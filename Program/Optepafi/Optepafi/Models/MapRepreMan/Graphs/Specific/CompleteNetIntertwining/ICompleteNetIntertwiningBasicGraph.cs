@@ -11,8 +11,7 @@ namespace Optepafi.Models.MapRepreMan.Graphs.Specific.CompleteNetIntertwining;
 
 public interface ICompleteNetIntertwiningBasicGraph<TVertexAttributes, TEdgeAttributes> :
     ICompleteNetIntertwiningMapRepre,
-    ISearchable<ICompleteNetIntertwiningBasicGraph<TVertexAttributes, TEdgeAttributes>.Vertex, ICompleteNetIntertwiningBasicGraph<TVertexAttributes, TEdgeAttributes>.Edge, float, TVertexAttributes, TEdgeAttributes>,
-    IScaled<ICompleteNetIntertwiningBasicGraph<TVertexAttributes, TEdgeAttributes>.Vertex, ICompleteNetIntertwiningBasicGraph<TVertexAttributes, TEdgeAttributes>.Edge>
+    ISearchable<ICompleteNetIntertwiningBasicGraph<TVertexAttributes, TEdgeAttributes>.Vertex, ICompleteNetIntertwiningBasicGraph<TVertexAttributes, TEdgeAttributes>.Edge, float, TVertexAttributes, TEdgeAttributes>
     where TVertexAttributes : IVertexAttributes
     where TEdgeAttributes : IEdgeAttributes
 {

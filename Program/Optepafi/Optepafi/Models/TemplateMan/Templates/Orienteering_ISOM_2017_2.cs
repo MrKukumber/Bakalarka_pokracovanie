@@ -1,5 +1,4 @@
-using System.Dynamic;
-using Microsoft.VisualBasic.CompilerServices;
+using System;
 using Optepafi.Models.TemplateMan.TemplateAttributes;
 using Optepafi.Models.Utils;
 
@@ -64,11 +63,13 @@ public class Orienteering_ISOM_2017_2 : ITemplate<Orienteering_ISOM_2017_2.Verte
 
     public struct EdgeAttributes((Grounds? ground, Boulders? boulders, Stones? stones, Water? water, VegetationAndManMade? vegetationAndManMade, VegetationGoodVis? vegetationGoodVis) leftSurrounding, 
                                              (NaturalLinearObstacles? naturalLinearObstacle, Paths? path, ManMadeLinearObstacles? manMadeLinearObstacle) linearFeatures,
-                                             (Grounds? ground, Boulders? boulders, Stones? stones, Water? water, VegetationAndManMade? vegetationAndManMade, VegetationGoodVis? vegetationGoodVis) rightSurrounding) : IEdgeAttributes
+                                             (Grounds? ground, Boulders? boulders, Stones? stones, Water? water, VegetationAndManMade? vegetationAndManMade, VegetationGoodVis? vegetationGoodVis) rightSurrounding) : IEdgeAttributes, IEquatable<EdgeAttributes>
     {
         public static bool operator==(EdgeAttributes left, EdgeAttributes right) => left._leftSurroundings == right._leftSurroundings && left._rightSurroundings == right._rightSurroundings && left._linearFeatures == right._linearFeatures;
         public static bool operator!=(EdgeAttributes left, EdgeAttributes right) => !(left == right);
+        public override bool Equals(object? other) => other is EdgeAttributes otherEdgeAttribute ? this == otherEdgeAttribute : false;
         public override int GetHashCode() => (_leftSurroundings, _rightSurroundings, _linearFeatures).GetHashCode();
+        public bool Equals(EdgeAttributes other) => this == other;
 
         public EdgeAttributes((Grounds? ground, Boulders? boulders, Stones? stones, Water? water, VegetationAndManMade? vegetationAndManMade, VegetationGoodVis? vegetationGoodVis) bothSurroundings, (NaturalLinearObstacles? naturalLinearObstacle, Paths? path, ManMadeLinearObstacles? manMadeLinearObstacle) linearFeatures) : this( (bothSurroundings.ground, bothSurroundings.boulders, bothSurroundings.stones, bothSurroundings.water, bothSurroundings.vegetationAndManMade, bothSurroundings.vegetationGoodVis), (linearFeatures.naturalLinearObstacle, linearFeatures.path, linearFeatures.manMadeLinearObstacle), (bothSurroundings.ground, bothSurroundings.boulders, bothSurroundings.stones, bothSurroundings.water, bothSurroundings.vegetationAndManMade, bothSurroundings.vegetationGoodVis)){}
         public EdgeAttributes((Grounds? ground, Boulders? boulders, Stones? stones, Water? water, VegetationAndManMade? vegetationAndManMade, VegetationGoodVis? vegetationGoodVis) bothSurroundings) : this((bothSurroundings.ground, bothSurroundings.boulders, bothSurroundings.stones, bothSurroundings.water, bothSurroundings.vegetationAndManMade, bothSurroundings.vegetationGoodVis), (null, null, null)){}
