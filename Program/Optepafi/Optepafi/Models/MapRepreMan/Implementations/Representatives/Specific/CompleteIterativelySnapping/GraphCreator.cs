@@ -2250,7 +2250,7 @@ public class GraphCreator<TVertex, TEdge>
                 // at first, we have to sort cross-section vertices so they could be correctly connected to the chain vertices
                 var newSortedVertices = SortVerticesCorrectly(vertex1, vertex2, newVertices);
                 ConnectNewVerticesToChain(newSortedVertices,  vertex1, vertex2);
-                AddNewVerticesToChain(newSortedVertices, vertex1, vertex2, chains, chainIndex);
+                AddNewVerticesToChain(newSortedVertices, vertex1, vertex2, chains[chainIndex]);
             }
         }
 
@@ -2271,9 +2271,9 @@ public class GraphCreator<TVertex, TEdge>
             vertex2.BoundaryEdges[lastVertex] = new Orienteering_ISOM_2017_2.EdgeAttributes();
         }
 
-        private static void AddNewVerticesToChain(List<BoundaryVertexBuilder<TVertex, TEdge>> sortedVertices, BoundaryVertexBuilder<TVertex, TEdge> vertex1, BoundaryVertexBuilder<TVertex, TEdge> vertex2, List<BoundaryVertexBuilder<TVertex, TEdge>>[] chains, int chainIndex)
+        private static void AddNewVerticesToChain(List<BoundaryVertexBuilder<TVertex, TEdge>> sortedVertices, BoundaryVertexBuilder<TVertex, TEdge> vertex1, BoundaryVertexBuilder<TVertex, TEdge> vertex2, List<BoundaryVertexBuilder<TVertex, TEdge>> chain)
         {
-            int vertexIndex = chains[chainIndex].IndexOf(vertex1); 
+            int vertexIndex = chain.IndexOf(vertex1); 
             var lastVertex = vertex1;
             // newly created cross-section vertices are added to the chain
             foreach (var vertex in sortedVertices)
@@ -2296,7 +2296,7 @@ public class GraphCreator<TVertex, TEdge>
                     }
                 }
                 else
-                    chains[chainIndex].Insert(++vertexIndex, vertex);
+                    chain.Insert(++vertexIndex, vertex);
             }
         }
         
@@ -2340,7 +2340,7 @@ public class GraphCreator<TVertex, TEdge>
             // at first, we have to find all boundary vertices in standard edge length distance from vertices of chain
             // these boundary vertices will also include chain vertices
             // we will need them so we could test, whether newly added edges does not cross some boundary edge of previously added objects or currently processed object
-            var closeBoundaryVerticesToChainsVertices = FindCloseBoundaryVerticesToChainVertices(chainVertices, allVertices, standardEdgeLength);
+            var closeBoundaryVerticesToChainVertices = FindCloseBoundaryVerticesToChainVertices(chainVertices, allVertices, standardEdgeLength);
             for (int i = 0; i < chainVertices.Length; ++i)
             {
                 var closeVertices = connectableVertices.FindInEuclideanDistanceFrom((chainVertices[i].Position.XPos, chainVertices[i].Position.YPos), standardEdgeLength);
@@ -2348,7 +2348,7 @@ public class GraphCreator<TVertex, TEdge>
                     // we do not connect vertices by non boundary edges to vertices which are connected to current vertex by boundary edge already 
                     if (closeVertex is not BoundaryVertexBuilder<TVertex, TEdge> boundaryCloseVertex || !chainVertices[i].BoundaryEdges.ContainsKey(boundaryCloseVertex))
                         // check, if created edge does not cut any boundary edge 
-                        if (DoesNotCrossSomeBoundaryEdge(chainVertices[i], closeVertex, closeBoundaryVerticesToChainsVertices[i]))
+                        if (DoesNotCrossSomeBoundaryEdge(chainVertices[i], closeVertex, closeBoundaryVerticesToChainVertices[i]))
                             if (closeVertex is NetVertexBuilder<TVertex, TEdge> closeNetVertex)
                                 ConnectBoundaryVertexAndNetVertex(chainVertices[i], closeNetVertex);
                             else if (closeVertex is BoundaryVertexBuilder<TVertex, TEdge> closeBoundaryVertex && !chainVertices[i].BoundaryEdges.ContainsKey(closeBoundaryVertex))
@@ -2359,16 +2359,16 @@ public class GraphCreator<TVertex, TEdge>
         
         private static List<List<BoundaryVertexBuilder<TVertex, TEdge>>> FindCloseBoundaryVerticesToChainVertices(BoundaryVertexBuilder<TVertex, TEdge>[] chainVertices, IEditableRadiallySearchableDataStruct<VertexBuilder<TVertex, TEdge>> allVertices,  int standardEdgeLength)
         {
-            List<List<BoundaryVertexBuilder<TVertex, TEdge>>> closeBoundaryVerticesToChainsVertices = new List<List<BoundaryVertexBuilder<TVertex, TEdge>>>();
+            List<List<BoundaryVertexBuilder<TVertex, TEdge>>> closeBoundaryVerticesToChainVertices = new List<List<BoundaryVertexBuilder<TVertex, TEdge>>>();
             IRadiallySearchableDataStruct<BoundaryVertexBuilder<TVertex, TEdge>> searchableChain = new RadiallySearchableKdTree<BoundaryVertexBuilder<TVertex, TEdge>>(chainVertices, vertexBuilder => (vertexBuilder.Position.XPos, vertexBuilder.Position.YPos));
             foreach (var chainVertex in chainVertices)
             {
                 var allCloseVerticesToChainVertex = allVertices.FindInEuclideanDistanceFrom((chainVertex.Position.XPos, chainVertex.Position.YPos), standardEdgeLength);
-                closeBoundaryVerticesToChainsVertices.Add(allCloseVerticesToChainVertex.OfType<BoundaryVertexBuilder<TVertex, TEdge>>().ToList());
+                closeBoundaryVerticesToChainVertices.Add(allCloseVerticesToChainVertex.OfType<BoundaryVertexBuilder<TVertex, TEdge>>().ToList());
                 var allCloseChainVerticesToChainVertex = searchableChain.FindInEuclideanDistanceFrom((chainVertex.Position.XPos, chainVertex.Position.YPos), standardEdgeLength);
-                closeBoundaryVerticesToChainsVertices.Last().AddRange(allCloseChainVerticesToChainVertex);
+                closeBoundaryVerticesToChainVertices.Last().AddRange(allCloseChainVerticesToChainVertex);
             }
-            return closeBoundaryVerticesToChainsVertices;
+            return closeBoundaryVerticesToChainVertices;
         }
 
         private static bool DoesNotCrossSomeBoundaryEdge(BoundaryVertexBuilder<TVertex, TEdge> chainVertex, VertexBuilder<TVertex, TEdge> closeVertex, List<BoundaryVertexBuilder<TVertex, TEdge>> closeBoundaryVerticesToBeChecked)
