@@ -228,7 +228,7 @@ public class GraphCreator<TVertex, TEdge>
                 PolygonalObjectsProcessing.ProcessCutBoundaryEdgesByChain(chains, verticesOfCutBoundaryEdges, outerVerticesOfCutEdges, symbolCode);
         // 6
         // if(processedObjectsCount != debugLimit) // for debugging
-        PolygonalObjectsProcessing.ConnectChainToVerticesOfCutEdgesAndOtherVerticesOfChain(chainsEnrichedByNewCrossSectionVertices, outerVerticesOfCutEdges, innerVerticesOfCutEdges, allVertices, configuration.standardEdgeLength.Value);
+        PolygonalObjectsProcessing.ConnectChainToVerticesOfCutEdgesAndOtherVerticesOfChain(chainsEnrichedByNewCrossSectionVertices, allVertices, configuration.standardEdgeLength.Value);
         // 7
         // if(processedObjectsCount != debugLimit) // for debugging
         PolygonalObjectsProcessing.SetAttributesOfChainsEdges(chainsEnrichedByNewCrossSectionVertices, outerVerticesOfCutEdges, symbolCode);
@@ -255,7 +255,7 @@ public class GraphCreator<TVertex, TEdge>
             PathObjectsProcessing.ProcessCutBoundaryEdgesByChain(potentiallyMultiOccuringVerticesChain, verticesOfCutBoundaryEdges);
         // 4
         // if(processedObjectsCount != debugLimit) // for debugging
-        PathObjectsProcessing.ConnectChainToVerticesOfCutEdgesAndOtherVerticesOfChain(potentiallyMultiOccuringVerticesChainEnrichedByNewCrossSectionVertices , verticesOfCutNonBoundaryEdges, verticesOfCutBoundaryEdges, allVertices, configuration.standardEdgeLength.Value);
+        PathObjectsProcessing.ConnectChainToVerticesOfCutEdgesAndOtherVerticesOfChain(potentiallyMultiOccuringVerticesChainEnrichedByNewCrossSectionVertices, allVertices, configuration.standardEdgeLength.Value);
         // 5
         // if(processedObjectsCount != debugLimit) // for debugging
         PathObjectsProcessing.SetAttributesOfChainsEdges(potentiallyMultiOccuringVerticesChainEnrichedByNewCrossSectionVertices, symbolCode);
@@ -846,8 +846,8 @@ public class GraphCreator<TVertex, TEdge>
         
         #region 6 \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 
-        public static void ConnectChainToVerticesOfCutEdgesAndOtherVerticesOfChain(BoundaryVertexBuilder<TVertex, TEdge>[][] chains, List<VertexBuilder<TVertex, TEdge>> outerVerticesOfCutEdges, List<VertexBuilder<TVertex, TEdge>> innerVerticesOfCutEdges, IEditableRadiallySearchableDataStruct<VertexBuilder<TVertex, TEdge>> allVertices, int standardEdgeLength)
-            => Utils.ConnectChainVerticesToVerticesOfCutEdgesAndOtherVerticesOfChain(chains.SelectMany(chain => chain).ToArray(), outerVerticesOfCutEdges.Concat(innerVerticesOfCutEdges), allVertices, standardEdgeLength); 
+        public static void ConnectChainToVerticesOfCutEdgesAndOtherVerticesOfChain(BoundaryVertexBuilder<TVertex, TEdge>[][] chains, IEditableRadiallySearchableDataStruct<VertexBuilder<TVertex, TEdge>> allVertices, int standardEdgeLength)
+            => Utils.ConnectChainVerticesToOtherVerticesIncludingChainOnes(chains.SelectMany(chain => chain).ToArray(), allVertices, standardEdgeLength); 
         
         #endregion
         
@@ -1178,13 +1178,8 @@ public class GraphCreator<TVertex, TEdge>
         
         #region 4 \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 
-        public static void ConnectChainToVerticesOfCutEdgesAndOtherVerticesOfChain(BoundaryVertexBuilder<TVertex, TEdge>[] chain, Dictionary<(VertexBuilder<TVertex, TEdge>, VertexBuilder<TVertex, TEdge>), List<MapCoordinates>> verticesOfCutNonBoundaryEdges, Dictionary<(BoundaryVertexBuilder<TVertex, TEdge>, BoundaryVertexBuilder<TVertex, TEdge>), (Orienteering_ISOM_2017_2.EdgeAttributes, List<(MapCoordinates, int, int)>)> verticesOfCutBoundaryEdges, IEditableRadiallySearchableDataStruct<VertexBuilder<TVertex, TEdge>> allVertices, int standardEdgeLength)
-        {
-            HashSet<VertexBuilder<TVertex, TEdge>> verticesOfCutEdges = new();
-            foreach (var ((vertex1, vertex2), _) in verticesOfCutNonBoundaryEdges) { verticesOfCutEdges.Add(vertex1); verticesOfCutEdges.Add(vertex2); }
-            foreach (var ((vertex1, vertex2), _) in verticesOfCutBoundaryEdges) { verticesOfCutEdges.Add(vertex1); verticesOfCutEdges.Add(vertex2); }
-            Utils.ConnectChainVerticesToVerticesOfCutEdgesAndOtherVerticesOfChain(chain, verticesOfCutEdges, allVertices, standardEdgeLength);
-        }
+        public static void ConnectChainToVerticesOfCutEdgesAndOtherVerticesOfChain(BoundaryVertexBuilder<TVertex, TEdge>[] chain, IEditableRadiallySearchableDataStruct<VertexBuilder<TVertex, TEdge>> allVertices, int standardEdgeLength)
+            => Utils.ConnectChainVerticesToOtherVerticesIncludingChainOnes(chain, allVertices, standardEdgeLength);
         
         #endregion
         
@@ -2331,44 +2326,24 @@ public class GraphCreator<TVertex, TEdge>
         
         #endregion
         
-        #region Connecting of chain vertices to vertices of cut edges and to itself by non boundary edges \\\\\\\\\\\\\\
-        public static void ConnectChainVerticesToVerticesOfCutEdgesAndOtherVerticesOfChain(BoundaryVertexBuilder<TVertex, TEdge>[] chainVertices, IEnumerable<VertexBuilder<TVertex, TEdge>> verticesOfCutEdges, IEditableRadiallySearchableDataStruct<VertexBuilder<TVertex, TEdge>> allVertices, int standardEdgeLength)
+        #region Connecting of chain vertices to all other vertices including itself by non boundary edges \\\\\\\\\\\\\\
+        public static void ConnectChainVerticesToOtherVerticesIncludingChainOnes( BoundaryVertexBuilder<TVertex, TEdge>[] chainVertices, IEditableRadiallySearchableDataStruct<VertexBuilder<TVertex, TEdge>> allVertices, int standardEdgeLength)
         {
-            // connectable vertices consists of chain vertices and all vertices of edges, which were cut by chain
-            IEditableRadiallySearchableDataStruct<VertexBuilder<TVertex, TEdge>> connectableVertices = new RadiallySearchableKdTree<VertexBuilder<TVertex, TEdge>>(chainVertices.Concat(verticesOfCutEdges), vertexBuilder => (vertexBuilder.Position.XPos, vertexBuilder.Position.YPos));
-            
-            // at first, we have to find all boundary vertices in standard edge length distance from vertices of chain
-            // these boundary vertices will also include chain vertices
-            // we will need them so we could test, whether newly added edges does not cross some boundary edge of previously added objects or currently processed object
-            var closeBoundaryVerticesToChainVertices = FindCloseBoundaryVerticesToChainVertices(chainVertices, allVertices, standardEdgeLength);
-            for (int i = 0; i < chainVertices.Length; ++i)
-            {
-                var closeVertices = connectableVertices.FindInEuclideanDistanceFrom((chainVertices[i].Position.XPos, chainVertices[i].Position.YPos), standardEdgeLength);
-                foreach (var closeVertex in closeVertices)
-                    // we do not connect vertices by non boundary edges to vertices which are connected to current vertex by boundary edge already 
-                    if (closeVertex is not BoundaryVertexBuilder<TVertex, TEdge> boundaryCloseVertex || !chainVertices[i].BoundaryEdges.ContainsKey(boundaryCloseVertex))
-                        // check, if created edge does not cut any boundary edge 
-                        if (DoesNotCrossSomeBoundaryEdge(chainVertices[i], closeVertex, closeBoundaryVerticesToChainVertices[i]))
-                            if (closeVertex is NetVertexBuilder<TVertex, TEdge> closeNetVertex)
-                                ConnectBoundaryVertexAndNetVertex(chainVertices[i], closeNetVertex);
-                            else if (closeVertex is BoundaryVertexBuilder<TVertex, TEdge> closeBoundaryVertex && !chainVertices[i].BoundaryEdges.ContainsKey(closeBoundaryVertex))
-                                ConnectTwoBoundaryVerticesWithNonBoundaryEdge(chainVertices[i], closeBoundaryVertex);
-            }
-            
-        }
-        
-        private static List<List<BoundaryVertexBuilder<TVertex, TEdge>>> FindCloseBoundaryVerticesToChainVertices(BoundaryVertexBuilder<TVertex, TEdge>[] chainVertices, IEditableRadiallySearchableDataStruct<VertexBuilder<TVertex, TEdge>> allVertices,  int standardEdgeLength)
-        {
-            List<List<BoundaryVertexBuilder<TVertex, TEdge>>> closeBoundaryVerticesToChainVertices = new List<List<BoundaryVertexBuilder<TVertex, TEdge>>>();
-            IRadiallySearchableDataStruct<BoundaryVertexBuilder<TVertex, TEdge>> searchableChain = new RadiallySearchableKdTree<BoundaryVertexBuilder<TVertex, TEdge>>(chainVertices, vertexBuilder => (vertexBuilder.Position.XPos, vertexBuilder.Position.YPos));
+            var searchableChain = new RadiallySearchableKdTree<BoundaryVertexBuilder<TVertex, TEdge>>(chainVertices, vertexBuilder => (vertexBuilder.Position.XPos, vertexBuilder.Position.YPos));
             foreach (var chainVertex in chainVertices)
             {
-                var allCloseVerticesToChainVertex = allVertices.FindInEuclideanDistanceFrom((chainVertex.Position.XPos, chainVertex.Position.YPos), standardEdgeLength);
-                closeBoundaryVerticesToChainVertices.Add(allCloseVerticesToChainVertex.OfType<BoundaryVertexBuilder<TVertex, TEdge>>().ToList());
-                var allCloseChainVerticesToChainVertex = searchableChain.FindInEuclideanDistanceFrom((chainVertex.Position.XPos, chainVertex.Position.YPos), standardEdgeLength);
-                closeBoundaryVerticesToChainVertices.Last().AddRange(allCloseChainVerticesToChainVertex);
+                var closeVertices = allVertices.FindInEuclideanDistanceFrom((chainVertex.Position.XPos, chainVertex.Position.YPos), standardEdgeLength).Concat(searchableChain.FindInEuclideanDistanceFrom((chainVertex.Position.XPos, chainVertex.Position.YPos), standardEdgeLength));
+                var closeBoundaryVertices = closeVertices.OfType<BoundaryVertexBuilder<TVertex, TEdge>>().ToList();
+                foreach (var closeVertex in closeVertices)
+                    // we do not connect vertices by non boundary edges to vertices which are connected to current vertex by boundary edge already 
+                    if (closeVertex is not BoundaryVertexBuilder<TVertex, TEdge> boundaryCloseVertex || !chainVertex.BoundaryEdges.ContainsKey(boundaryCloseVertex))
+                        // check, if created edge does not cut any boundary edge 
+                        if (DoesNotCrossSomeBoundaryEdge(chainVertex, closeVertex, closeBoundaryVertices))
+                            if (closeVertex is NetVertexBuilder<TVertex, TEdge> closeNetVertex)
+                                ConnectBoundaryVertexAndNetVertex(chainVertex, closeNetVertex);
+                            else if (closeVertex is BoundaryVertexBuilder<TVertex, TEdge> closeBoundaryVertex)
+                                ConnectTwoBoundaryVerticesWithNonBoundaryEdge(chainVertex, closeBoundaryVertex);
             }
-            return closeBoundaryVerticesToChainVertices;
         }
 
         private static bool DoesNotCrossSomeBoundaryEdge(BoundaryVertexBuilder<TVertex, TEdge> chainVertex, VertexBuilder<TVertex, TEdge> closeVertex, List<BoundaryVertexBuilder<TVertex, TEdge>> closeBoundaryVerticesToBeChecked)
@@ -2401,6 +2376,44 @@ public class GraphCreator<TVertex, TEdge>
             // correct attributes will be assigned to these edges in the future
             boundaryVertex1.NonBoundaryEdges[boundaryVertex2] = new Orienteering_ISOM_2017_2.EdgeAttributes();
             boundaryVertex2.NonBoundaryEdges[boundaryVertex1] = new Orienteering_ISOM_2017_2.EdgeAttributes();
+        }
+        
+        [Obsolete("This method is deprecated. Use ConnectChainVerticesToOtherVerticesIncludingChainOnes instead.")]
+        public static void ConnectChainVerticesToVerticesOfCutEdgesAndOtherVerticesOfChain(BoundaryVertexBuilder<TVertex, TEdge>[] chainVertices, IEnumerable<VertexBuilder<TVertex, TEdge>> verticesOfCutEdges, IEditableRadiallySearchableDataStruct<VertexBuilder<TVertex, TEdge>> allVertices, int standardEdgeLength)
+        {
+            // connectable vertices consists of chain vertices and all vertices of edges, which were cut by chain
+            IEditableRadiallySearchableDataStruct<VertexBuilder<TVertex, TEdge>> connectableVertices = new RadiallySearchableKdTree<VertexBuilder<TVertex, TEdge>>(chainVertices.Concat(verticesOfCutEdges), vertexBuilder => (vertexBuilder.Position.XPos, vertexBuilder.Position.YPos));
+            
+            // at first, we have to find all boundary vertices in standard edge length distance from vertices of chain
+            // these boundary vertices will also include chain vertices
+            // we will need them so we could test, whether newly added edges does not cross some boundary edge of previously added objects or currently processed object
+            var closeBoundaryVerticesToChainVertices = FindCloseBoundaryVerticesToChainVertices(chainVertices, allVertices, standardEdgeLength);
+            for (int i = 0; i < chainVertices.Length; ++i)
+            {
+                var closeVertices = connectableVertices.FindInEuclideanDistanceFrom((chainVertices[i].Position.XPos, chainVertices[i].Position.YPos), standardEdgeLength);
+                foreach (var closeVertex in closeVertices)
+                    // we do not connect vertices by non boundary edges to vertices which are connected to current vertex by boundary edge already 
+                    if (closeVertex is not BoundaryVertexBuilder<TVertex, TEdge> boundaryCloseVertex || !chainVertices[i].BoundaryEdges.ContainsKey(boundaryCloseVertex))
+                        // check, if created edge does not cut any boundary edge 
+                        if (DoesNotCrossSomeBoundaryEdge(chainVertices[i], closeVertex, closeBoundaryVerticesToChainVertices[i]))
+                            if (closeVertex is NetVertexBuilder<TVertex, TEdge> closeNetVertex)
+                                ConnectBoundaryVertexAndNetVertex(chainVertices[i], closeNetVertex);
+                            else if (closeVertex is BoundaryVertexBuilder<TVertex, TEdge> closeBoundaryVertex /*&& !chainVertices[i].BoundaryEdges.ContainsKey(closeBoundaryVertex)*/)
+                                ConnectTwoBoundaryVerticesWithNonBoundaryEdge(chainVertices[i], closeBoundaryVertex);
+            }
+        }
+        private static List<List<BoundaryVertexBuilder<TVertex, TEdge>>> FindCloseBoundaryVerticesToChainVertices(BoundaryVertexBuilder<TVertex, TEdge>[] chainVertices, IEditableRadiallySearchableDataStruct<VertexBuilder<TVertex, TEdge>> allVertices,  int standardEdgeLength)
+        {
+            List<List<BoundaryVertexBuilder<TVertex, TEdge>>> closeBoundaryVerticesToChainVertices = new List<List<BoundaryVertexBuilder<TVertex, TEdge>>>();
+            IRadiallySearchableDataStruct<BoundaryVertexBuilder<TVertex, TEdge>> searchableChain = new RadiallySearchableKdTree<BoundaryVertexBuilder<TVertex, TEdge>>(chainVertices, vertexBuilder => (vertexBuilder.Position.XPos, vertexBuilder.Position.YPos));
+            foreach (var chainVertex in chainVertices)
+            {
+                var allCloseVerticesToChainVertex = allVertices.FindInEuclideanDistanceFrom((chainVertex.Position.XPos, chainVertex.Position.YPos), standardEdgeLength);
+                closeBoundaryVerticesToChainVertices.Add(allCloseVerticesToChainVertex.OfType<BoundaryVertexBuilder<TVertex, TEdge>>().ToList());
+                var allCloseChainVerticesToChainVertex = searchableChain.FindInEuclideanDistanceFrom((chainVertex.Position.XPos, chainVertex.Position.YPos), standardEdgeLength);
+                closeBoundaryVerticesToChainVertices.Last().AddRange(allCloseChainVerticesToChainVertex);
+            }
+            return closeBoundaryVerticesToChainVertices;
         }
         
         #endregion
