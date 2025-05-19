@@ -22,8 +22,8 @@ using Optepafi.Models.TemplateMan.Templates;
 using Optepafi.Models.Utils;
 using Optepafi.Models.Utils.Shapes.Segments;
 public class GraphCreator<TVertex, TEdge>
-    where TVertex : IBuildableVertex<TEdge>, IInitializableVertex<TEdge, Orienteering_ISOM_2017_2.VertexAttributes>, new()
-    where TEdge : IEdge, IInitializableEdge<TVertex, Orienteering_ISOM_2017_2.EdgeAttributes>, new()
+    where TVertex : IBuildableVertex<TEdge>, IInitializableVertex<TEdge, Orienteering_ISOM_2017_2_RunSpeModSym.VertexAttributes>, new()
+    where TEdge : IEdge, IInitializableEdge<TVertex, Orienteering_ISOM_2017_2_RunSpeModSym.EdgeAttributes>, new()
 {
     public GraphCreator() { }
     
@@ -128,17 +128,17 @@ public class GraphCreator<TVertex, TEdge>
         List<NetVertexBuilder<TVertex, TEdge>> vertices = new ();
         List<NetVertexBuilder<TVertex, TEdge>> lastRow = new ();
         List<NetVertexBuilder<TVertex, TEdge>> currentRow = new ();
-        (Orienteering_ISOM_2017_2.Grounds?, Orienteering_ISOM_2017_2.Boulders?, Orienteering_ISOM_2017_2.Stones?, Orienteering_ISOM_2017_2.Water?, Orienteering_ISOM_2017_2.VegetationAndManMade?, Orienteering_ISOM_2017_2.VegetationGoodVis?) justForest =  (null, null, null, null, Orienteering_ISOM_2017_2.VegetationAndManMade.Forest_405, null);
-        (Orienteering_ISOM_2017_2.NaturalLinearObstacles?, Orienteering_ISOM_2017_2.Paths?, Orienteering_ISOM_2017_2.ManMadeLinearObstacles?) blankLinearFeatures = (null, null, null);
+        (Orienteering_ISOM_2017_2_RunSpeModSym.Grounds?, Orienteering_ISOM_2017_2_RunSpeModSym.Boulders?, Orienteering_ISOM_2017_2_RunSpeModSym.Stones?, Orienteering_ISOM_2017_2_RunSpeModSym.Water?, Orienteering_ISOM_2017_2_RunSpeModSym.VegetationAndManMade?, Orienteering_ISOM_2017_2_RunSpeModSym.VegetationGoodVis?) justForest =  (null, null, null, null, Orienteering_ISOM_2017_2_RunSpeModSym.VegetationAndManMade.Forest_405, null);
+        (Orienteering_ISOM_2017_2_RunSpeModSym.NaturalLinearObstacles?, Orienteering_ISOM_2017_2_RunSpeModSym.Paths?, Orienteering_ISOM_2017_2_RunSpeModSym.ManMadeLinearObstacles?) blankLinearFeatures = (null, null, null);
         for (int coll = 0; coll < colls; ++coll)
-            lastRow.Add(new NetVertexBuilder<TVertex, TEdge>( new Orienteering_ISOM_2017_2.VertexAttributes( new MapCoordinates(boundaries.left + coll * edgeLength, boundaries.top)))
+            lastRow.Add(new NetVertexBuilder<TVertex, TEdge>( new Orienteering_ISOM_2017_2_RunSpeModSym.VertexAttributes( new MapCoordinates(boundaries.left + coll * edgeLength, boundaries.top)))
                 {Surroundings = justForest});
 
         for (int row = 1; row < rows; ++row)
         {
             for (int coll = 0; coll < colls - 1; ++coll)
             {
-                NetVertexBuilder<TVertex, TEdge> vertex = new NetVertexBuilder<TVertex, TEdge>(new Orienteering_ISOM_2017_2.VertexAttributes(new MapCoordinates( boundaries.left + edgeLength/2 + coll * edgeLength , (int) (boundaries.top - row * Math.Sqrt(3) * edgeLength / 2))))
+                NetVertexBuilder<TVertex, TEdge> vertex = new NetVertexBuilder<TVertex, TEdge>(new Orienteering_ISOM_2017_2_RunSpeModSym.VertexAttributes(new MapCoordinates( boundaries.left + edgeLength/2 + coll * edgeLength , (int) (boundaries.top - row * Math.Sqrt(3) * edgeLength / 2))))
                     {Surroundings = justForest};
                 vertex.NonBoundaryEdges[lastRow[coll]] = blankLinearFeatures ;
                 lastRow[coll].NonBoundaryEdges[vertex] = blankLinearFeatures;
@@ -155,14 +155,14 @@ public class GraphCreator<TVertex, TEdge>
             currentRow.Clear();
             ++row;
             
-            NetVertexBuilder<TVertex, TEdge> leftVertex = new NetVertexBuilder<TVertex, TEdge>(new Orienteering_ISOM_2017_2.VertexAttributes(new MapCoordinates(boundaries.left, (int) (boundaries.top - row * Math.Sqrt(3) * edgeLength / 2))))
+            NetVertexBuilder<TVertex, TEdge> leftVertex = new NetVertexBuilder<TVertex, TEdge>(new Orienteering_ISOM_2017_2_RunSpeModSym.VertexAttributes(new MapCoordinates(boundaries.left, (int) (boundaries.top - row * Math.Sqrt(3) * edgeLength / 2))))
                 {Surroundings = justForest};
             leftVertex.NonBoundaryEdges[lastRow[0]] = blankLinearFeatures;
             lastRow[0].NonBoundaryEdges[leftVertex] = blankLinearFeatures;
             currentRow.Add(leftVertex);
             for (int coll = 1; coll < colls - 1; ++coll)
             {
-                NetVertexBuilder<TVertex, TEdge> vertex =  new NetVertexBuilder<TVertex, TEdge>(new Orienteering_ISOM_2017_2.VertexAttributes(new MapCoordinates( boundaries.left + coll * edgeLength , (int) (boundaries.top - row * Math.Sqrt(3) * edgeLength / 2)))) 
+                NetVertexBuilder<TVertex, TEdge> vertex =  new NetVertexBuilder<TVertex, TEdge>(new Orienteering_ISOM_2017_2_RunSpeModSym.VertexAttributes(new MapCoordinates( boundaries.left + coll * edgeLength , (int) (boundaries.top - row * Math.Sqrt(3) * edgeLength / 2)))) 
                     {Surroundings = justForest};
                 vertex.NonBoundaryEdges[lastRow[coll - 1]] = blankLinearFeatures;
                 lastRow[coll - 1].NonBoundaryEdges[vertex] = blankLinearFeatures;
@@ -172,7 +172,7 @@ public class GraphCreator<TVertex, TEdge>
                 lastRow[coll - 1].NonBoundaryEdges[lastRow[coll]] = blankLinearFeatures;
                 currentRow.Add(vertex);
             }
-            NetVertexBuilder<TVertex, TEdge> rightVertex = new NetVertexBuilder<TVertex, TEdge>(new Orienteering_ISOM_2017_2.VertexAttributes(new MapCoordinates(boundaries.left + (colls - 1) * edgeLength, (int) (boundaries.top - row * Math.Sqrt(3) * edgeLength / 2))))
+            NetVertexBuilder<TVertex, TEdge> rightVertex = new NetVertexBuilder<TVertex, TEdge>(new Orienteering_ISOM_2017_2_RunSpeModSym.VertexAttributes(new MapCoordinates(boundaries.left + (colls - 1) * edgeLength, (int) (boundaries.top - row * Math.Sqrt(3) * edgeLength / 2))))
                 {Surroundings = justForest};
             rightVertex.NonBoundaryEdges[lastRow[colls - 2]] = blankLinearFeatures;
             lastRow[colls - 2].NonBoundaryEdges[rightVertex] = blankLinearFeatures;
@@ -292,8 +292,8 @@ public class GraphCreator<TVertex, TEdge>
                 var boundaryChain = Utils.GetBlankChainOfSegmentedLine(polygonalSegments.Last().LastPoint, polygonalSegments, standardEdgeLength, minBoundaryEdgeRatio);
                 if (boundaryChain.Count <= 2)  continue; 
                 //connects last and second vertex of chain for polygonal shape, removes first one
-                boundaryChain.Last().BoundaryEdges[boundaryChain[1]] = new Orienteering_ISOM_2017_2.EdgeAttributes();
-                boundaryChain[1].BoundaryEdges[boundaryChain.Last()] = new Orienteering_ISOM_2017_2.EdgeAttributes();
+                boundaryChain.Last().BoundaryEdges[boundaryChain[1]] = new Orienteering_ISOM_2017_2_RunSpeModSym.EdgeAttributes();
+                boundaryChain[1].BoundaryEdges[boundaryChain.Last()] = new Orienteering_ISOM_2017_2_RunSpeModSym.EdgeAttributes();
                 boundaryChain[1].BoundaryEdges.Remove(boundaryChain[0]);
                 boundaryChain.RemoveAt(0);
                 if (boundaryChain.Count <= 2)  continue; 
@@ -310,10 +310,10 @@ public class GraphCreator<TVertex, TEdge>
             var rightBoundaryChain = Utils.GetBlankShiftedChainOfSegmentedLine(obj.TypedCoords[0].coords, segments, standardEdgeLength, minBoundaryEdgeRatio, false, 125);   
             if (leftBoundaryChain.Count + rightBoundaryChain.Count <= 2) return null;
             // connect left and right boundary chain
-            leftBoundaryChain[0].BoundaryEdges[rightBoundaryChain[0]] = new Orienteering_ISOM_2017_2.EdgeAttributes();
-            rightBoundaryChain[0].BoundaryEdges[leftBoundaryChain[0]] = new Orienteering_ISOM_2017_2.EdgeAttributes();
-            leftBoundaryChain.Last().BoundaryEdges[rightBoundaryChain.Last()] = new Orienteering_ISOM_2017_2.EdgeAttributes();
-            rightBoundaryChain.Last().BoundaryEdges[leftBoundaryChain.Last()] = new Orienteering_ISOM_2017_2.EdgeAttributes();
+            leftBoundaryChain[0].BoundaryEdges[rightBoundaryChain[0]] = new Orienteering_ISOM_2017_2_RunSpeModSym.EdgeAttributes();
+            rightBoundaryChain[0].BoundaryEdges[leftBoundaryChain[0]] = new Orienteering_ISOM_2017_2_RunSpeModSym.EdgeAttributes();
+            leftBoundaryChain.Last().BoundaryEdges[rightBoundaryChain.Last()] = new Orienteering_ISOM_2017_2_RunSpeModSym.EdgeAttributes();
+            rightBoundaryChain.Last().BoundaryEdges[leftBoundaryChain.Last()] = new Orienteering_ISOM_2017_2_RunSpeModSym.EdgeAttributes();
             //return left boundary chain together with reversed right boundary chain
             rightBoundaryChain.Reverse();
             leftBoundaryChain.AddRange(rightBoundaryChain);
@@ -384,7 +384,7 @@ public class GraphCreator<TVertex, TEdge>
                 // if cross-section of successive edges is checked, cross-section is valid only if it is not positioned in common vertex of these edges (vertex on position je). This happens when these edges are parallel.
                 if (ich != jch || je != ie + 1 || crossSectionCoords != potentiallyEntangledChains[jch][je].Position)
                 {
-                    var newTemporaryVertex = new ChainEntanglementTemporaryVertexBuilder( new Orienteering_ISOM_2017_2.VertexAttributes(crossSectionCoords.Value));
+                    var newTemporaryVertex = new ChainEntanglementTemporaryVertexBuilder( new Orienteering_ISOM_2017_2_RunSpeModSym.VertexAttributes(crossSectionCoords.Value));
                     if (indicesOfCutEdgesWithCorrespondingTemporaryVertices.ContainsKey((ich, ie))) indicesOfCutEdgesWithCorrespondingTemporaryVertices[(ich, ie)].Add(newTemporaryVertex);
                     else indicesOfCutEdgesWithCorrespondingTemporaryVertices[(ich, ie)] = [newTemporaryVertex];
                     if (indicesOfCutEdgesWithCorrespondingTemporaryVertices.ContainsKey((jch, je))) indicesOfCutEdgesWithCorrespondingTemporaryVertices[(jch, je)].Add(newTemporaryVertex);
@@ -484,13 +484,13 @@ public class GraphCreator<TVertex, TEdge>
             var lastVertex = chain.Last();
             for (int i = 0; i < countOfEdgesToBeAdded; i++)
             {
-                BoundaryVertexBuilder<TVertex, TEdge> newVertex = new BoundaryVertexBuilder<TVertex, TEdge>( new Orienteering_ISOM_2017_2.VertexAttributes( lastVertex.Position + 1 / (float)(countOfEdgesToBeAdded + 1 - i) * (vertex.Position - lastVertex.Position)));
+                BoundaryVertexBuilder<TVertex, TEdge> newVertex = new BoundaryVertexBuilder<TVertex, TEdge>( new Orienteering_ISOM_2017_2_RunSpeModSym.VertexAttributes( lastVertex.Position + 1 / (float)(countOfEdgesToBeAdded + 1 - i) * (vertex.Position - lastVertex.Position)));
                 vertex.BoundaryEdges.Remove(lastVertex);
                 lastVertex.BoundaryEdges.Remove(vertex);
-                lastVertex.BoundaryEdges[newVertex] = new Orienteering_ISOM_2017_2.EdgeAttributes();
-                newVertex.BoundaryEdges[lastVertex] = new Orienteering_ISOM_2017_2.EdgeAttributes();
-                vertex.BoundaryEdges[newVertex] = new Orienteering_ISOM_2017_2.EdgeAttributes();
-                newVertex.BoundaryEdges[vertex] = new Orienteering_ISOM_2017_2.EdgeAttributes();
+                lastVertex.BoundaryEdges[newVertex] = new Orienteering_ISOM_2017_2_RunSpeModSym.EdgeAttributes();
+                newVertex.BoundaryEdges[lastVertex] = new Orienteering_ISOM_2017_2_RunSpeModSym.EdgeAttributes();
+                vertex.BoundaryEdges[newVertex] = new Orienteering_ISOM_2017_2_RunSpeModSym.EdgeAttributes();
+                newVertex.BoundaryEdges[vertex] = new Orienteering_ISOM_2017_2_RunSpeModSym.EdgeAttributes();
                 chain.Add(newVertex);
                 lastVertex = newVertex;
             }
@@ -509,8 +509,8 @@ public class GraphCreator<TVertex, TEdge>
                     chain[i].BoundaryEdges.Remove(chain[iP]);
                     chain[iS].BoundaryEdges.Remove(chain[i]);
                     chain[i].BoundaryEdges.Remove(chain[iS]);
-                    chain[iP].BoundaryEdges[chain[iS]] = new Orienteering_ISOM_2017_2.EdgeAttributes();
-                    chain[iS].BoundaryEdges[chain[iP]] = new Orienteering_ISOM_2017_2.EdgeAttributes();
+                    chain[iP].BoundaryEdges[chain[iS]] = new Orienteering_ISOM_2017_2_RunSpeModSym.EdgeAttributes();
+                    chain[iS].BoundaryEdges[chain[iP]] = new Orienteering_ISOM_2017_2_RunSpeModSym.EdgeAttributes();
                     chain.RemoveAt(i);
                 }
             }
@@ -536,7 +536,7 @@ public class GraphCreator<TVertex, TEdge>
             return collectedChains;
         }
         
-        private class ChainEntanglementTemporaryVertexBuilder(Orienteering_ISOM_2017_2.VertexAttributes attributesNoElev) : BoundaryVertexBuilder<TVertex, TEdge>(attributesNoElev)
+        private class ChainEntanglementTemporaryVertexBuilder(Orienteering_ISOM_2017_2_RunSpeModSym.VertexAttributes attributesNoElev) : BoundaryVertexBuilder<TVertex, TEdge>(attributesNoElev)
         {
             private BoundaryVertexBuilder<TVertex, TEdge>? from1;
             private BoundaryVertexBuilder<TVertex, TEdge>? to1;
@@ -591,13 +591,13 @@ public class GraphCreator<TVertex, TEdge>
                 // if both vertices are original chain vertices, couple them by edges
                 if (from1 is not ChainEntanglementTemporaryVertexBuilder && to1 is not ChainEntanglementTemporaryVertexBuilder)
                 {
-                    from1.BoundaryEdges[to1] = new Orienteering_ISOM_2017_2.EdgeAttributes();
-                    to1.BoundaryEdges[from1] = new Orienteering_ISOM_2017_2.EdgeAttributes();
+                    from1.BoundaryEdges[to1] = new Orienteering_ISOM_2017_2_RunSpeModSym.EdgeAttributes();
+                    to1.BoundaryEdges[from1] = new Orienteering_ISOM_2017_2_RunSpeModSym.EdgeAttributes();
                 }
                 if (from2 is not ChainEntanglementTemporaryVertexBuilder && to2 is not ChainEntanglementTemporaryVertexBuilder)
                 {
-                    from2.BoundaryEdges[to2] = new Orienteering_ISOM_2017_2.EdgeAttributes();
-                    to2.BoundaryEdges[from2] = new Orienteering_ISOM_2017_2.EdgeAttributes();
+                    from2.BoundaryEdges[to2] = new Orienteering_ISOM_2017_2_RunSpeModSym.EdgeAttributes();
+                    to2.BoundaryEdges[from2] = new Orienteering_ISOM_2017_2_RunSpeModSym.EdgeAttributes();
                 }
             }
             public override bool IsStationary { get; set; } = true;
@@ -607,7 +607,7 @@ public class GraphCreator<TVertex, TEdge>
         
         #region 2 \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 
-        public static (Dictionary<(VertexBuilder<TVertex, TEdge>, VertexBuilder<TVertex, TEdge>), List<MapCoordinates>>, Dictionary<(BoundaryVertexBuilder<TVertex, TEdge>, BoundaryVertexBuilder<TVertex, TEdge>), (Orienteering_ISOM_2017_2.EdgeAttributes cutEdgeAttributes, List<(MapCoordinates, int, int)> crossSectionsWithChainsAndEdgesIndices)>)
+        public static (Dictionary<(VertexBuilder<TVertex, TEdge>, VertexBuilder<TVertex, TEdge>), List<MapCoordinates>>, Dictionary<(BoundaryVertexBuilder<TVertex, TEdge>, BoundaryVertexBuilder<TVertex, TEdge>), (Orienteering_ISOM_2017_2_RunSpeModSym.EdgeAttributes cutEdgeAttributes, List<(MapCoordinates, int, int)> crossSectionsWithChainsAndEdgesIndices)>)
             CutAllCrossedEdges(BoundaryVertexBuilder<TVertex, TEdge>[][] chains,
                 IEditableRadiallySearchableDataStruct<VertexBuilder<TVertex, TEdge>> allVertices, int standardEdgeLength)
         {
@@ -621,7 +621,7 @@ public class GraphCreator<TVertex, TEdge>
         #region 3 \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 
         public static (List<VertexBuilder<TVertex, TEdge>> outerVerticesOfCutEdges, List<VertexBuilder<TVertex, TEdge>> innerVerticesOfCutEdges, List<VertexBuilder<TVertex, TEdge>> allInnerVertices) 
-            FindNodesInsideThePolygonByDfs(Dictionary<(VertexBuilder<TVertex, TEdge>, VertexBuilder<TVertex, TEdge>), List<MapCoordinates>> verticesOfCutNonBoundaryEdges, Dictionary<(BoundaryVertexBuilder<TVertex, TEdge>, BoundaryVertexBuilder<TVertex, TEdge>), (Orienteering_ISOM_2017_2.EdgeAttributes, List<(MapCoordinates, int, int)>)> verticesOfCutBoundaryEdges, BoundaryVertexBuilder<TVertex, TEdge>[][] chains)
+            FindNodesInsideThePolygonByDfs(Dictionary<(VertexBuilder<TVertex, TEdge>, VertexBuilder<TVertex, TEdge>), List<MapCoordinates>> verticesOfCutNonBoundaryEdges, Dictionary<(BoundaryVertexBuilder<TVertex, TEdge>, BoundaryVertexBuilder<TVertex, TEdge>), (Orienteering_ISOM_2017_2_RunSpeModSym.EdgeAttributes, List<(MapCoordinates, int, int)>)> verticesOfCutBoundaryEdges, BoundaryVertexBuilder<TVertex, TEdge>[][] chains)
         {
             var outerVerticesOfCutEdges = new List<VertexBuilder<TVertex, TEdge>>();
             var innerVerticesOfCutEdges = new List<VertexBuilder<TVertex, TEdge>>();
@@ -790,7 +790,7 @@ public class GraphCreator<TVertex, TEdge>
         #region 5 \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 
         public static BoundaryVertexBuilder<TVertex, TEdge>[][] ProcessCutBoundaryEdgesByChain(BoundaryVertexBuilder<TVertex, TEdge>[][] chains, 
-            Dictionary<(BoundaryVertexBuilder<TVertex, TEdge>, BoundaryVertexBuilder<TVertex, TEdge>), (Orienteering_ISOM_2017_2.EdgeAttributes cutEdgeAttributes, List<(MapCoordinates, int, int)> crossSectionsWithChainsAndEdgesIndices)> verticesOfCutBoundaryEdges, 
+            Dictionary<(BoundaryVertexBuilder<TVertex, TEdge>, BoundaryVertexBuilder<TVertex, TEdge>), (Orienteering_ISOM_2017_2_RunSpeModSym.EdgeAttributes cutEdgeAttributes, List<(MapCoordinates, int, int)> crossSectionsWithChainsAndEdgesIndices)> verticesOfCutBoundaryEdges, 
             List<VertexBuilder<TVertex, TEdge>> outerVerticesOfCutEdges, decimal symbolCodeOfAddedObject)
         {
             // at first create vertex for every cross-section, then connect them correctly to the vertices of cut boundary edges and to the vertices of chain and in the end add the vertices to the chain
@@ -802,7 +802,7 @@ public class GraphCreator<TVertex, TEdge>
             return listChains.Select(chain => chain.ToArray()).ToArray();
         }
         
-        public static void ConnectNewVerticesToVerticesOfCutBoundaryEdges(Dictionary<(BoundaryVertexBuilder<TVertex, TEdge>, BoundaryVertexBuilder<TVertex, TEdge>), List<BoundaryVertexBuilder<TVertex, TEdge>>> verticesOfCrossedBoundaryEdgesWithTheirCrossSectionVertices, Dictionary<(BoundaryVertexBuilder<TVertex, TEdge>, BoundaryVertexBuilder<TVertex, TEdge>), (Orienteering_ISOM_2017_2.EdgeAttributes, List<(MapCoordinates, int, int)>)> verticesOfCutBoundaryEdges, List<VertexBuilder<TVertex, TEdge>> outerVerticesOfCutEdges, decimal symbolCodeOfAddedObject)
+        public static void ConnectNewVerticesToVerticesOfCutBoundaryEdges(Dictionary<(BoundaryVertexBuilder<TVertex, TEdge>, BoundaryVertexBuilder<TVertex, TEdge>), List<BoundaryVertexBuilder<TVertex, TEdge>>> verticesOfCrossedBoundaryEdgesWithTheirCrossSectionVertices, Dictionary<(BoundaryVertexBuilder<TVertex, TEdge>, BoundaryVertexBuilder<TVertex, TEdge>), (Orienteering_ISOM_2017_2_RunSpeModSym.EdgeAttributes, List<(MapCoordinates, int, int)>)> verticesOfCutBoundaryEdges, List<VertexBuilder<TVertex, TEdge>> outerVerticesOfCutEdges, decimal symbolCodeOfAddedObject)
         {
             foreach(var ((vertex1, vertex2), newVertices) in verticesOfCrossedBoundaryEdgesWithTheirCrossSectionVertices)
             {
@@ -832,8 +832,8 @@ public class GraphCreator<TVertex, TEdge>
                     // this behaviour ensures correct attributes assigment to newly created edges
                     lastVertex.BoundaryEdges[newVertex] = edgeToBeAddedIsOuter ? outerEdgeAttributesFromV1ToV2 : innerEdgeAttributesFromV1ToV2;
                     newVertex.BoundaryEdges[lastVertex] = edgeToBeAddedIsOuter 
-                        ? new Orienteering_ISOM_2017_2.EdgeAttributes(outerEdgeAttributesFromV1ToV2.RightSurroundings, outerEdgeAttributesFromV1ToV2.LeftSurroundings) 
-                        : new Orienteering_ISOM_2017_2.EdgeAttributes(innerEdgeAttributesFromV1ToV2.RightSurroundings, innerEdgeAttributesFromV1ToV2.LeftSurroundings);
+                        ? new Orienteering_ISOM_2017_2_RunSpeModSym.EdgeAttributes(outerEdgeAttributesFromV1ToV2.RightSurroundings, outerEdgeAttributesFromV1ToV2.LeftSurroundings) 
+                        : new Orienteering_ISOM_2017_2_RunSpeModSym.EdgeAttributes(innerEdgeAttributesFromV1ToV2.RightSurroundings, innerEdgeAttributesFromV1ToV2.LeftSurroundings);
                     edgeToBeAddedIsOuter = !edgeToBeAddedIsOuter;
                     lastVertex = newVertex;
                 }
@@ -904,11 +904,11 @@ public class GraphCreator<TVertex, TEdge>
         private static void SetAttributesOfChainBoundaryEdgesUniformly(BoundaryVertexBuilder<TVertex, TEdge>[] chain, List<VertexBuilder<TVertex, TEdge>> outerVertices, decimal symbolCodeOfAddedObject)
         {
             // attributes are determined from any outer net vertex
-            var outerEdgeSurroundingsForWholeChain = TryFindEdgeAttributesOfSomeOuterNetVertexConnectedToChainInGivenInterval(chain, outerVertices, 0, chain.Length - 1) ?? (null, null, null, null, Orienteering_ISOM_2017_2.VegetationAndManMade.Forest_405, null);
+            var outerEdgeSurroundingsForWholeChain = TryFindEdgeAttributesOfSomeOuterNetVertexConnectedToChainInGivenInterval(chain, outerVertices, 0, chain.Length - 1) ?? (null, null, null, null, Orienteering_ISOM_2017_2_RunSpeModSym.VegetationAndManMade.Forest_405, null);
             Utils.SetAttributesOfChainBoundaryEdgesBasedOnGivenLeftSurroundingsOnGivenInterval(chain, outerEdgeSurroundingsForWholeChain, symbolCodeOfAddedObject, 0, chain.Length - 1);
             var innerSurroundings = Utils.GetUpdatedSurroundingsOfEdgeAttributes(outerEdgeSurroundingsForWholeChain, symbolCodeOfAddedObject);
-            chain.Last().BoundaryEdges[chain[0]] = new Orienteering_ISOM_2017_2.EdgeAttributes(outerEdgeSurroundingsForWholeChain, innerSurroundings);
-            chain[0].BoundaryEdges[chain.Last()] = new Orienteering_ISOM_2017_2.EdgeAttributes(innerSurroundings, outerEdgeSurroundingsForWholeChain);
+            chain.Last().BoundaryEdges[chain[0]] = new Orienteering_ISOM_2017_2_RunSpeModSym.EdgeAttributes(outerEdgeSurroundingsForWholeChain, innerSurroundings);
+            chain[0].BoundaryEdges[chain.Last()] = new Orienteering_ISOM_2017_2_RunSpeModSym.EdgeAttributes(innerSurroundings, outerEdgeSurroundingsForWholeChain);
         }
 
         private static void SetAttributesOfChainBoundaryEdgesNonUniformly(BoundaryVertexBuilder<TVertex, TEdge>[] chain,  List<(int index, BoundaryVertexBuilder<TVertex, TEdge> neighbor)> indicesAndClosestOuterBoundaryNeighborsOfCrossSectionVertices, decimal symbolCodeOfAddedObject)
@@ -922,11 +922,11 @@ public class GraphCreator<TVertex, TEdge>
             Utils.SetAttributesOfChainBoundaryEdgesBasedOnGivenLeftSurroundingsOnGivenInterval(chain, outerEdgeSurroundingsForLastIntervalOfChain, symbolCodeOfAddedObject, indicesAndClosestOuterBoundaryNeighborsOfCrossSectionVertices.Last().index, chain.Length-1);
             Utils.SetAttributesOfChainBoundaryEdgesBasedOnGivenLeftSurroundingsOnGivenInterval(chain, outerEdgeSurroundingsForLastIntervalOfChain, symbolCodeOfAddedObject, 0, indicesAndClosestOuterBoundaryNeighborsOfCrossSectionVertices[0].index);
             var innerSurroundings = Utils.GetUpdatedSurroundingsOfEdgeAttributes(outerEdgeSurroundingsForLastIntervalOfChain, symbolCodeOfAddedObject);
-            chain.Last().BoundaryEdges[chain[0]] = new Orienteering_ISOM_2017_2.EdgeAttributes(outerEdgeSurroundingsForLastIntervalOfChain, innerSurroundings);
-            chain[0].BoundaryEdges[chain.Last()] = new Orienteering_ISOM_2017_2.EdgeAttributes(innerSurroundings, outerEdgeSurroundingsForLastIntervalOfChain); 
+            chain.Last().BoundaryEdges[chain[0]] = new Orienteering_ISOM_2017_2_RunSpeModSym.EdgeAttributes(outerEdgeSurroundingsForLastIntervalOfChain, innerSurroundings);
+            chain[0].BoundaryEdges[chain.Last()] = new Orienteering_ISOM_2017_2_RunSpeModSym.EdgeAttributes(innerSurroundings, outerEdgeSurroundingsForLastIntervalOfChain); 
         }
 
-        private static(Orienteering_ISOM_2017_2.Grounds?, Orienteering_ISOM_2017_2.Boulders?, Orienteering_ISOM_2017_2.Stones?, Orienteering_ISOM_2017_2.Water?, Orienteering_ISOM_2017_2.VegetationAndManMade?, Orienteering_ISOM_2017_2.VegetationGoodVis?)? 
+        private static(Orienteering_ISOM_2017_2_RunSpeModSym.Grounds?, Orienteering_ISOM_2017_2_RunSpeModSym.Boulders?, Orienteering_ISOM_2017_2_RunSpeModSym.Stones?, Orienteering_ISOM_2017_2_RunSpeModSym.Water?, Orienteering_ISOM_2017_2_RunSpeModSym.VegetationAndManMade?, Orienteering_ISOM_2017_2_RunSpeModSym.VegetationGoodVis?)? 
             TryFindEdgeAttributesOfSomeOuterNetVertexConnectedToChainInGivenInterval(BoundaryVertexBuilder<TVertex, TEdge>[] chain, List<VertexBuilder<TVertex, TEdge>> outerVertices, int startIndex, int endIndex)
         {
             if (startIndex >= endIndex || startIndex < 0 || endIndex >= chain.Length) return null;
@@ -968,8 +968,8 @@ public class GraphCreator<TVertex, TEdge>
             // therefore we replace first vertex for the last one, and it will occur in chain two times - at last and first position
             if (boundaryChain[0].Position == boundaryChain.Last().Position)
             {
-                boundaryChain.Last().BoundaryEdges[boundaryChain[1]] = new Orienteering_ISOM_2017_2.EdgeAttributes();
-                boundaryChain[1].BoundaryEdges[boundaryChain.Last()] = new Orienteering_ISOM_2017_2.EdgeAttributes();
+                boundaryChain.Last().BoundaryEdges[boundaryChain[1]] = new Orienteering_ISOM_2017_2_RunSpeModSym.EdgeAttributes();
+                boundaryChain[1].BoundaryEdges[boundaryChain.Last()] = new Orienteering_ISOM_2017_2_RunSpeModSym.EdgeAttributes();
                 boundaryChain[1].BoundaryEdges.Remove(boundaryChain[0]);
                 boundaryChain.RemoveAt(0);
                 boundaryChain.Insert(0, boundaryChain.Last());
@@ -991,7 +991,7 @@ public class GraphCreator<TVertex, TEdge>
                     MapCoordinates? crossSectionCoords = Utils.GetLineSegmentsCrossSectionCoordsP2Q2Excluded(potentiallyEntangledChain[i].Position, potentiallyEntangledChain[i + 1].Position, potentiallyEntangledChain[j].Position, potentiallyEntangledChain[j + 1].Position)  ;
                     if (crossSectionCoords is not null)
                     {
-                        var newVertex = new BoundaryVertexBuilder<TVertex, TEdge>(new Orienteering_ISOM_2017_2.VertexAttributes(crossSectionCoords.Value));
+                        var newVertex = new BoundaryVertexBuilder<TVertex, TEdge>(new Orienteering_ISOM_2017_2_RunSpeModSym.VertexAttributes(crossSectionCoords.Value));
                         ConnectVertexToChain(newVertex, potentiallyEntangledChain, i, j);
                         AddVertexToChain(newVertex, potentiallyEntangledChain, ref i, ref j);
                     }
@@ -1007,15 +1007,15 @@ public class GraphCreator<TVertex, TEdge>
             chain[secondEdgeIndex].BoundaryEdges.Remove(chain[secondEdgeIndex+1]);
             chain[secondEdgeIndex+1].BoundaryEdges.Remove(chain[secondEdgeIndex]);
             
-            chain[firstEdgeIndex].BoundaryEdges[newVertex] = new Orienteering_ISOM_2017_2.EdgeAttributes();
-            newVertex.BoundaryEdges[chain[firstEdgeIndex]] = new Orienteering_ISOM_2017_2.EdgeAttributes();
-            chain[firstEdgeIndex+1].BoundaryEdges[newVertex] = new Orienteering_ISOM_2017_2.EdgeAttributes();
-            newVertex.BoundaryEdges[chain[firstEdgeIndex+1]] = new Orienteering_ISOM_2017_2.EdgeAttributes();
+            chain[firstEdgeIndex].BoundaryEdges[newVertex] = new Orienteering_ISOM_2017_2_RunSpeModSym.EdgeAttributes();
+            newVertex.BoundaryEdges[chain[firstEdgeIndex]] = new Orienteering_ISOM_2017_2_RunSpeModSym.EdgeAttributes();
+            chain[firstEdgeIndex+1].BoundaryEdges[newVertex] = new Orienteering_ISOM_2017_2_RunSpeModSym.EdgeAttributes();
+            newVertex.BoundaryEdges[chain[firstEdgeIndex+1]] = new Orienteering_ISOM_2017_2_RunSpeModSym.EdgeAttributes();
             
-            chain[secondEdgeIndex].BoundaryEdges[newVertex] = new Orienteering_ISOM_2017_2.EdgeAttributes();
-            newVertex.BoundaryEdges[chain[secondEdgeIndex]] = new Orienteering_ISOM_2017_2.EdgeAttributes();
-            chain[secondEdgeIndex+1].BoundaryEdges[newVertex] = new Orienteering_ISOM_2017_2.EdgeAttributes();
-            newVertex.BoundaryEdges[chain[secondEdgeIndex+1]] = new Orienteering_ISOM_2017_2.EdgeAttributes();
+            chain[secondEdgeIndex].BoundaryEdges[newVertex] = new Orienteering_ISOM_2017_2_RunSpeModSym.EdgeAttributes();
+            newVertex.BoundaryEdges[chain[secondEdgeIndex]] = new Orienteering_ISOM_2017_2_RunSpeModSym.EdgeAttributes();
+            chain[secondEdgeIndex+1].BoundaryEdges[newVertex] = new Orienteering_ISOM_2017_2_RunSpeModSym.EdgeAttributes();
+            newVertex.BoundaryEdges[chain[secondEdgeIndex+1]] = new Orienteering_ISOM_2017_2_RunSpeModSym.EdgeAttributes();
         }
 
         private static void AddVertexToChain(BoundaryVertexBuilder<TVertex, TEdge> newVertex, List<BoundaryVertexBuilder<TVertex, TEdge>> chain, ref int i, ref int j)
@@ -1028,15 +1028,15 @@ public class GraphCreator<TVertex, TEdge>
                     newVertex.BoundaryEdges.Remove(chain[i]);
                     foreach (var (newVertexNeighbor, _) in newVertex.BoundaryEdges)
                     {
-                        chain[i].BoundaryEdges[newVertexNeighbor] = new Orienteering_ISOM_2017_2.EdgeAttributes();
-                        newVertexNeighbor.BoundaryEdges[chain[i]] = new Orienteering_ISOM_2017_2.EdgeAttributes();
+                        chain[i].BoundaryEdges[newVertexNeighbor] = new Orienteering_ISOM_2017_2_RunSpeModSym.EdgeAttributes();
+                        newVertexNeighbor.BoundaryEdges[chain[i]] = new Orienteering_ISOM_2017_2_RunSpeModSym.EdgeAttributes();
                         newVertexNeighbor.BoundaryEdges.Remove(newVertex);
                     }
                     newVertex.BoundaryEdges.Clear();
                     foreach (var (vertexAtJInChainNeighbor, _) in chain[j].BoundaryEdges)
                     {
-                        chain[i].BoundaryEdges[vertexAtJInChainNeighbor] = new Orienteering_ISOM_2017_2.EdgeAttributes();
-                        vertexAtJInChainNeighbor.BoundaryEdges[chain[i]] = new Orienteering_ISOM_2017_2.EdgeAttributes();
+                        chain[i].BoundaryEdges[vertexAtJInChainNeighbor] = new Orienteering_ISOM_2017_2_RunSpeModSym.EdgeAttributes();
+                        vertexAtJInChainNeighbor.BoundaryEdges[chain[i]] = new Orienteering_ISOM_2017_2_RunSpeModSym.EdgeAttributes();
                         vertexAtJInChainNeighbor.BoundaryEdges.Remove(chain[j]);
                     }
                     chain[j].BoundaryEdges.Clear();
@@ -1050,15 +1050,15 @@ public class GraphCreator<TVertex, TEdge>
                     newVertex.BoundaryEdges.Remove(chain[i]);
                     foreach (var (newVertexNeighbor, _) in newVertex.BoundaryEdges)
                     {
-                        chain[i].BoundaryEdges[newVertexNeighbor] = new Orienteering_ISOM_2017_2.EdgeAttributes();
-                        newVertexNeighbor.BoundaryEdges[chain[i]] = new Orienteering_ISOM_2017_2.EdgeAttributes();
+                        chain[i].BoundaryEdges[newVertexNeighbor] = new Orienteering_ISOM_2017_2_RunSpeModSym.EdgeAttributes();
+                        newVertexNeighbor.BoundaryEdges[chain[i]] = new Orienteering_ISOM_2017_2_RunSpeModSym.EdgeAttributes();
                         newVertexNeighbor.BoundaryEdges.Remove(newVertex);
                     }
                     newVertex.BoundaryEdges.Clear();
                     foreach (var (vertexAtJPlusOneInChainNeighbor, _) in chain[j+1].BoundaryEdges)
                     {
-                        chain[i].BoundaryEdges[vertexAtJPlusOneInChainNeighbor] = new Orienteering_ISOM_2017_2.EdgeAttributes();
-                        vertexAtJPlusOneInChainNeighbor.BoundaryEdges[chain[i]] = new Orienteering_ISOM_2017_2.EdgeAttributes();
+                        chain[i].BoundaryEdges[vertexAtJPlusOneInChainNeighbor] = new Orienteering_ISOM_2017_2_RunSpeModSym.EdgeAttributes();
+                        vertexAtJPlusOneInChainNeighbor.BoundaryEdges[chain[i]] = new Orienteering_ISOM_2017_2_RunSpeModSym.EdgeAttributes();
                         vertexAtJPlusOneInChainNeighbor.BoundaryEdges.Remove(chain[j+1]);
                     }
                     chain[j+1].BoundaryEdges.Clear();
@@ -1071,8 +1071,8 @@ public class GraphCreator<TVertex, TEdge>
                     newVertex.BoundaryEdges.Remove(chain[i]);
                     foreach (var (newVertexNeighbor, _) in newVertex.BoundaryEdges)
                     {
-                        chain[i].BoundaryEdges[newVertexNeighbor] = new Orienteering_ISOM_2017_2.EdgeAttributes();
-                        newVertexNeighbor.BoundaryEdges[chain[i]] = new Orienteering_ISOM_2017_2.EdgeAttributes();
+                        chain[i].BoundaryEdges[newVertexNeighbor] = new Orienteering_ISOM_2017_2_RunSpeModSym.EdgeAttributes();
+                        newVertexNeighbor.BoundaryEdges[chain[i]] = new Orienteering_ISOM_2017_2_RunSpeModSym.EdgeAttributes();
                         newVertexNeighbor.BoundaryEdges.Remove(newVertex);
                     }
                     newVertex.BoundaryEdges.Clear();
@@ -1085,8 +1085,8 @@ public class GraphCreator<TVertex, TEdge>
                 newVertex.BoundaryEdges.Remove(chain[j]);
                 foreach (var (newVertexNeighbor, _) in newVertex.BoundaryEdges)
                 {
-                    chain[j].BoundaryEdges[newVertexNeighbor] = new Orienteering_ISOM_2017_2.EdgeAttributes();
-                    newVertexNeighbor.BoundaryEdges[chain[j]] = new Orienteering_ISOM_2017_2.EdgeAttributes();
+                    chain[j].BoundaryEdges[newVertexNeighbor] = new Orienteering_ISOM_2017_2_RunSpeModSym.EdgeAttributes();
+                    newVertexNeighbor.BoundaryEdges[chain[j]] = new Orienteering_ISOM_2017_2_RunSpeModSym.EdgeAttributes();
                     newVertexNeighbor.BoundaryEdges.Remove(newVertex);
                 }
                 newVertex.BoundaryEdges.Clear();
@@ -1099,8 +1099,8 @@ public class GraphCreator<TVertex, TEdge>
                 newVertex.BoundaryEdges.Remove(chain[j+1]);
                 foreach (var (newVertexNeighbor, _) in newVertex.BoundaryEdges)
                 {
-                    chain[j+1].BoundaryEdges[newVertexNeighbor] = new Orienteering_ISOM_2017_2.EdgeAttributes();
-                    newVertexNeighbor.BoundaryEdges[chain[j+1]] = new Orienteering_ISOM_2017_2.EdgeAttributes();
+                    chain[j+1].BoundaryEdges[newVertexNeighbor] = new Orienteering_ISOM_2017_2_RunSpeModSym.EdgeAttributes();
+                    newVertexNeighbor.BoundaryEdges[chain[j+1]] = new Orienteering_ISOM_2017_2_RunSpeModSym.EdgeAttributes();
                     newVertexNeighbor.BoundaryEdges.Remove(newVertex);
                 }
                 newVertex.BoundaryEdges.Clear();
@@ -1119,7 +1119,7 @@ public class GraphCreator<TVertex, TEdge>
         
         #region 2 \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 
-        public static (Dictionary<(VertexBuilder<TVertex, TEdge>, VertexBuilder<TVertex, TEdge>), List<MapCoordinates>>, Dictionary<(BoundaryVertexBuilder<TVertex, TEdge>, BoundaryVertexBuilder<TVertex, TEdge>), (Orienteering_ISOM_2017_2.EdgeAttributes cutEdgeAttributes, List<(MapCoordinates coords, int chainIndex, int edgeIndex)> crossSectionsWithChainsAndEdgesIndices)>)
+        public static (Dictionary<(VertexBuilder<TVertex, TEdge>, VertexBuilder<TVertex, TEdge>), List<MapCoordinates>>, Dictionary<(BoundaryVertexBuilder<TVertex, TEdge>, BoundaryVertexBuilder<TVertex, TEdge>), (Orienteering_ISOM_2017_2_RunSpeModSym.EdgeAttributes cutEdgeAttributes, List<(MapCoordinates coords, int chainIndex, int edgeIndex)> crossSectionsWithChainsAndEdgesIndices)>)
             CutAllCrossedEdges(BoundaryVertexBuilder<TVertex, TEdge>[] potentiallyMultiOccuringVerticesChain,
             IEditableRadiallySearchableDataStruct<VertexBuilder<TVertex, TEdge>> allVertices, int standardEdgeLength)
         {
@@ -1132,7 +1132,7 @@ public class GraphCreator<TVertex, TEdge>
         
         #region 3 \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 
-        public static BoundaryVertexBuilder<TVertex, TEdge>[] ProcessCutBoundaryEdgesByChain(BoundaryVertexBuilder<TVertex, TEdge>[] potentiallyMultiOccuringVerticesChain, Dictionary<(BoundaryVertexBuilder<TVertex, TEdge>, BoundaryVertexBuilder<TVertex, TEdge>), (Orienteering_ISOM_2017_2.EdgeAttributes, List<(MapCoordinates, int, int)>)> verticesOfCutBoundaryEdges)
+        public static BoundaryVertexBuilder<TVertex, TEdge>[] ProcessCutBoundaryEdgesByChain(BoundaryVertexBuilder<TVertex, TEdge>[] potentiallyMultiOccuringVerticesChain, Dictionary<(BoundaryVertexBuilder<TVertex, TEdge>, BoundaryVertexBuilder<TVertex, TEdge>), (Orienteering_ISOM_2017_2_RunSpeModSym.EdgeAttributes, List<(MapCoordinates, int, int)>)> verticesOfCutBoundaryEdges)
         {
             // at first create vertex for every cross-section, then connect them correctly to the vertices of cut boundary edges and to the vertices of chain and in the end add the vertices to the chain
             var listChain = potentiallyMultiOccuringVerticesChain.ToList();
@@ -1144,7 +1144,7 @@ public class GraphCreator<TVertex, TEdge>
             
         }
         
-        public static void ConnectNewVerticesToVerticesOfCutBoundaryEdges(Dictionary<(BoundaryVertexBuilder<TVertex, TEdge>, BoundaryVertexBuilder<TVertex, TEdge>), List<BoundaryVertexBuilder<TVertex, TEdge>>> verticesOfCrossedBoundaryEdgesWithTheirCrossSectionVertices, Dictionary<(BoundaryVertexBuilder<TVertex, TEdge>, BoundaryVertexBuilder<TVertex, TEdge>), (Orienteering_ISOM_2017_2.EdgeAttributes, List<(MapCoordinates, int, int)>)> verticesOfCutBoundaryEdges)
+        public static void ConnectNewVerticesToVerticesOfCutBoundaryEdges(Dictionary<(BoundaryVertexBuilder<TVertex, TEdge>, BoundaryVertexBuilder<TVertex, TEdge>), List<BoundaryVertexBuilder<TVertex, TEdge>>> verticesOfCrossedBoundaryEdgesWithTheirCrossSectionVertices, Dictionary<(BoundaryVertexBuilder<TVertex, TEdge>, BoundaryVertexBuilder<TVertex, TEdge>), (Orienteering_ISOM_2017_2_RunSpeModSym.EdgeAttributes, List<(MapCoordinates, int, int)>)> verticesOfCutBoundaryEdges)
         {
             foreach(var ((vertex1, vertex2), newVertices) in verticesOfCrossedBoundaryEdgesWithTheirCrossSectionVertices)
             {
@@ -1168,7 +1168,7 @@ public class GraphCreator<TVertex, TEdge>
                         continue;
                     }
                     lastVertex.BoundaryEdges[newVertex] =  edgeAttributesFromV1ToV2;
-                    newVertex.BoundaryEdges[lastVertex] = new Orienteering_ISOM_2017_2.EdgeAttributes(edgeAttributesFromV1ToV2.RightSurroundings, edgeAttributesFromV1ToV2.LeftSurroundings); 
+                    newVertex.BoundaryEdges[lastVertex] = new Orienteering_ISOM_2017_2_RunSpeModSym.EdgeAttributes(edgeAttributesFromV1ToV2.RightSurroundings, edgeAttributesFromV1ToV2.LeftSurroundings); 
                     lastVertex = newVertex;
                 }
             }
@@ -1249,7 +1249,7 @@ public class GraphCreator<TVertex, TEdge>
         private static void SetAttributesOfChainBoundaryEdgesUniformly(BoundaryVertexBuilder<TVertex, TEdge>[] chain, decimal symbolCodeOfAddedObject)
         {
             // attributes are determined from any net vertex
-            var outerEdgeSurroundingsForWholeChain = TryFindEdgeAttributesOfSomeNetVertexConnectedToChainInGivenInterval(chain, 0, chain.Length - 1) ?? (null, null, null, null, Orienteering_ISOM_2017_2.VegetationAndManMade.Forest_405, null);
+            var outerEdgeSurroundingsForWholeChain = TryFindEdgeAttributesOfSomeNetVertexConnectedToChainInGivenInterval(chain, 0, chain.Length - 1) ?? (null, null, null, null, Orienteering_ISOM_2017_2_RunSpeModSym.VegetationAndManMade.Forest_405, null);
             Utils.SetAttributesOfChainBoundaryEdgesBasedOnGivenLeftSurroundingsOnGivenInterval(chain, outerEdgeSurroundingsForWholeChain, symbolCodeOfAddedObject, 0, chain.Length - 1);
         }
         
@@ -1268,7 +1268,7 @@ public class GraphCreator<TVertex, TEdge>
             Utils.SetAttributesOfChainBoundaryEdgesBasedOnGivenLeftSurroundingsOnGivenInterval(chain, outerEdgeSurroundingsForFirstIntervalOfChain, symbolCodeOfAddedObject, 0, indicesAndClosestOuterBoundaryNeighborsOfCrossSectionVertices.First().index);
         }
         
-        private static(Orienteering_ISOM_2017_2.Grounds?, Orienteering_ISOM_2017_2.Boulders?, Orienteering_ISOM_2017_2.Stones?, Orienteering_ISOM_2017_2.Water?, Orienteering_ISOM_2017_2.VegetationAndManMade?, Orienteering_ISOM_2017_2.VegetationGoodVis?)? 
+        private static(Orienteering_ISOM_2017_2_RunSpeModSym.Grounds?, Orienteering_ISOM_2017_2_RunSpeModSym.Boulders?, Orienteering_ISOM_2017_2_RunSpeModSym.Stones?, Orienteering_ISOM_2017_2_RunSpeModSym.Water?, Orienteering_ISOM_2017_2_RunSpeModSym.VegetationAndManMade?, Orienteering_ISOM_2017_2_RunSpeModSym.VegetationGoodVis?)? 
             TryFindEdgeAttributesOfSomeNetVertexConnectedToChainInGivenInterval(BoundaryVertexBuilder<TVertex, TEdge>[] chain, int startIndex, int endIndex)
         {
             if (startIndex >= endIndex || startIndex < 0 || endIndex >= chain.Length) return null;
@@ -1314,8 +1314,8 @@ public class GraphCreator<TVertex, TEdge>
             // therefore we replace first vertex for last one, and it will occur in chain two times - at last and first position
             if (boundaryChain[0].Position == boundaryChain.Last().Position)
             {
-                boundaryChain.Last().BoundaryEdges[boundaryChain[1]] = new Orienteering_ISOM_2017_2.EdgeAttributes();
-                boundaryChain[1].BoundaryEdges[boundaryChain.Last()] = new Orienteering_ISOM_2017_2.EdgeAttributes();
+                boundaryChain.Last().BoundaryEdges[boundaryChain[1]] = new Orienteering_ISOM_2017_2_RunSpeModSym.EdgeAttributes();
+                boundaryChain[1].BoundaryEdges[boundaryChain.Last()] = new Orienteering_ISOM_2017_2_RunSpeModSym.EdgeAttributes();
                 boundaryChain[1].BoundaryEdges.Remove(boundaryChain[0]);
                 boundaryChain.RemoveAt(0);
                 // if linear obstacle is around some polygon, it is better, when crossed edges by this obstacle will be the same one as edges crossed by chain of that polygon
@@ -1333,7 +1333,7 @@ public class GraphCreator<TVertex, TEdge>
         
         #region 1 \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
         
-        public static (Dictionary<(VertexBuilder<TVertex, TEdge>, VertexBuilder<TVertex, TEdge>), List<MapCoordinates>>, Dictionary<(BoundaryVertexBuilder<TVertex, TEdge>, BoundaryVertexBuilder<TVertex, TEdge>), (Orienteering_ISOM_2017_2.EdgeAttributes cutEdgeAttributes, List<(MapCoordinates, int, int)> crossSectionsWithChainsAndEdgesIndices)>)
+        public static (Dictionary<(VertexBuilder<TVertex, TEdge>, VertexBuilder<TVertex, TEdge>), List<MapCoordinates>>, Dictionary<(BoundaryVertexBuilder<TVertex, TEdge>, BoundaryVertexBuilder<TVertex, TEdge>), (Orienteering_ISOM_2017_2_RunSpeModSym.EdgeAttributes cutEdgeAttributes, List<(MapCoordinates, int, int)> crossSectionsWithChainsAndEdgesIndices)>)
             
             FindAllCrossedEdges(BoundaryVertexBuilder<TVertex, TEdge>[] chain, IEditableRadiallySearchableDataStruct<VertexBuilder<TVertex, TEdge>> allVertices, int standardEdgeLength) 
             => Utils.FindAllCrossedEdges([chain], allVertices, standardEdgeLength, false);
@@ -1342,7 +1342,7 @@ public class GraphCreator<TVertex, TEdge>
         
         #region 2 \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 
-        public static void SetLinearObstacleAttributesToAllCrossedEdges(Dictionary<(VertexBuilder<TVertex, TEdge>, VertexBuilder<TVertex, TEdge>), List<MapCoordinates>> verticesOfCrossedNonBoundaryEdges, Dictionary<(BoundaryVertexBuilder<TVertex, TEdge>, BoundaryVertexBuilder<TVertex, TEdge>), (Orienteering_ISOM_2017_2.EdgeAttributes cutEdgeAttributes, List<(MapCoordinates, int, int)> crossSectionsWithChainsAndEdgesIndices)> verticesOfCrossedBoundaryEdges, decimal symbolCodeOfAddedObject)
+        public static void SetLinearObstacleAttributesToAllCrossedEdges(Dictionary<(VertexBuilder<TVertex, TEdge>, VertexBuilder<TVertex, TEdge>), List<MapCoordinates>> verticesOfCrossedNonBoundaryEdges, Dictionary<(BoundaryVertexBuilder<TVertex, TEdge>, BoundaryVertexBuilder<TVertex, TEdge>), (Orienteering_ISOM_2017_2_RunSpeModSym.EdgeAttributes cutEdgeAttributes, List<(MapCoordinates, int, int)> crossSectionsWithChainsAndEdgesIndices)> verticesOfCrossedBoundaryEdges, decimal symbolCodeOfAddedObject)
         {
             foreach (var ((vertex1, vertex2), _) in verticesOfCrossedNonBoundaryEdges)
             {
@@ -1381,7 +1381,7 @@ public class GraphCreator<TVertex, TEdge>
         public const int microscopicEdgeLength = 100;
         public static List<BoundaryVertexBuilder<TVertex, TEdge>> GetBlankChainOfSegmentedLine(MapCoordinates firstPosition, IList<Segment> segments, int standardEdgeLength, float minBoundaryEdgeRatio)
         {
-            List<BoundaryVertexBuilder<TVertex, TEdge>> chain = [new (new Orienteering_ISOM_2017_2.VertexAttributes(firstPosition))];
+            List<BoundaryVertexBuilder<TVertex, TEdge>> chain = [new (new Orienteering_ISOM_2017_2_RunSpeModSym.VertexAttributes(firstPosition))];
             // incrementally adds new vertices to chain for each segment of objects boundary 
             foreach (var segment in segments)
             {
@@ -1413,9 +1413,9 @@ public class GraphCreator<TVertex, TEdge>
             // iteratively creating edges from uniformly chosen parts of segment
             for (int i = 1; i <= parametersCount - 1; ++i)
             {
-                BoundaryVertexBuilder<TVertex, TEdge> newVertex = new( new Orienteering_ISOM_2017_2.VertexAttributes(segment.PositionAt(parametrization[i], point0)));
-                newVertex.BoundaryEdges[chain.Last()] = new Orienteering_ISOM_2017_2.EdgeAttributes();
-                chain.Last().BoundaryEdges[newVertex] = new Orienteering_ISOM_2017_2.EdgeAttributes();
+                BoundaryVertexBuilder<TVertex, TEdge> newVertex = new( new Orienteering_ISOM_2017_2_RunSpeModSym.VertexAttributes(segment.PositionAt(parametrization[i], point0)));
+                newVertex.BoundaryEdges[chain.Last()] = new Orienteering_ISOM_2017_2_RunSpeModSym.EdgeAttributes();
+                chain.Last().BoundaryEdges[newVertex] = new Orienteering_ISOM_2017_2_RunSpeModSym.EdgeAttributes();
                 chain.Add(newVertex);
             }
         }
@@ -1438,8 +1438,8 @@ public class GraphCreator<TVertex, TEdge>
             
             foreach (var newVertex in newVertices)
             {
-                newVertex.BoundaryEdges[chain.Last()] = new Orienteering_ISOM_2017_2.EdgeAttributes();
-                chain.Last().BoundaryEdges[newVertex] = new Orienteering_ISOM_2017_2.EdgeAttributes();
+                newVertex.BoundaryEdges[chain.Last()] = new Orienteering_ISOM_2017_2_RunSpeModSym.EdgeAttributes();
+                chain.Last().BoundaryEdges[newVertex] = new Orienteering_ISOM_2017_2_RunSpeModSym.EdgeAttributes();
                 chain.Add(newVertex);
             }
             return true;
@@ -1453,7 +1453,7 @@ public class GraphCreator<TVertex, TEdge>
             for(int i = 1; i <= n; ++i)
                 if ((segment.PositionAt(chordLengthParametrization[i], point0) - segment.PositionAt(chordLengthParametrization[i-1], point0)).Length() < standardEdgeLength * minBoundaryEdgeRatio) return false;
             for (int i = 1; i <= n; ++i)
-                newVertices.Add(new BoundaryVertexBuilder<TVertex, TEdge>(new Orienteering_ISOM_2017_2.VertexAttributes(segment.PositionAt(chordLengthParametrization[i], point0))));
+                newVertices.Add(new BoundaryVertexBuilder<TVertex, TEdge>(new Orienteering_ISOM_2017_2_RunSpeModSym.VertexAttributes(segment.PositionAt(chordLengthParametrization[i], point0))));
             return true;
         }
 
@@ -1465,7 +1465,7 @@ public class GraphCreator<TVertex, TEdge>
             var normalVectorOfShiftSizeOfFirstSegmentAt0 = leftShift 
                 ? new MapCoordinates((int)(-tangentVectorToFirstSegmentAt0.YPos * shiftSize / tangentVectorToFirstSegmentAt0.Length()), (int)(tangentVectorToFirstSegmentAt0.XPos * 125 / tangentVectorToFirstSegmentAt0.Length()))
                 : new MapCoordinates((int)(tangentVectorToFirstSegmentAt0.YPos * shiftSize / tangentVectorToFirstSegmentAt0.Length()), (int)(-tangentVectorToFirstSegmentAt0.XPos * 125 / tangentVectorToFirstSegmentAt0.Length()));
-            List<BoundaryVertexBuilder<TVertex, TEdge>> chain = [new (new Orienteering_ISOM_2017_2.VertexAttributes(firstPosition + normalVectorOfShiftSizeOfFirstSegmentAt0))];
+            List<BoundaryVertexBuilder<TVertex, TEdge>> chain = [new (new Orienteering_ISOM_2017_2_RunSpeModSym.VertexAttributes(firstPosition + normalVectorOfShiftSizeOfFirstSegmentAt0))];
             // incrementally adds new vertices to chain for each segment of objects boundary 
             foreach (var segment in segments)
             {
@@ -1499,9 +1499,9 @@ public class GraphCreator<TVertex, TEdge>
                 var normalVectorOfShiftSize = leftShift 
                     ? new MapCoordinates((int)(-tangentVectorToSegment.YPos * shiftSize / tangentVectorToSegment.Length()), (int)(tangentVectorToSegment.XPos * 125 / tangentVectorToSegment.Length()))
                     : new MapCoordinates((int)(tangentVectorToSegment.YPos * shiftSize / tangentVectorToSegment.Length()), (int)(-tangentVectorToSegment.XPos * 125 / tangentVectorToSegment.Length()));
-                BoundaryVertexBuilder<TVertex, TEdge> newVertex = new( new Orienteering_ISOM_2017_2.VertexAttributes(segment.PositionAt(parametrization[i], point0) + normalVectorOfShiftSize));
-                newVertex.BoundaryEdges[chain.Last()] = new Orienteering_ISOM_2017_2.EdgeAttributes();
-                chain.Last().BoundaryEdges[newVertex] = new Orienteering_ISOM_2017_2.EdgeAttributes();
+                BoundaryVertexBuilder<TVertex, TEdge> newVertex = new( new Orienteering_ISOM_2017_2_RunSpeModSym.VertexAttributes(segment.PositionAt(parametrization[i], point0) + normalVectorOfShiftSize));
+                newVertex.BoundaryEdges[chain.Last()] = new Orienteering_ISOM_2017_2_RunSpeModSym.EdgeAttributes();
+                chain.Last().BoundaryEdges[newVertex] = new Orienteering_ISOM_2017_2_RunSpeModSym.EdgeAttributes();
                 chain.Add(newVertex);
             }
         }
@@ -1524,8 +1524,8 @@ public class GraphCreator<TVertex, TEdge>
             
             foreach (var newVertex in newVertices)
             {
-                newVertex.BoundaryEdges[chain.Last()] = new Orienteering_ISOM_2017_2.EdgeAttributes();
-                chain.Last().BoundaryEdges[newVertex] = new Orienteering_ISOM_2017_2.EdgeAttributes();
+                newVertex.BoundaryEdges[chain.Last()] = new Orienteering_ISOM_2017_2_RunSpeModSym.EdgeAttributes();
+                chain.Last().BoundaryEdges[newVertex] = new Orienteering_ISOM_2017_2_RunSpeModSym.EdgeAttributes();
                 chain.Add(newVertex);
             }
             return true;
@@ -1547,7 +1547,7 @@ public class GraphCreator<TVertex, TEdge>
             for(int i = 1; i <= n; ++i)
                 if ((segment.PositionAt(chordLengthParametrization[i], point0) - segment.PositionAt(chordLengthParametrization[i-1], point0)).Length() < standardEdgeLength * minBoundaryEdgeRatio) return false;
             for (int i = 1; i <= n; ++i)
-                newVertices.Add(new BoundaryVertexBuilder<TVertex, TEdge>(new Orienteering_ISOM_2017_2.VertexAttributes(segment.PositionAt(chordLengthParametrization[i], point0) + normalVectorsOfShift[i-1])));
+                newVertices.Add(new BoundaryVertexBuilder<TVertex, TEdge>(new Orienteering_ISOM_2017_2_RunSpeModSym.VertexAttributes(segment.PositionAt(chordLengthParametrization[i], point0) + normalVectorsOfShift[i-1])));
             return true;
         }
 
@@ -1683,11 +1683,11 @@ public class GraphCreator<TVertex, TEdge>
         
         #region Finding and cutting all crossed edges by chain \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
         
-        public static (Dictionary<(VertexBuilder<TVertex, TEdge>, VertexBuilder<TVertex, TEdge>), List<MapCoordinates>>, Dictionary<(BoundaryVertexBuilder<TVertex, TEdge>, BoundaryVertexBuilder<TVertex, TEdge>), (Orienteering_ISOM_2017_2.EdgeAttributes cutEdgeAttributes, List<(MapCoordinates, int, int)> crossSectionsWithChainsAndEdgesIndices)>) 
+        public static (Dictionary<(VertexBuilder<TVertex, TEdge>, VertexBuilder<TVertex, TEdge>), List<MapCoordinates>>, Dictionary<(BoundaryVertexBuilder<TVertex, TEdge>, BoundaryVertexBuilder<TVertex, TEdge>), (Orienteering_ISOM_2017_2_RunSpeModSym.EdgeAttributes cutEdgeAttributes, List<(MapCoordinates, int, int)> crossSectionsWithChainsAndEdgesIndices)>) 
             FindAllCrossedEdges(BoundaryVertexBuilder<TVertex, TEdge>[][] chains, IEditableRadiallySearchableDataStruct<VertexBuilder<TVertex, TEdge>> allVertices, int standardEdgeLength, bool polygonalChain)
         {
             Dictionary<(VertexBuilder<TVertex, TEdge>, VertexBuilder<TVertex, TEdge>), List<MapCoordinates>> verticesOfCutNonBoundaryEdges = new();
-            Dictionary<(BoundaryVertexBuilder<TVertex, TEdge>, BoundaryVertexBuilder<TVertex, TEdge>), (Orienteering_ISOM_2017_2.EdgeAttributes, List<(MapCoordinates, int, int)>)> verticesOfCutBoundaryEdges = new();
+            Dictionary<(BoundaryVertexBuilder<TVertex, TEdge>, BoundaryVertexBuilder<TVertex, TEdge>), (Orienteering_ISOM_2017_2_RunSpeModSym.EdgeAttributes, List<(MapCoordinates, int, int)>)> verticesOfCutBoundaryEdges = new();
             // at first collects all edges, which are crossed by any chain
             for (int i = 0; i < chains.Length; ++i)
             {
@@ -1701,7 +1701,7 @@ public class GraphCreator<TVertex, TEdge>
         }
         
         public static void
-            CutAllFoundCrossedEdges(Dictionary<(VertexBuilder<TVertex, TEdge>, VertexBuilder<TVertex, TEdge>), List<MapCoordinates>> verticesOfCutNonBoundaryEdges, Dictionary<(BoundaryVertexBuilder<TVertex, TEdge>, BoundaryVertexBuilder<TVertex, TEdge>), (Orienteering_ISOM_2017_2.EdgeAttributes cutEdgeAttributes, List<(MapCoordinates, int, int)> crossSectionsWithChainsAndEdgesIndices)> verticesOfCutBoundaryEdges)
+            CutAllFoundCrossedEdges(Dictionary<(VertexBuilder<TVertex, TEdge>, VertexBuilder<TVertex, TEdge>), List<MapCoordinates>> verticesOfCutNonBoundaryEdges, Dictionary<(BoundaryVertexBuilder<TVertex, TEdge>, BoundaryVertexBuilder<TVertex, TEdge>), (Orienteering_ISOM_2017_2_RunSpeModSym.EdgeAttributes cutEdgeAttributes, List<(MapCoordinates, int, int)> crossSectionsWithChainsAndEdgesIndices)> verticesOfCutBoundaryEdges)
         {
             // at second cut out all crossed edges from the graph
             foreach (var ((vertex1, vertex2), _) in verticesOfCutNonBoundaryEdges)
@@ -1720,7 +1720,7 @@ public class GraphCreator<TVertex, TEdge>
         }
 
 
-        private static void AddCrossedEdgesBy(MapCoordinates point0, MapCoordinates point1, MapCoordinates prevPoint, MapCoordinates nextPoint,int chainIndex, int edgeIndex, IEditableRadiallySearchableDataStruct<VertexBuilder<TVertex, TEdge>> allVertices, Dictionary<(VertexBuilder<TVertex, TEdge>, VertexBuilder<TVertex, TEdge>), List<MapCoordinates>> verticesOfCutNonBoundaryEdges, Dictionary<(BoundaryVertexBuilder<TVertex, TEdge>, BoundaryVertexBuilder<TVertex, TEdge>), (Orienteering_ISOM_2017_2.EdgeAttributes cutEdgeAttributes, List<(MapCoordinates, int, int)> crossSectionsWithChainsAndEdgesIndices)> verticesOfCutBoundaryEdges, int standardEdgeLength)
+        private static void AddCrossedEdgesBy(MapCoordinates point0, MapCoordinates point1, MapCoordinates prevPoint, MapCoordinates nextPoint,int chainIndex, int edgeIndex, IEditableRadiallySearchableDataStruct<VertexBuilder<TVertex, TEdge>> allVertices, Dictionary<(VertexBuilder<TVertex, TEdge>, VertexBuilder<TVertex, TEdge>), List<MapCoordinates>> verticesOfCutNonBoundaryEdges, Dictionary<(BoundaryVertexBuilder<TVertex, TEdge>, BoundaryVertexBuilder<TVertex, TEdge>), (Orienteering_ISOM_2017_2_RunSpeModSym.EdgeAttributes cutEdgeAttributes, List<(MapCoordinates, int, int)> crossSectionsWithChainsAndEdgesIndices)> verticesOfCutBoundaryEdges, int standardEdgeLength)
         {
             HashSet<VertexBuilder<TVertex, TEdge>> closeVertices = new();
             // find all vertices, which are closer than standard edge length to vertices of chain edge
@@ -1778,7 +1778,7 @@ public class GraphCreator<TVertex, TEdge>
                 else verticesOfCutNonBoundaryEdges[(vertex2, vertex1)] = [crossSectionCoords];
         }
         
-        private static void AddSortedBoundaryVerticesTo(Dictionary<(BoundaryVertexBuilder<TVertex, TEdge>, BoundaryVertexBuilder<TVertex, TEdge>), (Orienteering_ISOM_2017_2.EdgeAttributes cutEdgeAttributes, List<(MapCoordinates, int, int)> crossSectionsWithChainsAndEdgesIndices)> verticesOfCutBoundaryEdges, BoundaryVertexBuilder<TVertex, TEdge> vertex1, BoundaryVertexBuilder<TVertex, TEdge> vertex2, int chainIndex, int edgeIndex, MapCoordinates crossSectionCoords)
+        private static void AddSortedBoundaryVerticesTo(Dictionary<(BoundaryVertexBuilder<TVertex, TEdge>, BoundaryVertexBuilder<TVertex, TEdge>), (Orienteering_ISOM_2017_2_RunSpeModSym.EdgeAttributes cutEdgeAttributes, List<(MapCoordinates, int, int)> crossSectionsWithChainsAndEdgesIndices)> verticesOfCutBoundaryEdges, BoundaryVertexBuilder<TVertex, TEdge> vertex1, BoundaryVertexBuilder<TVertex, TEdge> vertex2, int chainIndex, int edgeIndex, MapCoordinates crossSectionCoords)
         {
             // dictionary is indexed by couples of vertices in specific order, first vertex of couple has always lower sum of its position axis values than the other one
             // this ensures, that edges defined by couples of vertices are in the dictionary always present only one time
@@ -1981,196 +1981,196 @@ public class GraphCreator<TVertex, TEdge>
 
         #region Attributes updating \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 
-        public static Orienteering_ISOM_2017_2.EdgeAttributes UpdateLinearFeaturesOfEdgeAttributes( Orienteering_ISOM_2017_2.EdgeAttributes edge, decimal symbolCodeOfAddedObject)
+        public static Orienteering_ISOM_2017_2_RunSpeModSym.EdgeAttributes UpdateLinearFeaturesOfEdgeAttributes( Orienteering_ISOM_2017_2_RunSpeModSym.EdgeAttributes edge, decimal symbolCodeOfAddedObject)
         {
             var newLinearFeatures = GetUpdatedLinearFeaturesOfEdgeAttributes(edge.LineFeatures,  edge.LeftSurroundings, edge.RightSurroundings, symbolCodeOfAddedObject, out var newSurroundings, out var newSecondSurroundings);
-            return new Orienteering_ISOM_2017_2.EdgeAttributes(newSurroundings, newLinearFeatures, newSecondSurroundings);
+            return new Orienteering_ISOM_2017_2_RunSpeModSym.EdgeAttributes(newSurroundings, newLinearFeatures, newSecondSurroundings);
         }
         
-        public static Orienteering_ISOM_2017_2.EdgeAttributes UpdateBothSurroundingsOfEdgeAttributes(Orienteering_ISOM_2017_2.EdgeAttributes edge, decimal symbolCodeOfAddedObject)
+        public static Orienteering_ISOM_2017_2_RunSpeModSym.EdgeAttributes UpdateBothSurroundingsOfEdgeAttributes(Orienteering_ISOM_2017_2_RunSpeModSym.EdgeAttributes edge, decimal symbolCodeOfAddedObject)
         {
             // both left and right surroundings of edge attributes are updated
             var newLeftSurroundings = GetUpdatedSurroundingsOfEdgeAttributes(edge.LeftSurroundings, symbolCodeOfAddedObject); 
             var newRightSurroundings = GetUpdatedSurroundingsOfEdgeAttributes(edge.RightSurroundings, symbolCodeOfAddedObject); 
-            return new Orienteering_ISOM_2017_2.EdgeAttributes(newLeftSurroundings, newRightSurroundings);
+            return new Orienteering_ISOM_2017_2_RunSpeModSym.EdgeAttributes(newLeftSurroundings, newRightSurroundings);
         }
         
-        public static (Orienteering_ISOM_2017_2.Grounds? ground, Orienteering_ISOM_2017_2.Boulders? boulders, Orienteering_ISOM_2017_2.Stones? stones, Orienteering_ISOM_2017_2.Water? water, Orienteering_ISOM_2017_2.VegetationAndManMade? vegetationAndManMade, Orienteering_ISOM_2017_2.VegetationGoodVis? vegetationGoodVis)
-            GetUpdatedSurroundingsOfEdgeAttributes((Orienteering_ISOM_2017_2.Grounds? ground, Orienteering_ISOM_2017_2.Boulders? boulders, Orienteering_ISOM_2017_2.Stones? stones, Orienteering_ISOM_2017_2.Water? water, Orienteering_ISOM_2017_2.VegetationAndManMade? vegetationAndManMade, Orienteering_ISOM_2017_2.VegetationGoodVis? vegetationGoodVis) surroundings, decimal symbolCodeOfAddedObject)
+        public static (Orienteering_ISOM_2017_2_RunSpeModSym.Grounds? ground, Orienteering_ISOM_2017_2_RunSpeModSym.Boulders? boulders, Orienteering_ISOM_2017_2_RunSpeModSym.Stones? stones, Orienteering_ISOM_2017_2_RunSpeModSym.Water? water, Orienteering_ISOM_2017_2_RunSpeModSym.VegetationAndManMade? vegetationAndManMade, Orienteering_ISOM_2017_2_RunSpeModSym.VegetationGoodVis? vegetationGoodVis)
+            GetUpdatedSurroundingsOfEdgeAttributes((Orienteering_ISOM_2017_2_RunSpeModSym.Grounds? ground, Orienteering_ISOM_2017_2_RunSpeModSym.Boulders? boulders, Orienteering_ISOM_2017_2_RunSpeModSym.Stones? stones, Orienteering_ISOM_2017_2_RunSpeModSym.Water? water, Orienteering_ISOM_2017_2_RunSpeModSym.VegetationAndManMade? vegetationAndManMade, Orienteering_ISOM_2017_2_RunSpeModSym.VegetationGoodVis? vegetationGoodVis) surroundings, decimal symbolCodeOfAddedObject)
             => symbolCodeOfAddedObject switch 
             {
-                403 => (null, null, null, null, Orienteering_ISOM_2017_2.VegetationAndManMade.RoughOpenLand_403, null),
-                404 or 404.1m => (null , null, null, null, Orienteering_ISOM_2017_2.VegetationAndManMade.RoughOpenLandWithTrees_404, null),
-                413.1m => (null, null, null, null, Orienteering_ISOM_2017_2.VegetationAndManMade.RoughOrchard_413, null),
-                213 => (null, null, Orienteering_ISOM_2017_2.Stones.SandyGround_213, null, null, null),
-                414.1m => (null, null, null, null, Orienteering_ISOM_2017_2.VegetationAndManMade.RoughVineyard_414, null),
-                401 => (null, null, null, null, Orienteering_ISOM_2017_2.VegetationAndManMade.OpenLand_401, null),
-                402 or 402.1m => (null, null, null, null, Orienteering_ISOM_2017_2.VegetationAndManMade.OpenLandWithTrees_402, null),
-                413 => (null, null, null, null, Orienteering_ISOM_2017_2.VegetationAndManMade.Orchard_413, null),
-                412 => (Orienteering_ISOM_2017_2.Grounds.CultivatedLand_412, null, null, null, null, null),
-                414 => (null, null, null, null, Orienteering_ISOM_2017_2.VegetationAndManMade.Vineyard_414, null),
-                407 => new Func<(Orienteering_ISOM_2017_2.Grounds? ground, Orienteering_ISOM_2017_2.Boulders? boulders, Orienteering_ISOM_2017_2.Stones? stones, Orienteering_ISOM_2017_2.Water? water, Orienteering_ISOM_2017_2.VegetationAndManMade? vegetationAndManMade, Orienteering_ISOM_2017_2.VegetationGoodVis? vegetationGoodVis)>(() => {
-                        if (surroundings.ground == Orienteering_ISOM_2017_2.Grounds.CultivatedLand_412 ||
-                            surroundings.stones == Orienteering_ISOM_2017_2.Stones.SandyGround_213)
+                403 => (null, null, null, null, Orienteering_ISOM_2017_2_RunSpeModSym.VegetationAndManMade.RoughOpenLand_403, null),
+                404 or 404.1m => (null , null, null, null, Orienteering_ISOM_2017_2_RunSpeModSym.VegetationAndManMade.RoughOpenLandWithTrees_404, null),
+                413.1m => (null, null, null, null, Orienteering_ISOM_2017_2_RunSpeModSym.VegetationAndManMade.RoughOrchard_413, null),
+                213 => (null, null, Orienteering_ISOM_2017_2_RunSpeModSym.Stones.SandyGround_213, null, null, null),
+                414.1m => (null, null, null, null, Orienteering_ISOM_2017_2_RunSpeModSym.VegetationAndManMade.RoughVineyard_414, null),
+                401 => (null, null, null, null, Orienteering_ISOM_2017_2_RunSpeModSym.VegetationAndManMade.OpenLand_401, null),
+                402 or 402.1m => (null, null, null, null, Orienteering_ISOM_2017_2_RunSpeModSym.VegetationAndManMade.OpenLandWithTrees_402, null),
+                413 => (null, null, null, null, Orienteering_ISOM_2017_2_RunSpeModSym.VegetationAndManMade.Orchard_413, null),
+                412 => (Orienteering_ISOM_2017_2_RunSpeModSym.Grounds.CultivatedLand_412, null, null, null, null, null),
+                414 => (null, null, null, null, Orienteering_ISOM_2017_2_RunSpeModSym.VegetationAndManMade.Vineyard_414, null),
+                407 => new Func<(Orienteering_ISOM_2017_2_RunSpeModSym.Grounds? ground, Orienteering_ISOM_2017_2_RunSpeModSym.Boulders? boulders, Orienteering_ISOM_2017_2_RunSpeModSym.Stones? stones, Orienteering_ISOM_2017_2_RunSpeModSym.Water? water, Orienteering_ISOM_2017_2_RunSpeModSym.VegetationAndManMade? vegetationAndManMade, Orienteering_ISOM_2017_2_RunSpeModSym.VegetationGoodVis? vegetationGoodVis)>(() => {
+                        if (surroundings.ground == Orienteering_ISOM_2017_2_RunSpeModSym.Grounds.CultivatedLand_412 ||
+                            surroundings.stones == Orienteering_ISOM_2017_2_RunSpeModSym.Stones.SandyGround_213)
                             return surroundings;
-                        return (null, null, null, null, surroundings.vegetationAndManMade, Orienteering_ISOM_2017_2.VegetationGoodVis.VegetationSlowGoodVis_407); })(),
-                409 => new Func<(Orienteering_ISOM_2017_2.Grounds? ground, Orienteering_ISOM_2017_2.Boulders? boulders, Orienteering_ISOM_2017_2.Stones? stones, Orienteering_ISOM_2017_2.Water? water, Orienteering_ISOM_2017_2.VegetationAndManMade? vegetationAndManMade, Orienteering_ISOM_2017_2.VegetationGoodVis? vegetationGoodVis)>(() => {
-                        if (surroundings.ground == Orienteering_ISOM_2017_2.Grounds.CultivatedLand_412 ||
-                            surroundings.stones == Orienteering_ISOM_2017_2.Stones.SandyGround_213)
+                        return (null, null, null, null, surroundings.vegetationAndManMade, Orienteering_ISOM_2017_2_RunSpeModSym.VegetationGoodVis.VegetationSlowGoodVis_407); })(),
+                409 => new Func<(Orienteering_ISOM_2017_2_RunSpeModSym.Grounds? ground, Orienteering_ISOM_2017_2_RunSpeModSym.Boulders? boulders, Orienteering_ISOM_2017_2_RunSpeModSym.Stones? stones, Orienteering_ISOM_2017_2_RunSpeModSym.Water? water, Orienteering_ISOM_2017_2_RunSpeModSym.VegetationAndManMade? vegetationAndManMade, Orienteering_ISOM_2017_2_RunSpeModSym.VegetationGoodVis? vegetationGoodVis)>(() => {
+                        if (surroundings.ground == Orienteering_ISOM_2017_2_RunSpeModSym.Grounds.CultivatedLand_412 ||
+                            surroundings.stones == Orienteering_ISOM_2017_2_RunSpeModSym.Stones.SandyGround_213)
                             return surroundings;
-                        return (null, null, null, null, surroundings.vegetationAndManMade, Orienteering_ISOM_2017_2.VegetationGoodVis.VegetationWalkGoodVis_409); })(),
-                406 or 406.1m => (null, null, null, null, Orienteering_ISOM_2017_2.VegetationAndManMade.VegetationSlow_406, null),
-                408 or 408.1m or 408.2m => (null, null, null, null, Orienteering_ISOM_2017_2.VegetationAndManMade.VegetationWalk_408, null),
-                410 or 410.1m or 410.2m or 410.3m or 410.4m =>    (null, null, null, null, Orienteering_ISOM_2017_2.VegetationAndManMade.VegetationFight_410, null),
-                214 => (null, null, Orienteering_ISOM_2017_2.Stones.BareRock_214, null, null, null),
-                405 => (null, null, null, null, Orienteering_ISOM_2017_2.VegetationAndManMade.Forest_405, null),
-                310 => new Func<(Orienteering_ISOM_2017_2.Grounds? ground, Orienteering_ISOM_2017_2.Boulders? boulders, Orienteering_ISOM_2017_2.Stones? stones, Orienteering_ISOM_2017_2.Water? water, Orienteering_ISOM_2017_2.VegetationAndManMade? vegetationAndManMade, Orienteering_ISOM_2017_2.VegetationGoodVis? vegetationGoodVis)>(() => {
-                        if (surroundings.ground == Orienteering_ISOM_2017_2.Grounds.CultivatedLand_412 ||
-                            surroundings.stones == Orienteering_ISOM_2017_2.Stones.SandyGround_213 ||
-                            surroundings.stones == Orienteering_ISOM_2017_2.Stones.BareRock_214)
+                        return (null, null, null, null, surroundings.vegetationAndManMade, Orienteering_ISOM_2017_2_RunSpeModSym.VegetationGoodVis.VegetationWalkGoodVis_409); })(),
+                406 or 406.1m => (null, null, null, null, Orienteering_ISOM_2017_2_RunSpeModSym.VegetationAndManMade.VegetationSlow_406, null),
+                408 or 408.1m or 408.2m => (null, null, null, null, Orienteering_ISOM_2017_2_RunSpeModSym.VegetationAndManMade.VegetationWalk_408, null),
+                410 or 410.1m or 410.2m or 410.3m or 410.4m =>    (null, null, null, null, Orienteering_ISOM_2017_2_RunSpeModSym.VegetationAndManMade.VegetationFight_410, null),
+                214 => (null, null, Orienteering_ISOM_2017_2_RunSpeModSym.Stones.BareRock_214, null, null, null),
+                405 => (null, null, null, null, Orienteering_ISOM_2017_2_RunSpeModSym.VegetationAndManMade.Forest_405, null),
+                310 => new Func<(Orienteering_ISOM_2017_2_RunSpeModSym.Grounds? ground, Orienteering_ISOM_2017_2_RunSpeModSym.Boulders? boulders, Orienteering_ISOM_2017_2_RunSpeModSym.Stones? stones, Orienteering_ISOM_2017_2_RunSpeModSym.Water? water, Orienteering_ISOM_2017_2_RunSpeModSym.VegetationAndManMade? vegetationAndManMade, Orienteering_ISOM_2017_2_RunSpeModSym.VegetationGoodVis? vegetationGoodVis)>(() => {
+                        if (surroundings.ground == Orienteering_ISOM_2017_2_RunSpeModSym.Grounds.CultivatedLand_412 ||
+                            surroundings.stones == Orienteering_ISOM_2017_2_RunSpeModSym.Stones.SandyGround_213 ||
+                            surroundings.stones == Orienteering_ISOM_2017_2_RunSpeModSym.Stones.BareRock_214)
                             return surroundings;
-                        return (null, null, null, Orienteering_ISOM_2017_2.Water.IndistinctMarsh_310, surroundings.vegetationAndManMade, surroundings.vegetationGoodVis); })(),
-                308 => new Func<(Orienteering_ISOM_2017_2.Grounds? ground, Orienteering_ISOM_2017_2.Boulders? boulders, Orienteering_ISOM_2017_2.Stones? stones, Orienteering_ISOM_2017_2.Water? water, Orienteering_ISOM_2017_2.VegetationAndManMade? vegetationAndManMade, Orienteering_ISOM_2017_2.VegetationGoodVis? vegetationGoodVis)>(() => {
-                        if (surroundings.ground == Orienteering_ISOM_2017_2.Grounds.CultivatedLand_412 ||
-                            surroundings.stones == Orienteering_ISOM_2017_2.Stones.SandyGround_213 ||
-                            surroundings.stones == Orienteering_ISOM_2017_2.Stones.BareRock_214)
+                        return (null, null, null, Orienteering_ISOM_2017_2_RunSpeModSym.Water.IndistinctMarsh_310, surroundings.vegetationAndManMade, surroundings.vegetationGoodVis); })(),
+                308 => new Func<(Orienteering_ISOM_2017_2_RunSpeModSym.Grounds? ground, Orienteering_ISOM_2017_2_RunSpeModSym.Boulders? boulders, Orienteering_ISOM_2017_2_RunSpeModSym.Stones? stones, Orienteering_ISOM_2017_2_RunSpeModSym.Water? water, Orienteering_ISOM_2017_2_RunSpeModSym.VegetationAndManMade? vegetationAndManMade, Orienteering_ISOM_2017_2_RunSpeModSym.VegetationGoodVis? vegetationGoodVis)>(() => {
+                        if (surroundings.ground == Orienteering_ISOM_2017_2_RunSpeModSym.Grounds.CultivatedLand_412 ||
+                            surroundings.stones == Orienteering_ISOM_2017_2_RunSpeModSym.Stones.SandyGround_213 ||
+                            surroundings.stones == Orienteering_ISOM_2017_2_RunSpeModSym.Stones.BareRock_214)
                             return surroundings;
-                        return (null, null, null, Orienteering_ISOM_2017_2.Water.Marsh_308, surroundings.vegetationAndManMade, surroundings.vegetationGoodVis); })(),
-                302 or 302.1m or 302.5m => (null, null, null, Orienteering_ISOM_2017_2.Water.ShallowBodyOfWater_302, null, null),
-                113 => new Func<(Orienteering_ISOM_2017_2.Grounds? ground, Orienteering_ISOM_2017_2.Boulders? boulders, Orienteering_ISOM_2017_2.Stones? stones, Orienteering_ISOM_2017_2.Water? water, Orienteering_ISOM_2017_2.VegetationAndManMade? vegetationAndManMade, Orienteering_ISOM_2017_2.VegetationGoodVis? vegetationGoodVis)>(() => {
-                        if (surroundings.ground == Orienteering_ISOM_2017_2.Grounds.CultivatedLand_412 ||
-                            surroundings.stones == Orienteering_ISOM_2017_2.Stones.SandyGround_213 ||
-                            surroundings.stones == Orienteering_ISOM_2017_2.Stones.BareRock_214 ||
-                            surroundings.water == Orienteering_ISOM_2017_2.Water.ShallowBodyOfWater_302)
+                        return (null, null, null, Orienteering_ISOM_2017_2_RunSpeModSym.Water.Marsh_308, surroundings.vegetationAndManMade, surroundings.vegetationGoodVis); })(),
+                302 or 302.1m or 302.5m => (null, null, null, Orienteering_ISOM_2017_2_RunSpeModSym.Water.ShallowBodyOfWater_302, null, null),
+                113 => new Func<(Orienteering_ISOM_2017_2_RunSpeModSym.Grounds? ground, Orienteering_ISOM_2017_2_RunSpeModSym.Boulders? boulders, Orienteering_ISOM_2017_2_RunSpeModSym.Stones? stones, Orienteering_ISOM_2017_2_RunSpeModSym.Water? water, Orienteering_ISOM_2017_2_RunSpeModSym.VegetationAndManMade? vegetationAndManMade, Orienteering_ISOM_2017_2_RunSpeModSym.VegetationGoodVis? vegetationGoodVis)>(() => {
+                        if (surroundings.ground == Orienteering_ISOM_2017_2_RunSpeModSym.Grounds.CultivatedLand_412 ||
+                            surroundings.stones == Orienteering_ISOM_2017_2_RunSpeModSym.Stones.SandyGround_213 ||
+                            surroundings.stones == Orienteering_ISOM_2017_2_RunSpeModSym.Stones.BareRock_214 ||
+                            surroundings.water == Orienteering_ISOM_2017_2_RunSpeModSym.Water.ShallowBodyOfWater_302)
                             return surroundings;
-                        return (Orienteering_ISOM_2017_2.Grounds.BrokenGround_113, null, null, surroundings.water, surroundings.vegetationAndManMade, surroundings.vegetationGoodVis); })(),
-                114 => new Func<(Orienteering_ISOM_2017_2.Grounds? ground, Orienteering_ISOM_2017_2.Boulders? boulders, Orienteering_ISOM_2017_2.Stones? stones, Orienteering_ISOM_2017_2.Water? water, Orienteering_ISOM_2017_2.VegetationAndManMade? vegetationAndManMade, Orienteering_ISOM_2017_2.VegetationGoodVis? vegetationGoodVis)>(() => {
-                        if (surroundings.ground == Orienteering_ISOM_2017_2.Grounds.CultivatedLand_412 ||
-                            surroundings.stones == Orienteering_ISOM_2017_2.Stones.SandyGround_213 ||
-                            surroundings.stones == Orienteering_ISOM_2017_2.Stones.BareRock_214 ||
-                            surroundings.water == Orienteering_ISOM_2017_2.Water.ShallowBodyOfWater_302 ||
-                            surroundings.vegetationAndManMade == Orienteering_ISOM_2017_2.VegetationAndManMade.OpenLand_401 ||
-                            surroundings.vegetationAndManMade == Orienteering_ISOM_2017_2.VegetationAndManMade.OpenLandWithTrees_402 ||
-                            surroundings.vegetationAndManMade == Orienteering_ISOM_2017_2.VegetationAndManMade.Orchard_413 ||
-                            surroundings.vegetationAndManMade == Orienteering_ISOM_2017_2.VegetationAndManMade.Vineyard_414)
+                        return (Orienteering_ISOM_2017_2_RunSpeModSym.Grounds.BrokenGround_113, null, null, surroundings.water, surroundings.vegetationAndManMade, surroundings.vegetationGoodVis); })(),
+                114 => new Func<(Orienteering_ISOM_2017_2_RunSpeModSym.Grounds? ground, Orienteering_ISOM_2017_2_RunSpeModSym.Boulders? boulders, Orienteering_ISOM_2017_2_RunSpeModSym.Stones? stones, Orienteering_ISOM_2017_2_RunSpeModSym.Water? water, Orienteering_ISOM_2017_2_RunSpeModSym.VegetationAndManMade? vegetationAndManMade, Orienteering_ISOM_2017_2_RunSpeModSym.VegetationGoodVis? vegetationGoodVis)>(() => {
+                        if (surroundings.ground == Orienteering_ISOM_2017_2_RunSpeModSym.Grounds.CultivatedLand_412 ||
+                            surroundings.stones == Orienteering_ISOM_2017_2_RunSpeModSym.Stones.SandyGround_213 ||
+                            surroundings.stones == Orienteering_ISOM_2017_2_RunSpeModSym.Stones.BareRock_214 ||
+                            surroundings.water == Orienteering_ISOM_2017_2_RunSpeModSym.Water.ShallowBodyOfWater_302 ||
+                            surroundings.vegetationAndManMade == Orienteering_ISOM_2017_2_RunSpeModSym.VegetationAndManMade.OpenLand_401 ||
+                            surroundings.vegetationAndManMade == Orienteering_ISOM_2017_2_RunSpeModSym.VegetationAndManMade.OpenLandWithTrees_402 ||
+                            surroundings.vegetationAndManMade == Orienteering_ISOM_2017_2_RunSpeModSym.VegetationAndManMade.Orchard_413 ||
+                            surroundings.vegetationAndManMade == Orienteering_ISOM_2017_2_RunSpeModSym.VegetationAndManMade.Vineyard_414)
                             return surroundings;
-                        return (Orienteering_ISOM_2017_2.Grounds.VeryBrokenGround_114, null, null, null, surroundings.vegetationAndManMade, surroundings.vegetationGoodVis); })(),
-                210 => new Func<(Orienteering_ISOM_2017_2.Grounds? ground, Orienteering_ISOM_2017_2.Boulders? boulders, Orienteering_ISOM_2017_2.Stones? stones, Orienteering_ISOM_2017_2.Water? water, Orienteering_ISOM_2017_2.VegetationAndManMade? vegetationAndManMade, Orienteering_ISOM_2017_2.VegetationGoodVis? vegetationGoodVis)>( () => {
-                        if (surroundings.ground == Orienteering_ISOM_2017_2.Grounds.CultivatedLand_412 || 
-                            surroundings.stones == Orienteering_ISOM_2017_2.Stones.SandyGround_213 ||
-                            surroundings.stones == Orienteering_ISOM_2017_2.Stones.BareRock_214 ||
-                            surroundings.water == Orienteering_ISOM_2017_2.Water.ShallowBodyOfWater_302 ||
-                            surroundings.vegetationAndManMade == Orienteering_ISOM_2017_2.VegetationAndManMade.OpenLand_401 ||
-                            surroundings.vegetationAndManMade == Orienteering_ISOM_2017_2.VegetationAndManMade.OpenLandWithTrees_402 ||
-                            surroundings.vegetationAndManMade == Orienteering_ISOM_2017_2.VegetationAndManMade.Orchard_413 ||
-                            surroundings.vegetationAndManMade == Orienteering_ISOM_2017_2.VegetationAndManMade.Vineyard_414)
+                        return (Orienteering_ISOM_2017_2_RunSpeModSym.Grounds.VeryBrokenGround_114, null, null, null, surroundings.vegetationAndManMade, surroundings.vegetationGoodVis); })(),
+                210 => new Func<(Orienteering_ISOM_2017_2_RunSpeModSym.Grounds? ground, Orienteering_ISOM_2017_2_RunSpeModSym.Boulders? boulders, Orienteering_ISOM_2017_2_RunSpeModSym.Stones? stones, Orienteering_ISOM_2017_2_RunSpeModSym.Water? water, Orienteering_ISOM_2017_2_RunSpeModSym.VegetationAndManMade? vegetationAndManMade, Orienteering_ISOM_2017_2_RunSpeModSym.VegetationGoodVis? vegetationGoodVis)>( () => {
+                        if (surroundings.ground == Orienteering_ISOM_2017_2_RunSpeModSym.Grounds.CultivatedLand_412 || 
+                            surroundings.stones == Orienteering_ISOM_2017_2_RunSpeModSym.Stones.SandyGround_213 ||
+                            surroundings.stones == Orienteering_ISOM_2017_2_RunSpeModSym.Stones.BareRock_214 ||
+                            surroundings.water == Orienteering_ISOM_2017_2_RunSpeModSym.Water.ShallowBodyOfWater_302 ||
+                            surroundings.vegetationAndManMade == Orienteering_ISOM_2017_2_RunSpeModSym.VegetationAndManMade.OpenLand_401 ||
+                            surroundings.vegetationAndManMade == Orienteering_ISOM_2017_2_RunSpeModSym.VegetationAndManMade.OpenLandWithTrees_402 ||
+                            surroundings.vegetationAndManMade == Orienteering_ISOM_2017_2_RunSpeModSym.VegetationAndManMade.Orchard_413 ||
+                            surroundings.vegetationAndManMade == Orienteering_ISOM_2017_2_RunSpeModSym.VegetationAndManMade.Vineyard_414)
                             return surroundings;
-                        if (surroundings.ground == Orienteering_ISOM_2017_2.Grounds.VeryBrokenGround_114)
-                            return (null, null, Orienteering_ISOM_2017_2.Stones.StonyGroundSlow_210, surroundings.water, surroundings.vegetationAndManMade, surroundings.vegetationGoodVis);
-                        return (surroundings.ground, null, Orienteering_ISOM_2017_2.Stones.StonyGroundSlow_210, surroundings.water, surroundings.vegetationAndManMade, surroundings.vegetationGoodVis); })(),
-                211 => new Func<(Orienteering_ISOM_2017_2.Grounds? ground, Orienteering_ISOM_2017_2.Boulders? boulders, Orienteering_ISOM_2017_2.Stones? stones, Orienteering_ISOM_2017_2.Water? water, Orienteering_ISOM_2017_2.VegetationAndManMade? vegetationAndManMade, Orienteering_ISOM_2017_2.VegetationGoodVis? vegetationGoodVis)>(() => {
-                        if ( surroundings.ground == Orienteering_ISOM_2017_2.Grounds.VeryBrokenGround_114 ||
-                            surroundings.ground == Orienteering_ISOM_2017_2.Grounds.CultivatedLand_412 || 
-                            surroundings.stones == Orienteering_ISOM_2017_2.Stones.SandyGround_213 ||
-                            surroundings.stones == Orienteering_ISOM_2017_2.Stones.BareRock_214 ||
-                            surroundings.water == Orienteering_ISOM_2017_2.Water.ShallowBodyOfWater_302 ||
-                            surroundings.vegetationAndManMade == Orienteering_ISOM_2017_2.VegetationAndManMade.OpenLand_401 ||
-                            surroundings.vegetationAndManMade == Orienteering_ISOM_2017_2.VegetationAndManMade.OpenLandWithTrees_402 ||
-                            surroundings.vegetationAndManMade == Orienteering_ISOM_2017_2.VegetationAndManMade.Orchard_413 ||
-                            surroundings.vegetationAndManMade == Orienteering_ISOM_2017_2.VegetationAndManMade.Vineyard_414)
+                        if (surroundings.ground == Orienteering_ISOM_2017_2_RunSpeModSym.Grounds.VeryBrokenGround_114)
+                            return (null, null, Orienteering_ISOM_2017_2_RunSpeModSym.Stones.StonyGroundSlow_210, surroundings.water, surroundings.vegetationAndManMade, surroundings.vegetationGoodVis);
+                        return (surroundings.ground, null, Orienteering_ISOM_2017_2_RunSpeModSym.Stones.StonyGroundSlow_210, surroundings.water, surroundings.vegetationAndManMade, surroundings.vegetationGoodVis); })(),
+                211 => new Func<(Orienteering_ISOM_2017_2_RunSpeModSym.Grounds? ground, Orienteering_ISOM_2017_2_RunSpeModSym.Boulders? boulders, Orienteering_ISOM_2017_2_RunSpeModSym.Stones? stones, Orienteering_ISOM_2017_2_RunSpeModSym.Water? water, Orienteering_ISOM_2017_2_RunSpeModSym.VegetationAndManMade? vegetationAndManMade, Orienteering_ISOM_2017_2_RunSpeModSym.VegetationGoodVis? vegetationGoodVis)>(() => {
+                        if ( surroundings.ground == Orienteering_ISOM_2017_2_RunSpeModSym.Grounds.VeryBrokenGround_114 ||
+                            surroundings.ground == Orienteering_ISOM_2017_2_RunSpeModSym.Grounds.CultivatedLand_412 || 
+                            surroundings.stones == Orienteering_ISOM_2017_2_RunSpeModSym.Stones.SandyGround_213 ||
+                            surroundings.stones == Orienteering_ISOM_2017_2_RunSpeModSym.Stones.BareRock_214 ||
+                            surroundings.water == Orienteering_ISOM_2017_2_RunSpeModSym.Water.ShallowBodyOfWater_302 ||
+                            surroundings.vegetationAndManMade == Orienteering_ISOM_2017_2_RunSpeModSym.VegetationAndManMade.OpenLand_401 ||
+                            surroundings.vegetationAndManMade == Orienteering_ISOM_2017_2_RunSpeModSym.VegetationAndManMade.OpenLandWithTrees_402 ||
+                            surroundings.vegetationAndManMade == Orienteering_ISOM_2017_2_RunSpeModSym.VegetationAndManMade.Orchard_413 ||
+                            surroundings.vegetationAndManMade == Orienteering_ISOM_2017_2_RunSpeModSym.VegetationAndManMade.Vineyard_414)
                             return surroundings;
-                        return (surroundings.ground, null, Orienteering_ISOM_2017_2.Stones.StonyGroundWalk_211, surroundings.water, surroundings.vegetationAndManMade, surroundings.vegetationGoodVis); })(),
-                212 => new Func<(Orienteering_ISOM_2017_2.Grounds? ground, Orienteering_ISOM_2017_2.Boulders? boulders, Orienteering_ISOM_2017_2.Stones? stones, Orienteering_ISOM_2017_2.Water? water, Orienteering_ISOM_2017_2.VegetationAndManMade? vegetationAndManMade, Orienteering_ISOM_2017_2.VegetationGoodVis? vegetationGoodVis)>(() => {
-                        if (surroundings.ground == Orienteering_ISOM_2017_2.Grounds.VeryBrokenGround_114 ||
-                            surroundings.ground == Orienteering_ISOM_2017_2.Grounds.CultivatedLand_412 || 
-                            surroundings.stones == Orienteering_ISOM_2017_2.Stones.SandyGround_213 ||
-                            surroundings.stones == Orienteering_ISOM_2017_2.Stones.BareRock_214 ||
-                            surroundings.water == Orienteering_ISOM_2017_2.Water.ShallowBodyOfWater_302 ||
-                            surroundings.vegetationAndManMade == Orienteering_ISOM_2017_2.VegetationAndManMade.OpenLand_401 ||
-                            surroundings.vegetationAndManMade == Orienteering_ISOM_2017_2.VegetationAndManMade.OpenLandWithTrees_402 ||
-                            surroundings.vegetationAndManMade == Orienteering_ISOM_2017_2.VegetationAndManMade.Orchard_413 ||
-                            surroundings.vegetationAndManMade == Orienteering_ISOM_2017_2.VegetationAndManMade.Vineyard_414)
+                        return (surroundings.ground, null, Orienteering_ISOM_2017_2_RunSpeModSym.Stones.StonyGroundWalk_211, surroundings.water, surroundings.vegetationAndManMade, surroundings.vegetationGoodVis); })(),
+                212 => new Func<(Orienteering_ISOM_2017_2_RunSpeModSym.Grounds? ground, Orienteering_ISOM_2017_2_RunSpeModSym.Boulders? boulders, Orienteering_ISOM_2017_2_RunSpeModSym.Stones? stones, Orienteering_ISOM_2017_2_RunSpeModSym.Water? water, Orienteering_ISOM_2017_2_RunSpeModSym.VegetationAndManMade? vegetationAndManMade, Orienteering_ISOM_2017_2_RunSpeModSym.VegetationGoodVis? vegetationGoodVis)>(() => {
+                        if (surroundings.ground == Orienteering_ISOM_2017_2_RunSpeModSym.Grounds.VeryBrokenGround_114 ||
+                            surroundings.ground == Orienteering_ISOM_2017_2_RunSpeModSym.Grounds.CultivatedLand_412 || 
+                            surroundings.stones == Orienteering_ISOM_2017_2_RunSpeModSym.Stones.SandyGround_213 ||
+                            surroundings.stones == Orienteering_ISOM_2017_2_RunSpeModSym.Stones.BareRock_214 ||
+                            surroundings.water == Orienteering_ISOM_2017_2_RunSpeModSym.Water.ShallowBodyOfWater_302 ||
+                            surroundings.vegetationAndManMade == Orienteering_ISOM_2017_2_RunSpeModSym.VegetationAndManMade.OpenLand_401 ||
+                            surroundings.vegetationAndManMade == Orienteering_ISOM_2017_2_RunSpeModSym.VegetationAndManMade.OpenLandWithTrees_402 ||
+                            surroundings.vegetationAndManMade == Orienteering_ISOM_2017_2_RunSpeModSym.VegetationAndManMade.Orchard_413 ||
+                            surroundings.vegetationAndManMade == Orienteering_ISOM_2017_2_RunSpeModSym.VegetationAndManMade.Vineyard_414)
                             return surroundings;
-                        return (surroundings.ground, null, Orienteering_ISOM_2017_2.Stones.StonyGroundFight_212, surroundings.water, surroundings.vegetationAndManMade, surroundings.vegetationGoodVis); })(),
-                208 => new Func<(Orienteering_ISOM_2017_2.Grounds? ground, Orienteering_ISOM_2017_2.Boulders? boulders, Orienteering_ISOM_2017_2.Stones? stones, Orienteering_ISOM_2017_2.Water? water, Orienteering_ISOM_2017_2.VegetationAndManMade? vegetationAndManMade, Orienteering_ISOM_2017_2.VegetationGoodVis? vegetationGoodVis)>(() => {
-                        if (surroundings.ground == Orienteering_ISOM_2017_2.Grounds.CultivatedLand_412 || 
-                            surroundings.stones == Orienteering_ISOM_2017_2.Stones.SandyGround_213 ||
-                            surroundings.stones == Orienteering_ISOM_2017_2.Stones.BareRock_214 ||
-                            surroundings.water == Orienteering_ISOM_2017_2.Water.ShallowBodyOfWater_302)
+                        return (surroundings.ground, null, Orienteering_ISOM_2017_2_RunSpeModSym.Stones.StonyGroundFight_212, surroundings.water, surroundings.vegetationAndManMade, surroundings.vegetationGoodVis); })(),
+                208 => new Func<(Orienteering_ISOM_2017_2_RunSpeModSym.Grounds? ground, Orienteering_ISOM_2017_2_RunSpeModSym.Boulders? boulders, Orienteering_ISOM_2017_2_RunSpeModSym.Stones? stones, Orienteering_ISOM_2017_2_RunSpeModSym.Water? water, Orienteering_ISOM_2017_2_RunSpeModSym.VegetationAndManMade? vegetationAndManMade, Orienteering_ISOM_2017_2_RunSpeModSym.VegetationGoodVis? vegetationGoodVis)>(() => {
+                        if (surroundings.ground == Orienteering_ISOM_2017_2_RunSpeModSym.Grounds.CultivatedLand_412 || 
+                            surroundings.stones == Orienteering_ISOM_2017_2_RunSpeModSym.Stones.SandyGround_213 ||
+                            surroundings.stones == Orienteering_ISOM_2017_2_RunSpeModSym.Stones.BareRock_214 ||
+                            surroundings.water == Orienteering_ISOM_2017_2_RunSpeModSym.Water.ShallowBodyOfWater_302)
                             return surroundings;
-                        return (surroundings.ground, Orienteering_ISOM_2017_2.Boulders.BoulderField_208, surroundings.stones, surroundings.water, surroundings.vegetationAndManMade, surroundings.vegetationGoodVis); })(),
-                209 => new Func<(Orienteering_ISOM_2017_2.Grounds? ground, Orienteering_ISOM_2017_2.Boulders? boulders, Orienteering_ISOM_2017_2.Stones? stones, Orienteering_ISOM_2017_2.Water? water, Orienteering_ISOM_2017_2.VegetationAndManMade? vegetationAndManMade, Orienteering_ISOM_2017_2.VegetationGoodVis? vegetationGoodVis)>(() => {
-                        if (surroundings.ground == Orienteering_ISOM_2017_2.Grounds.CultivatedLand_412 || 
-                            surroundings.stones == Orienteering_ISOM_2017_2.Stones.SandyGround_213 ||
-                            surroundings.stones == Orienteering_ISOM_2017_2.Stones.BareRock_214 ||
-                            surroundings.water == Orienteering_ISOM_2017_2.Water.ShallowBodyOfWater_302 ||
-                            surroundings.vegetationAndManMade == Orienteering_ISOM_2017_2.VegetationAndManMade.OpenLand_401 ||
-                            surroundings.vegetationAndManMade == Orienteering_ISOM_2017_2.VegetationAndManMade.OpenLandWithTrees_402 ||
-                            surroundings.vegetationAndManMade == Orienteering_ISOM_2017_2.VegetationAndManMade.Orchard_413 ||
-                            surroundings.vegetationAndManMade == Orienteering_ISOM_2017_2.VegetationAndManMade.Vineyard_414)
+                        return (surroundings.ground, Orienteering_ISOM_2017_2_RunSpeModSym.Boulders.BoulderField_208, surroundings.stones, surroundings.water, surroundings.vegetationAndManMade, surroundings.vegetationGoodVis); })(),
+                209 => new Func<(Orienteering_ISOM_2017_2_RunSpeModSym.Grounds? ground, Orienteering_ISOM_2017_2_RunSpeModSym.Boulders? boulders, Orienteering_ISOM_2017_2_RunSpeModSym.Stones? stones, Orienteering_ISOM_2017_2_RunSpeModSym.Water? water, Orienteering_ISOM_2017_2_RunSpeModSym.VegetationAndManMade? vegetationAndManMade, Orienteering_ISOM_2017_2_RunSpeModSym.VegetationGoodVis? vegetationGoodVis)>(() => {
+                        if (surroundings.ground == Orienteering_ISOM_2017_2_RunSpeModSym.Grounds.CultivatedLand_412 || 
+                            surroundings.stones == Orienteering_ISOM_2017_2_RunSpeModSym.Stones.SandyGround_213 ||
+                            surroundings.stones == Orienteering_ISOM_2017_2_RunSpeModSym.Stones.BareRock_214 ||
+                            surroundings.water == Orienteering_ISOM_2017_2_RunSpeModSym.Water.ShallowBodyOfWater_302 ||
+                            surroundings.vegetationAndManMade == Orienteering_ISOM_2017_2_RunSpeModSym.VegetationAndManMade.OpenLand_401 ||
+                            surroundings.vegetationAndManMade == Orienteering_ISOM_2017_2_RunSpeModSym.VegetationAndManMade.OpenLandWithTrees_402 ||
+                            surroundings.vegetationAndManMade == Orienteering_ISOM_2017_2_RunSpeModSym.VegetationAndManMade.Orchard_413 ||
+                            surroundings.vegetationAndManMade == Orienteering_ISOM_2017_2_RunSpeModSym.VegetationAndManMade.Vineyard_414)
                             return surroundings;
-                        return (null, Orienteering_ISOM_2017_2.Boulders.DenseBoulderField_209, null, surroundings.water, surroundings.vegetationAndManMade, null); })(),
-                501 or 501.1m => (null, null, null, null, Orienteering_ISOM_2017_2.VegetationAndManMade.PavedArea_501, null),
+                        return (null, Orienteering_ISOM_2017_2_RunSpeModSym.Boulders.DenseBoulderField_209, null, surroundings.water, surroundings.vegetationAndManMade, null); })(),
+                501 or 501.1m => (null, null, null, null, Orienteering_ISOM_2017_2_RunSpeModSym.VegetationAndManMade.PavedArea_501, null),
                 
-                520 => (null, null, null, null, Orienteering_ISOM_2017_2.VegetationAndManMade.AreaThatShallNotBeEntered_520, null),
-                307 or 307.1m => new Func<(Orienteering_ISOM_2017_2.Grounds? ground, Orienteering_ISOM_2017_2.Boulders? boulders, Orienteering_ISOM_2017_2.Stones? stones, Orienteering_ISOM_2017_2.Water? water, Orienteering_ISOM_2017_2.VegetationAndManMade? vegetationAndManMade, Orienteering_ISOM_2017_2.VegetationGoodVis? vegetationGoodVis)>(() => {
-                        if (surroundings.vegetationAndManMade == Orienteering_ISOM_2017_2.VegetationAndManMade.AreaThatShallNotBeEntered_520 ||
-                            surroundings.vegetationAndManMade == Orienteering_ISOM_2017_2.VegetationAndManMade.PavedArea_501)
+                520 => (null, null, null, null, Orienteering_ISOM_2017_2_RunSpeModSym.VegetationAndManMade.AreaThatShallNotBeEntered_520, null),
+                307 or 307.1m => new Func<(Orienteering_ISOM_2017_2_RunSpeModSym.Grounds? ground, Orienteering_ISOM_2017_2_RunSpeModSym.Boulders? boulders, Orienteering_ISOM_2017_2_RunSpeModSym.Stones? stones, Orienteering_ISOM_2017_2_RunSpeModSym.Water? water, Orienteering_ISOM_2017_2_RunSpeModSym.VegetationAndManMade? vegetationAndManMade, Orienteering_ISOM_2017_2_RunSpeModSym.VegetationGoodVis? vegetationGoodVis)>(() => {
+                        if (surroundings.vegetationAndManMade == Orienteering_ISOM_2017_2_RunSpeModSym.VegetationAndManMade.AreaThatShallNotBeEntered_520 ||
+                            surroundings.vegetationAndManMade == Orienteering_ISOM_2017_2_RunSpeModSym.VegetationAndManMade.PavedArea_501)
                             return surroundings;
-                        return (null, null, null, Orienteering_ISOM_2017_2.Water.UncrossableMarsh_307, null, null); })(),
-                301 or 301.1m or 301.2m or 301.3m => new Func<(Orienteering_ISOM_2017_2.Grounds? ground, Orienteering_ISOM_2017_2.Boulders? boulders, Orienteering_ISOM_2017_2.Stones? stones, Orienteering_ISOM_2017_2.Water? water, Orienteering_ISOM_2017_2.VegetationAndManMade? vegetationAndManMade, Orienteering_ISOM_2017_2.VegetationGoodVis? vegetationGoodVis)>(() => {
-                        if (surroundings.vegetationAndManMade == Orienteering_ISOM_2017_2.VegetationAndManMade.PavedArea_501)
+                        return (null, null, null, Orienteering_ISOM_2017_2_RunSpeModSym.Water.UncrossableMarsh_307, null, null); })(),
+                301 or 301.1m or 301.2m or 301.3m => new Func<(Orienteering_ISOM_2017_2_RunSpeModSym.Grounds? ground, Orienteering_ISOM_2017_2_RunSpeModSym.Boulders? boulders, Orienteering_ISOM_2017_2_RunSpeModSym.Stones? stones, Orienteering_ISOM_2017_2_RunSpeModSym.Water? water, Orienteering_ISOM_2017_2_RunSpeModSym.VegetationAndManMade? vegetationAndManMade, Orienteering_ISOM_2017_2_RunSpeModSym.VegetationGoodVis? vegetationGoodVis)>(() => {
+                        if (surroundings.vegetationAndManMade == Orienteering_ISOM_2017_2_RunSpeModSym.VegetationAndManMade.PavedArea_501)
                             return surroundings;
-                        return (null, null, null, Orienteering_ISOM_2017_2.Water.UncrossableBodyOfWater_301, null, null); })(),
-                206 => (null, Orienteering_ISOM_2017_2.Boulders.GiganticBoulder_206, null, null, null, null),
-                521 or 521.2m or 521.3m => (null, null, null, null, Orienteering_ISOM_2017_2.VegetationAndManMade.Building_521, null),
-                520.2m => (null, null, null, null, Orienteering_ISOM_2017_2.VegetationAndManMade.AreaThatShallNotBeEntered_520, null),
+                        return (null, null, null, Orienteering_ISOM_2017_2_RunSpeModSym.Water.UncrossableBodyOfWater_301, null, null); })(),
+                206 => (null, Orienteering_ISOM_2017_2_RunSpeModSym.Boulders.GiganticBoulder_206, null, null, null, null),
+                521 or 521.2m or 521.3m => (null, null, null, null, Orienteering_ISOM_2017_2_RunSpeModSym.VegetationAndManMade.Building_521, null),
+                520.2m => (null, null, null, null, Orienteering_ISOM_2017_2_RunSpeModSym.VegetationAndManMade.AreaThatShallNotBeEntered_520, null),
                 _ => surroundings
             };
         
-        public static (Orienteering_ISOM_2017_2.NaturalLinearObstacles? naturalLinearObstacle, Orienteering_ISOM_2017_2.Paths? path, Orienteering_ISOM_2017_2.ManMadeLinearObstacles? manMadeLinearObstacle)
-            GetUpdatedLinearFeaturesOfEdgeAttributes((Orienteering_ISOM_2017_2.NaturalLinearObstacles? naturalLinearObstacle, Orienteering_ISOM_2017_2.Paths? path, Orienteering_ISOM_2017_2.ManMadeLinearObstacles? manMadeLinearObstacle)  linearFeaturs, (Orienteering_ISOM_2017_2.Grounds? ground, Orienteering_ISOM_2017_2.Boulders? boulders, Orienteering_ISOM_2017_2.Stones? stones, Orienteering_ISOM_2017_2.Water? water, Orienteering_ISOM_2017_2.VegetationAndManMade? vegetationAndManMade, Orienteering_ISOM_2017_2.VegetationGoodVis? vegetationGoodVis) surroundings, (Orienteering_ISOM_2017_2.Grounds? ground, Orienteering_ISOM_2017_2.Boulders? boulders, Orienteering_ISOM_2017_2.Stones? stones, Orienteering_ISOM_2017_2.Water? water, Orienteering_ISOM_2017_2.VegetationAndManMade? vegetationAndManMade, Orienteering_ISOM_2017_2.VegetationGoodVis? vegetationGoodVis) secondSurroundings, decimal symbolCodeOfAddedObject, out (Orienteering_ISOM_2017_2.Grounds? ground, Orienteering_ISOM_2017_2.Boulders? boulders, Orienteering_ISOM_2017_2.Stones? stones, Orienteering_ISOM_2017_2.Water? water, Orienteering_ISOM_2017_2.VegetationAndManMade? vegetationAndManMade, Orienteering_ISOM_2017_2.VegetationGoodVis? vegetationGoodVis) newSurroundings, out (Orienteering_ISOM_2017_2.Grounds? ground, Orienteering_ISOM_2017_2.Boulders? boulders, Orienteering_ISOM_2017_2.Stones? stones, Orienteering_ISOM_2017_2.Water? water, Orienteering_ISOM_2017_2.VegetationAndManMade? vegetationAndManMade, Orienteering_ISOM_2017_2.VegetationGoodVis? vegetationGoodVis) newSecondSurroundings)
+        public static (Orienteering_ISOM_2017_2_RunSpeModSym.NaturalLinearObstacles? naturalLinearObstacle, Orienteering_ISOM_2017_2_RunSpeModSym.Paths? path, Orienteering_ISOM_2017_2_RunSpeModSym.ManMadeLinearObstacles? manMadeLinearObstacle)
+            GetUpdatedLinearFeaturesOfEdgeAttributes((Orienteering_ISOM_2017_2_RunSpeModSym.NaturalLinearObstacles? naturalLinearObstacle, Orienteering_ISOM_2017_2_RunSpeModSym.Paths? path, Orienteering_ISOM_2017_2_RunSpeModSym.ManMadeLinearObstacles? manMadeLinearObstacle)  linearFeaturs, (Orienteering_ISOM_2017_2_RunSpeModSym.Grounds? ground, Orienteering_ISOM_2017_2_RunSpeModSym.Boulders? boulders, Orienteering_ISOM_2017_2_RunSpeModSym.Stones? stones, Orienteering_ISOM_2017_2_RunSpeModSym.Water? water, Orienteering_ISOM_2017_2_RunSpeModSym.VegetationAndManMade? vegetationAndManMade, Orienteering_ISOM_2017_2_RunSpeModSym.VegetationGoodVis? vegetationGoodVis) surroundings, (Orienteering_ISOM_2017_2_RunSpeModSym.Grounds? ground, Orienteering_ISOM_2017_2_RunSpeModSym.Boulders? boulders, Orienteering_ISOM_2017_2_RunSpeModSym.Stones? stones, Orienteering_ISOM_2017_2_RunSpeModSym.Water? water, Orienteering_ISOM_2017_2_RunSpeModSym.VegetationAndManMade? vegetationAndManMade, Orienteering_ISOM_2017_2_RunSpeModSym.VegetationGoodVis? vegetationGoodVis) secondSurroundings, decimal symbolCodeOfAddedObject, out (Orienteering_ISOM_2017_2_RunSpeModSym.Grounds? ground, Orienteering_ISOM_2017_2_RunSpeModSym.Boulders? boulders, Orienteering_ISOM_2017_2_RunSpeModSym.Stones? stones, Orienteering_ISOM_2017_2_RunSpeModSym.Water? water, Orienteering_ISOM_2017_2_RunSpeModSym.VegetationAndManMade? vegetationAndManMade, Orienteering_ISOM_2017_2_RunSpeModSym.VegetationGoodVis? vegetationGoodVis) newSurroundings, out (Orienteering_ISOM_2017_2_RunSpeModSym.Grounds? ground, Orienteering_ISOM_2017_2_RunSpeModSym.Boulders? boulders, Orienteering_ISOM_2017_2_RunSpeModSym.Stones? stones, Orienteering_ISOM_2017_2_RunSpeModSym.Water? water, Orienteering_ISOM_2017_2_RunSpeModSym.VegetationAndManMade? vegetationAndManMade, Orienteering_ISOM_2017_2_RunSpeModSym.VegetationGoodVis? vegetationGoodVis) newSecondSurroundings)
         {
             var updatedLineFeatures = symbolCodeOfAddedObject switch 
             {
-                508 => (null, Orienteering_ISOM_2017_2.Paths.NarrowRide_508, null),
-                508.2m => new Func<(Orienteering_ISOM_2017_2.NaturalLinearObstacles? naturalLinearObstacle, Orienteering_ISOM_2017_2.Paths? path, Orienteering_ISOM_2017_2.ManMadeLinearObstacles? manMadeLinearObstacle)>(() => {
-                    surroundings = GetSurroundingsForEdgeWithNarrowRide(Orienteering_ISOM_2017_2.VegetationAndManMade.Forest_405, surroundings);
-                    secondSurroundings = GetSurroundingsForEdgeWithNarrowRide(Orienteering_ISOM_2017_2.VegetationAndManMade.Forest_405, secondSurroundings);
-                    return (null, Orienteering_ISOM_2017_2.Paths.NarrowRide_508, null); })(),
-                508.3m => new Func<(Orienteering_ISOM_2017_2.NaturalLinearObstacles? naturalLinearObstacle, Orienteering_ISOM_2017_2.Paths? path, Orienteering_ISOM_2017_2.ManMadeLinearObstacles? manMadeLinearObstacle)>(() => {
-                    surroundings = GetSurroundingsForEdgeWithNarrowRide(Orienteering_ISOM_2017_2.VegetationAndManMade.VegetationSlow_406, surroundings);
-                    secondSurroundings = GetSurroundingsForEdgeWithNarrowRide(Orienteering_ISOM_2017_2.VegetationAndManMade.VegetationSlow_406, secondSurroundings);
-                    return (null, Orienteering_ISOM_2017_2.Paths.NarrowRide_508, null); })(),
-                508.4m => new Func<(Orienteering_ISOM_2017_2.NaturalLinearObstacles? naturalLinearObstacle, Orienteering_ISOM_2017_2.Paths? path, Orienteering_ISOM_2017_2.ManMadeLinearObstacles? manMadeLinearObstacle)>(() => {
-                    surroundings = GetSurroundingsForEdgeWithNarrowRide(Orienteering_ISOM_2017_2.VegetationAndManMade.VegetationWalk_408, surroundings);
-                    secondSurroundings = GetSurroundingsForEdgeWithNarrowRide(Orienteering_ISOM_2017_2.VegetationAndManMade.VegetationWalk_408, secondSurroundings);
-                    return (null, Orienteering_ISOM_2017_2.Paths.NarrowRide_508, null); })(),
-                508.1m => new Func<(Orienteering_ISOM_2017_2.NaturalLinearObstacles? naturalLinearObstacle, Orienteering_ISOM_2017_2.Paths? path, Orienteering_ISOM_2017_2.ManMadeLinearObstacles? manMadeLinearObstacle)>(() => { 
-                    surroundings = GetSurroundingsForEdgeWithNarrowRide(Orienteering_ISOM_2017_2.VegetationAndManMade.OpenLand_401, surroundings);
-                    secondSurroundings = GetSurroundingsForEdgeWithNarrowRide(Orienteering_ISOM_2017_2.VegetationAndManMade.OpenLand_401, secondSurroundings);
-                    return (null, Orienteering_ISOM_2017_2.Paths.NarrowRide_508, null); })(),
-                507 => (null, Orienteering_ISOM_2017_2.Paths.LessDistinctSmallFootpath_507 ,null),
-                506 => (null, Orienteering_ISOM_2017_2.Paths.SmallFootpath_506, null),
-                505 => (null, Orienteering_ISOM_2017_2.Paths.Footpath_505, null),
-                504 => (null, Orienteering_ISOM_2017_2.Paths.VehicleTrack_504, null),
-                503 => (null, Orienteering_ISOM_2017_2.Paths.Road_503, null),
-                502 or 502.2m =>  (null, Orienteering_ISOM_2017_2.Paths.WideRoad_502, null),
-                532 => (null, Orienteering_ISOM_2017_2.Paths.Stairway_532,null),
-                104 or 104.2m => (Orienteering_ISOM_2017_2.NaturalLinearObstacles.EarthBank_104, linearFeaturs.path, linearFeaturs.manMadeLinearObstacle),
-                105 => (Orienteering_ISOM_2017_2.NaturalLinearObstacles.EarthWall_105, linearFeaturs.path, linearFeaturs.manMadeLinearObstacle),
-                107 => (Orienteering_ISOM_2017_2.NaturalLinearObstacles.ErosionGully_107, linearFeaturs.path, linearFeaturs.manMadeLinearObstacle),
-                305 => (Orienteering_ISOM_2017_2.NaturalLinearObstacles.SmallCrossableWatercourse_305, linearFeaturs.path, linearFeaturs.manMadeLinearObstacle),
-                304 => (Orienteering_ISOM_2017_2.NaturalLinearObstacles.CrossableWatercourse_304, linearFeaturs.path, linearFeaturs.manMadeLinearObstacle),
-                201 or 201.3m => (ImapssableCliff_201: Orienteering_ISOM_2017_2.NaturalLinearObstacles.ImpassableCliff_201, linearFeaturs.path, linearFeaturs.manMadeLinearObstacle),
-                202 or 202.2m => (Orienteering_ISOM_2017_2.NaturalLinearObstacles.Cliff_202, linearFeaturs.path, linearFeaturs.manMadeLinearObstacle),
-                215 => (linearFeaturs.naturalLinearObstacle, linearFeaturs.path, Orienteering_ISOM_2017_2.ManMadeLinearObstacles.Trench_215),
-                513 => (linearFeaturs.naturalLinearObstacle, linearFeaturs.path, Orienteering_ISOM_2017_2.ManMadeLinearObstacles.Wall_513),   
-                515 => (linearFeaturs.naturalLinearObstacle, linearFeaturs.path, Orienteering_ISOM_2017_2.ManMadeLinearObstacles.ImpassableWall_515),   
-                516 => (linearFeaturs.naturalLinearObstacle, linearFeaturs.path, Orienteering_ISOM_2017_2.ManMadeLinearObstacles.Fence_516),     
-                518 => (linearFeaturs.naturalLinearObstacle, linearFeaturs.path, Orienteering_ISOM_2017_2.ManMadeLinearObstacles.ImpassableFence_518), 
-                528 => (linearFeaturs.naturalLinearObstacle, linearFeaturs.path, Orienteering_ISOM_2017_2.ManMadeLinearObstacles.ProminentLineFeature_528),
-                529 => (linearFeaturs.naturalLinearObstacle, linearFeaturs.path, Orienteering_ISOM_2017_2.ManMadeLinearObstacles.ImpassableProminentLineFeature_529),
+                508 => (null, Orienteering_ISOM_2017_2_RunSpeModSym.Paths.NarrowRide_508, null),
+                508.2m => new Func<(Orienteering_ISOM_2017_2_RunSpeModSym.NaturalLinearObstacles? naturalLinearObstacle, Orienteering_ISOM_2017_2_RunSpeModSym.Paths? path, Orienteering_ISOM_2017_2_RunSpeModSym.ManMadeLinearObstacles? manMadeLinearObstacle)>(() => {
+                    surroundings = GetSurroundingsForEdgeWithNarrowRide(Orienteering_ISOM_2017_2_RunSpeModSym.VegetationAndManMade.Forest_405, surroundings);
+                    secondSurroundings = GetSurroundingsForEdgeWithNarrowRide(Orienteering_ISOM_2017_2_RunSpeModSym.VegetationAndManMade.Forest_405, secondSurroundings);
+                    return (null, Orienteering_ISOM_2017_2_RunSpeModSym.Paths.NarrowRide_508, null); })(),
+                508.3m => new Func<(Orienteering_ISOM_2017_2_RunSpeModSym.NaturalLinearObstacles? naturalLinearObstacle, Orienteering_ISOM_2017_2_RunSpeModSym.Paths? path, Orienteering_ISOM_2017_2_RunSpeModSym.ManMadeLinearObstacles? manMadeLinearObstacle)>(() => {
+                    surroundings = GetSurroundingsForEdgeWithNarrowRide(Orienteering_ISOM_2017_2_RunSpeModSym.VegetationAndManMade.VegetationSlow_406, surroundings);
+                    secondSurroundings = GetSurroundingsForEdgeWithNarrowRide(Orienteering_ISOM_2017_2_RunSpeModSym.VegetationAndManMade.VegetationSlow_406, secondSurroundings);
+                    return (null, Orienteering_ISOM_2017_2_RunSpeModSym.Paths.NarrowRide_508, null); })(),
+                508.4m => new Func<(Orienteering_ISOM_2017_2_RunSpeModSym.NaturalLinearObstacles? naturalLinearObstacle, Orienteering_ISOM_2017_2_RunSpeModSym.Paths? path, Orienteering_ISOM_2017_2_RunSpeModSym.ManMadeLinearObstacles? manMadeLinearObstacle)>(() => {
+                    surroundings = GetSurroundingsForEdgeWithNarrowRide(Orienteering_ISOM_2017_2_RunSpeModSym.VegetationAndManMade.VegetationWalk_408, surroundings);
+                    secondSurroundings = GetSurroundingsForEdgeWithNarrowRide(Orienteering_ISOM_2017_2_RunSpeModSym.VegetationAndManMade.VegetationWalk_408, secondSurroundings);
+                    return (null, Orienteering_ISOM_2017_2_RunSpeModSym.Paths.NarrowRide_508, null); })(),
+                508.1m => new Func<(Orienteering_ISOM_2017_2_RunSpeModSym.NaturalLinearObstacles? naturalLinearObstacle, Orienteering_ISOM_2017_2_RunSpeModSym.Paths? path, Orienteering_ISOM_2017_2_RunSpeModSym.ManMadeLinearObstacles? manMadeLinearObstacle)>(() => { 
+                    surroundings = GetSurroundingsForEdgeWithNarrowRide(Orienteering_ISOM_2017_2_RunSpeModSym.VegetationAndManMade.OpenLand_401, surroundings);
+                    secondSurroundings = GetSurroundingsForEdgeWithNarrowRide(Orienteering_ISOM_2017_2_RunSpeModSym.VegetationAndManMade.OpenLand_401, secondSurroundings);
+                    return (null, Orienteering_ISOM_2017_2_RunSpeModSym.Paths.NarrowRide_508, null); })(),
+                507 => (null, Orienteering_ISOM_2017_2_RunSpeModSym.Paths.LessDistinctSmallFootpath_507 ,null),
+                506 => (null, Orienteering_ISOM_2017_2_RunSpeModSym.Paths.SmallFootpath_506, null),
+                505 => (null, Orienteering_ISOM_2017_2_RunSpeModSym.Paths.Footpath_505, null),
+                504 => (null, Orienteering_ISOM_2017_2_RunSpeModSym.Paths.VehicleTrack_504, null),
+                503 => (null, Orienteering_ISOM_2017_2_RunSpeModSym.Paths.Road_503, null),
+                502 or 502.2m =>  (null, Orienteering_ISOM_2017_2_RunSpeModSym.Paths.WideRoad_502, null),
+                532 => (null, Orienteering_ISOM_2017_2_RunSpeModSym.Paths.Stairway_532,null),
+                104 or 104.2m => (Orienteering_ISOM_2017_2_RunSpeModSym.NaturalLinearObstacles.EarthBank_104, linearFeaturs.path, linearFeaturs.manMadeLinearObstacle),
+                105 => (Orienteering_ISOM_2017_2_RunSpeModSym.NaturalLinearObstacles.EarthWall_105, linearFeaturs.path, linearFeaturs.manMadeLinearObstacle),
+                107 => (Orienteering_ISOM_2017_2_RunSpeModSym.NaturalLinearObstacles.ErosionGully_107, linearFeaturs.path, linearFeaturs.manMadeLinearObstacle),
+                305 => (Orienteering_ISOM_2017_2_RunSpeModSym.NaturalLinearObstacles.SmallCrossableWatercourse_305, linearFeaturs.path, linearFeaturs.manMadeLinearObstacle),
+                304 => (Orienteering_ISOM_2017_2_RunSpeModSym.NaturalLinearObstacles.CrossableWatercourse_304, linearFeaturs.path, linearFeaturs.manMadeLinearObstacle),
+                201 or 201.3m => (ImapssableCliff_201: Orienteering_ISOM_2017_2_RunSpeModSym.NaturalLinearObstacles.ImpassableCliff_201, linearFeaturs.path, linearFeaturs.manMadeLinearObstacle),
+                202 or 202.2m => (Orienteering_ISOM_2017_2_RunSpeModSym.NaturalLinearObstacles.Cliff_202, linearFeaturs.path, linearFeaturs.manMadeLinearObstacle),
+                215 => (linearFeaturs.naturalLinearObstacle, linearFeaturs.path, Orienteering_ISOM_2017_2_RunSpeModSym.ManMadeLinearObstacles.Trench_215),
+                513 => (linearFeaturs.naturalLinearObstacle, linearFeaturs.path, Orienteering_ISOM_2017_2_RunSpeModSym.ManMadeLinearObstacles.Wall_513),   
+                515 => (linearFeaturs.naturalLinearObstacle, linearFeaturs.path, Orienteering_ISOM_2017_2_RunSpeModSym.ManMadeLinearObstacles.ImpassableWall_515),   
+                516 => (linearFeaturs.naturalLinearObstacle, linearFeaturs.path, Orienteering_ISOM_2017_2_RunSpeModSym.ManMadeLinearObstacles.Fence_516),     
+                518 => (linearFeaturs.naturalLinearObstacle, linearFeaturs.path, Orienteering_ISOM_2017_2_RunSpeModSym.ManMadeLinearObstacles.ImpassableFence_518), 
+                528 => (linearFeaturs.naturalLinearObstacle, linearFeaturs.path, Orienteering_ISOM_2017_2_RunSpeModSym.ManMadeLinearObstacles.ProminentLineFeature_528),
+                529 => (linearFeaturs.naturalLinearObstacle, linearFeaturs.path, Orienteering_ISOM_2017_2_RunSpeModSym.ManMadeLinearObstacles.ImpassableProminentLineFeature_529),
                 _ => linearFeaturs
             };
             newSurroundings = surroundings;
@@ -2178,17 +2178,17 @@ public class GraphCreator<TVertex, TEdge>
             return updatedLineFeatures;
         }
 
-        private static (Orienteering_ISOM_2017_2.Grounds? ground, Orienteering_ISOM_2017_2.Boulders? boulders, Orienteering_ISOM_2017_2.Stones? stones, Orienteering_ISOM_2017_2.Water? water, Orienteering_ISOM_2017_2.VegetationAndManMade? vegetationAndManMade, Orienteering_ISOM_2017_2.VegetationGoodVis? vegetationGoodVis)
-            GetSurroundingsForEdgeWithNarrowRide(Orienteering_ISOM_2017_2.VegetationAndManMade narrowRideSurroundings, (Orienteering_ISOM_2017_2.Grounds? ground, Orienteering_ISOM_2017_2.Boulders? boulders, Orienteering_ISOM_2017_2.Stones? stones, Orienteering_ISOM_2017_2.Water? water, Orienteering_ISOM_2017_2.VegetationAndManMade? vegetationAndManMade, Orienteering_ISOM_2017_2.VegetationGoodVis? vegetationGoodVis) originalSurroundings)
+        private static (Orienteering_ISOM_2017_2_RunSpeModSym.Grounds? ground, Orienteering_ISOM_2017_2_RunSpeModSym.Boulders? boulders, Orienteering_ISOM_2017_2_RunSpeModSym.Stones? stones, Orienteering_ISOM_2017_2_RunSpeModSym.Water? water, Orienteering_ISOM_2017_2_RunSpeModSym.VegetationAndManMade? vegetationAndManMade, Orienteering_ISOM_2017_2_RunSpeModSym.VegetationGoodVis? vegetationGoodVis)
+            GetSurroundingsForEdgeWithNarrowRide(Orienteering_ISOM_2017_2_RunSpeModSym.VegetationAndManMade narrowRideSurroundings, (Orienteering_ISOM_2017_2_RunSpeModSym.Grounds? ground, Orienteering_ISOM_2017_2_RunSpeModSym.Boulders? boulders, Orienteering_ISOM_2017_2_RunSpeModSym.Stones? stones, Orienteering_ISOM_2017_2_RunSpeModSym.Water? water, Orienteering_ISOM_2017_2_RunSpeModSym.VegetationAndManMade? vegetationAndManMade, Orienteering_ISOM_2017_2_RunSpeModSym.VegetationGoodVis? vegetationGoodVis) originalSurroundings)
         {
-            if (!(originalSurroundings.ground == Orienteering_ISOM_2017_2.Grounds.CultivatedLand_412 ||
-                  originalSurroundings.boulders == Orienteering_ISOM_2017_2.Boulders.GiganticBoulder_206 ||
-                  originalSurroundings.stones == Orienteering_ISOM_2017_2.Stones.SandyGround_213 ||
-                  originalSurroundings.water == Orienteering_ISOM_2017_2.Water.UncrossableMarsh_307 ||
-                  originalSurroundings.water == Orienteering_ISOM_2017_2.Water.ShallowBodyOfWater_302 ||
-                  originalSurroundings.vegetationAndManMade == Orienteering_ISOM_2017_2.VegetationAndManMade.PavedArea_501 ||
-                  originalSurroundings.vegetationAndManMade == Orienteering_ISOM_2017_2.VegetationAndManMade.AreaThatShallNotBeEntered_520 ||
-                  originalSurroundings.vegetationAndManMade == Orienteering_ISOM_2017_2.VegetationAndManMade.Building_521)) 
+            if (!(originalSurroundings.ground == Orienteering_ISOM_2017_2_RunSpeModSym.Grounds.CultivatedLand_412 ||
+                  originalSurroundings.boulders == Orienteering_ISOM_2017_2_RunSpeModSym.Boulders.GiganticBoulder_206 ||
+                  originalSurroundings.stones == Orienteering_ISOM_2017_2_RunSpeModSym.Stones.SandyGround_213 ||
+                  originalSurroundings.water == Orienteering_ISOM_2017_2_RunSpeModSym.Water.UncrossableMarsh_307 ||
+                  originalSurroundings.water == Orienteering_ISOM_2017_2_RunSpeModSym.Water.ShallowBodyOfWater_302 ||
+                  originalSurroundings.vegetationAndManMade == Orienteering_ISOM_2017_2_RunSpeModSym.VegetationAndManMade.PavedArea_501 ||
+                  originalSurroundings.vegetationAndManMade == Orienteering_ISOM_2017_2_RunSpeModSym.VegetationAndManMade.AreaThatShallNotBeEntered_520 ||
+                  originalSurroundings.vegetationAndManMade == Orienteering_ISOM_2017_2_RunSpeModSym.VegetationAndManMade.Building_521)) 
                 return (originalSurroundings.ground, originalSurroundings.boulders, originalSurroundings.stones, originalSurroundings.water, narrowRideSurroundings, null);
             return originalSurroundings;
         }
@@ -2213,7 +2213,7 @@ public class GraphCreator<TVertex, TEdge>
         #region Cross-section of chain and boundary edges vertices retrieving and their connection to chain vertices \\\
         
         public static (Dictionary<(BoundaryVertexBuilder<TVertex, TEdge>, BoundaryVertexBuilder<TVertex, TEdge>), (List<BoundaryVertexBuilder<TVertex, TEdge>>, int)>, Dictionary<(BoundaryVertexBuilder<TVertex, TEdge>, BoundaryVertexBuilder<TVertex, TEdge>), List<BoundaryVertexBuilder<TVertex, TEdge>>>) 
-            CreateCrossSectionVertices(BoundaryVertexBuilder<TVertex, TEdge>[][] chains, Dictionary<(BoundaryVertexBuilder<TVertex, TEdge>, BoundaryVertexBuilder<TVertex, TEdge>), (Orienteering_ISOM_2017_2.EdgeAttributes, List<(MapCoordinates, int, int)>)> verticesOfCutBoundaryEdges)
+            CreateCrossSectionVertices(BoundaryVertexBuilder<TVertex, TEdge>[][] chains, Dictionary<(BoundaryVertexBuilder<TVertex, TEdge>, BoundaryVertexBuilder<TVertex, TEdge>), (Orienteering_ISOM_2017_2_RunSpeModSym.EdgeAttributes, List<(MapCoordinates, int, int)>)> verticesOfCutBoundaryEdges)
         {
             Dictionary<(BoundaryVertexBuilder<TVertex, TEdge>, BoundaryVertexBuilder<TVertex, TEdge>), (List<BoundaryVertexBuilder<TVertex, TEdge>>, int)> chainVerticesOfCrossedEdgesWithTheirCrossSectionVerticesAndChainIndex = new();
             Dictionary<(BoundaryVertexBuilder<TVertex, TEdge>, BoundaryVertexBuilder<TVertex, TEdge>), List<BoundaryVertexBuilder<TVertex, TEdge>>> verticesOfCrossedBoundaryEdgesWithTheirCrossSectionVertices = new();
@@ -2226,7 +2226,7 @@ public class GraphCreator<TVertex, TEdge>
                     // crossed chain edge index will never be equal to chain.Count - 1, if chain is segmented line and not polygon
                     var chainVertex2 = crossedEdgeIndex == chains[crossedChainIndex].Length - 1 ? chains[crossedChainIndex][0] : chains[crossedChainIndex][crossedEdgeIndex + 1];
                     // creation of cross-section vertex and its addition to list of added vertices and list of added vertices for given cut boundary edge and chain edge
-                    var newVertex = new BoundaryVertexBuilder<TVertex, TEdge>(new Orienteering_ISOM_2017_2.VertexAttributes(crossSectionCoords));
+                    var newVertex = new BoundaryVertexBuilder<TVertex, TEdge>(new Orienteering_ISOM_2017_2_RunSpeModSym.VertexAttributes(crossSectionCoords));
                     if (chainVerticesOfCrossedEdgesWithTheirCrossSectionVerticesAndChainIndex.ContainsKey((chainVertex1, chainVertex2))) chainVerticesOfCrossedEdgesWithTheirCrossSectionVerticesAndChainIndex[(chainVertex1, chainVertex2)].Item1.Add(newVertex);
                     else chainVerticesOfCrossedEdgesWithTheirCrossSectionVerticesAndChainIndex[(chainVertex1, chainVertex2)] = ([newVertex], crossedChainIndex);
                     if (verticesOfCrossedBoundaryEdgesWithTheirCrossSectionVertices.ContainsKey((vertex1, vertex2))) verticesOfCrossedBoundaryEdgesWithTheirCrossSectionVertices[(vertex1, vertex2)].Add(newVertex);
@@ -2258,12 +2258,12 @@ public class GraphCreator<TVertex, TEdge>
             // then new vertices are iterattively connected to chain vertices 
             foreach (var newVertex in sortedVertices)
             {
-                lastVertex.BoundaryEdges[newVertex] = new Orienteering_ISOM_2017_2.EdgeAttributes();
-                newVertex.BoundaryEdges[lastVertex] = new Orienteering_ISOM_2017_2.EdgeAttributes();
+                lastVertex.BoundaryEdges[newVertex] = new Orienteering_ISOM_2017_2_RunSpeModSym.EdgeAttributes();
+                newVertex.BoundaryEdges[lastVertex] = new Orienteering_ISOM_2017_2_RunSpeModSym.EdgeAttributes();
                 lastVertex = newVertex;
             }
-            lastVertex.BoundaryEdges[vertex2] = new Orienteering_ISOM_2017_2.EdgeAttributes();
-            vertex2.BoundaryEdges[lastVertex] = new Orienteering_ISOM_2017_2.EdgeAttributes();
+            lastVertex.BoundaryEdges[vertex2] = new Orienteering_ISOM_2017_2_RunSpeModSym.EdgeAttributes();
+            vertex2.BoundaryEdges[lastVertex] = new Orienteering_ISOM_2017_2_RunSpeModSym.EdgeAttributes();
         }
 
         private static void AddNewVerticesToChain(List<BoundaryVertexBuilder<TVertex, TEdge>> sortedVertices, BoundaryVertexBuilder<TVertex, TEdge> vertex1, BoundaryVertexBuilder<TVertex, TEdge> vertex2, List<BoundaryVertexBuilder<TVertex, TEdge>> chain)
@@ -2366,7 +2366,7 @@ public class GraphCreator<TVertex, TEdge>
         {
             // net vertices are connected by edges whose attributes are correctly selected based on attributes of another edge of net vertex
             // here is used the assumption, that edges of net vertices have same attributes
-            boundaryVertex.NonBoundaryEdges[netVertex] = new Orienteering_ISOM_2017_2.EdgeAttributes(netVertex.Surroundings);
+            boundaryVertex.NonBoundaryEdges[netVertex] = new Orienteering_ISOM_2017_2_RunSpeModSym.EdgeAttributes(netVertex.Surroundings);
             netVertex.NonBoundaryEdges[boundaryVertex] = (null, null, null);
         }
 
@@ -2374,8 +2374,8 @@ public class GraphCreator<TVertex, TEdge>
         {
             // edges between boundary edges will be assigned with blank attributes
             // correct attributes will be assigned to these edges in the future
-            boundaryVertex1.NonBoundaryEdges[boundaryVertex2] = new Orienteering_ISOM_2017_2.EdgeAttributes();
-            boundaryVertex2.NonBoundaryEdges[boundaryVertex1] = new Orienteering_ISOM_2017_2.EdgeAttributes();
+            boundaryVertex1.NonBoundaryEdges[boundaryVertex2] = new Orienteering_ISOM_2017_2_RunSpeModSym.EdgeAttributes();
+            boundaryVertex2.NonBoundaryEdges[boundaryVertex1] = new Orienteering_ISOM_2017_2_RunSpeModSym.EdgeAttributes();
         }
         
         [Obsolete("This method is deprecated. Use ConnectChainVerticesToOtherVerticesIncludingChainOnes instead.")]
@@ -2420,24 +2420,24 @@ public class GraphCreator<TVertex, TEdge>
         
         #region Setting of chain edges \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
         
-        public static void SetAttributesOfChainBoundaryEdgesBasedOnGivenLeftSurroundingsOnGivenInterval(BoundaryVertexBuilder<TVertex, TEdge>[] chain, (Orienteering_ISOM_2017_2.Grounds?, Orienteering_ISOM_2017_2.Boulders?, Orienteering_ISOM_2017_2.Stones?, Orienteering_ISOM_2017_2.Water?, Orienteering_ISOM_2017_2.VegetationAndManMade?, Orienteering_ISOM_2017_2.VegetationGoodVis?) outerSurroundings, decimal symbolCodeOfAddedObject, int startIndex, int endIndex)
+        public static void SetAttributesOfChainBoundaryEdgesBasedOnGivenLeftSurroundingsOnGivenInterval(BoundaryVertexBuilder<TVertex, TEdge>[] chain, (Orienteering_ISOM_2017_2_RunSpeModSym.Grounds?, Orienteering_ISOM_2017_2_RunSpeModSym.Boulders?, Orienteering_ISOM_2017_2_RunSpeModSym.Stones?, Orienteering_ISOM_2017_2_RunSpeModSym.Water?, Orienteering_ISOM_2017_2_RunSpeModSym.VegetationAndManMade?, Orienteering_ISOM_2017_2_RunSpeModSym.VegetationGoodVis?) outerSurroundings, decimal symbolCodeOfAddedObject, int startIndex, int endIndex)
             => SetLeftSurroundingsUpdatedRightSurroundingsAndUpdatedLinearFeaturesOfChainBoundaryEdgesOnGivenInterval(chain, outerSurroundings, (null, null, null), symbolCodeOfAddedObject, startIndex, endIndex);
         
         //private for the time being
-        private static void SetLeftSurroundingsUpdatedRightSurroundingsAndUpdatedLinearFeaturesOfChainBoundaryEdgesOnGivenInterval(BoundaryVertexBuilder<TVertex, TEdge>[] chain, (Orienteering_ISOM_2017_2.Grounds?, Orienteering_ISOM_2017_2.Boulders?, Orienteering_ISOM_2017_2.Stones?, Orienteering_ISOM_2017_2.Water?, Orienteering_ISOM_2017_2.VegetationAndManMade?, Orienteering_ISOM_2017_2.VegetationGoodVis?) leftSurroundings, (Orienteering_ISOM_2017_2.NaturalLinearObstacles? naturalLinearObstacle, Orienteering_ISOM_2017_2.Paths? path, Orienteering_ISOM_2017_2.ManMadeLinearObstacles? manMadeLinearObstacle) linearFeatures, decimal symbolCodeOfAddedObject, int startIndex, int endIndex)
+        private static void SetLeftSurroundingsUpdatedRightSurroundingsAndUpdatedLinearFeaturesOfChainBoundaryEdgesOnGivenInterval(BoundaryVertexBuilder<TVertex, TEdge>[] chain, (Orienteering_ISOM_2017_2_RunSpeModSym.Grounds?, Orienteering_ISOM_2017_2_RunSpeModSym.Boulders?, Orienteering_ISOM_2017_2_RunSpeModSym.Stones?, Orienteering_ISOM_2017_2_RunSpeModSym.Water?, Orienteering_ISOM_2017_2_RunSpeModSym.VegetationAndManMade?, Orienteering_ISOM_2017_2_RunSpeModSym.VegetationGoodVis?) leftSurroundings, (Orienteering_ISOM_2017_2_RunSpeModSym.NaturalLinearObstacles? naturalLinearObstacle, Orienteering_ISOM_2017_2_RunSpeModSym.Paths? path, Orienteering_ISOM_2017_2_RunSpeModSym.ManMadeLinearObstacles? manMadeLinearObstacle) linearFeatures, decimal symbolCodeOfAddedObject, int startIndex, int endIndex)
         {
             if (startIndex >= endIndex || startIndex < 0 || endIndex >= chain.Length) return;
             var rightSurroundings = GetUpdatedSurroundingsOfEdgeAttributes(leftSurroundings, symbolCodeOfAddedObject);
             var linearFeaturesInDirection = GetUpdatedLinearFeaturesOfEdgeAttributes(linearFeatures, leftSurroundings, rightSurroundings, symbolCodeOfAddedObject, out leftSurroundings, out rightSurroundings);
             var linearFeaturesInOppositeDirection = GetUpdatedLinearFeaturesOfEdgeAttributes(linearFeatures, rightSurroundings, leftSurroundings, symbolCodeOfAddedObject, out rightSurroundings, out leftSurroundings);
             
-            chain[startIndex].BoundaryEdges[chain[startIndex + 1]] = new Orienteering_ISOM_2017_2.EdgeAttributes(leftSurroundings, rightSurroundings);
+            chain[startIndex].BoundaryEdges[chain[startIndex + 1]] = new Orienteering_ISOM_2017_2_RunSpeModSym.EdgeAttributes(leftSurroundings, rightSurroundings);
             for (int i = startIndex + 1; i < endIndex; ++i)
             {
-                chain[i].BoundaryEdges[chain[i + 1]] = new Orienteering_ISOM_2017_2.EdgeAttributes( leftSurroundings, linearFeaturesInDirection, rightSurroundings);
-                chain[i].BoundaryEdges[chain[i - 1]] = new Orienteering_ISOM_2017_2.EdgeAttributes( rightSurroundings, linearFeaturesInOppositeDirection, leftSurroundings);
+                chain[i].BoundaryEdges[chain[i + 1]] = new Orienteering_ISOM_2017_2_RunSpeModSym.EdgeAttributes( leftSurroundings, linearFeaturesInDirection, rightSurroundings);
+                chain[i].BoundaryEdges[chain[i - 1]] = new Orienteering_ISOM_2017_2_RunSpeModSym.EdgeAttributes( rightSurroundings, linearFeaturesInOppositeDirection, leftSurroundings);
             }
-            chain[endIndex].BoundaryEdges[chain[endIndex - 1]] = new Orienteering_ISOM_2017_2.EdgeAttributes(rightSurroundings, leftSurroundings); 
+            chain[endIndex].BoundaryEdges[chain[endIndex - 1]] = new Orienteering_ISOM_2017_2_RunSpeModSym.EdgeAttributes(rightSurroundings, leftSurroundings); 
         }
         
         #endregion
@@ -2456,22 +2456,22 @@ public class GraphCreator<TVertex, TEdge>
         {
             foreach (var (neighbor, edgeAttributes) in chainVertex.NonBoundaryEdges)
             {
-                if (neighbor is BoundaryVertexBuilder<TVertex, TEdge> boundaryNeighbor && edgeAttributes == new Orienteering_ISOM_2017_2.EdgeAttributes())
+                if (neighbor is BoundaryVertexBuilder<TVertex, TEdge> boundaryNeighbor && edgeAttributes == new Orienteering_ISOM_2017_2_RunSpeModSym.EdgeAttributes())
                 {
                     // if (chainVertex.Position == new MapCoordinates(776100, 2535)){} // for debugging
                     var attributesOfTheClosestLefHandedEdge = FindAttributesOfClosestLeftHandedBoundaryEdgeOfChainVertexTo(boundaryNeighbor, chainVertex);
-                    chainVertex.NonBoundaryEdges[boundaryNeighbor] = new Orienteering_ISOM_2017_2.EdgeAttributes(attributesOfTheClosestLefHandedEdge.RightSurroundings);
-                    boundaryNeighbor.NonBoundaryEdges[chainVertex] = new Orienteering_ISOM_2017_2.EdgeAttributes(attributesOfTheClosestLefHandedEdge.RightSurroundings);
+                    chainVertex.NonBoundaryEdges[boundaryNeighbor] = new Orienteering_ISOM_2017_2_RunSpeModSym.EdgeAttributes(attributesOfTheClosestLefHandedEdge.RightSurroundings);
+                    boundaryNeighbor.NonBoundaryEdges[chainVertex] = new Orienteering_ISOM_2017_2_RunSpeModSym.EdgeAttributes(attributesOfTheClosestLefHandedEdge.RightSurroundings);
                 }
             }
         }
 
-        private static Orienteering_ISOM_2017_2.EdgeAttributes FindAttributesOfClosestLeftHandedBoundaryEdgeOfChainVertexTo(
+        private static Orienteering_ISOM_2017_2_RunSpeModSym.EdgeAttributes FindAttributesOfClosestLeftHandedBoundaryEdgeOfChainVertexTo(
             VertexBuilder<TVertex, TEdge> neighbor, BoundaryVertexBuilder<TVertex, TEdge> chainVertex)
         {
             var angleOfTheClosestLefHandedBoundaryNeighborSoFar = 10.0; // greater than 2 * Math.Pi
             // by default set to forest attributes, will be surly overwritten 
-            Orienteering_ISOM_2017_2.EdgeAttributes attributesOfTheClosestLeftHandedEdge = new Orienteering_ISOM_2017_2.EdgeAttributes((null, null, null, null, Orienteering_ISOM_2017_2.VegetationAndManMade.Forest_405, null));
+            Orienteering_ISOM_2017_2_RunSpeModSym.EdgeAttributes attributesOfTheClosestLeftHandedEdge = new Orienteering_ISOM_2017_2_RunSpeModSym.EdgeAttributes((null, null, null, null, Orienteering_ISOM_2017_2_RunSpeModSym.VegetationAndManMade.Forest_405, null));
             foreach (var (boundaryNeighbor, edgeAttributes) in chainVertex.BoundaryEdges)
             {
                 var angleOfTheCurrentBoundaryNeighbor = ComputeLeftHandedAngleBetween(chainVertex.Position, neighbor.Position, chainVertex.Position, boundaryNeighbor.Position);
@@ -2550,7 +2550,7 @@ public class GraphCreator<TVertex, TEdge>
                     {
                         if (!chainVertex.NonBoundaryEdges.ContainsKey(overlappedNetVertexBoundaryNeighbor))
                         {
-                            chainVertex.NonBoundaryEdges[overlappedNetVertexBoundaryNeighbor] = new Orienteering_ISOM_2017_2.EdgeAttributes(overlappedNetVertex.Surroundings, linearFeatures);
+                            chainVertex.NonBoundaryEdges[overlappedNetVertexBoundaryNeighbor] = new Orienteering_ISOM_2017_2_RunSpeModSym.EdgeAttributes(overlappedNetVertex.Surroundings, linearFeatures);
                             overlappedNetVertexBoundaryNeighbor.NonBoundaryEdges[chainVertex] = overlappedNetVertexBoundaryNeighbor.NonBoundaryEdges[overlappedNetVertex];
                         }
                         overlappedNetVertexBoundaryNeighbor.NonBoundaryEdges.Remove(overlappedNetVertex);
@@ -2559,7 +2559,7 @@ public class GraphCreator<TVertex, TEdge>
                     {
                         if (!chainVertex.NonBoundaryEdges.ContainsKey(overlappedNetVertexNetNeighbor))
                         {
-                            chainVertex.NonBoundaryEdges[overlappedNetVertexNetNeighbor] = new Orienteering_ISOM_2017_2.EdgeAttributes(overlappedNetVertex.Surroundings, linearFeatures);
+                            chainVertex.NonBoundaryEdges[overlappedNetVertexNetNeighbor] = new Orienteering_ISOM_2017_2_RunSpeModSym.EdgeAttributes(overlappedNetVertex.Surroundings, linearFeatures);
                             overlappedNetVertexNetNeighbor.NonBoundaryEdges[chainVertex] = linearFeatures;
                         }
                         overlappedNetVertexNetNeighbor.NonBoundaryEdges.Remove(overlappedNetVertex);
@@ -2574,11 +2574,11 @@ public class GraphCreator<TVertex, TEdge>
 }
     
 
-public abstract class VertexBuilder<TVertex, TEdge>(Orienteering_ISOM_2017_2.VertexAttributes attributesNoElev) 
-    where TVertex : IBuildableVertex<TEdge>, IInitializableVertex<TEdge, Orienteering_ISOM_2017_2.VertexAttributes>, new()
-    where TEdge : IEdge, IInitializableEdge<TVertex, Orienteering_ISOM_2017_2.EdgeAttributes>, new()
+public abstract class VertexBuilder<TVertex, TEdge>(Orienteering_ISOM_2017_2_RunSpeModSym.VertexAttributes attributesNoElev) 
+    where TVertex : IBuildableVertex<TEdge>, IInitializableVertex<TEdge, Orienteering_ISOM_2017_2_RunSpeModSym.VertexAttributes>, new()
+    where TEdge : IEdge, IInitializableEdge<TVertex, Orienteering_ISOM_2017_2_RunSpeModSym.EdgeAttributes>, new()
 {
-    public Orienteering_ISOM_2017_2.VertexAttributes AttributesNoElev = attributesNoElev;
+    public Orienteering_ISOM_2017_2_RunSpeModSym.VertexAttributes AttributesNoElev = attributesNoElev;
 
     // public abstract HashSet<VertexBuilder> NonBoundaryEdges { get; }
     public TVertex? BuiltVertex { get; private set; }
@@ -2593,7 +2593,7 @@ public abstract class VertexBuilder<TVertex, TEdge>(Orienteering_ISOM_2017_2.Ver
         {
             // map and its graph representation are rotated to north magnetic pole. To compensate this rotation while retrieving corresponding elevation data, we must rotate position clockwise with declination (which is angular difference between north magnetic and north pole).
             double? elevation = withElevation.Value.elevData.GetElevation(Position.RotateCounterClockwise(-double.DegreesToRadians(withElevation.Value.declination)), withElevation.Value.referencePoint, withElevation.Value.scale);
-            BuiltVertex = new TVertex{ Attributes = new Orienteering_ISOM_2017_2.VertexAttributes(Position,elevation is not null ? elevation.Value : 0), OutgoingEdges = [] };
+            BuiltVertex = new TVertex{ Attributes = new Orienteering_ISOM_2017_2_RunSpeModSym.VertexAttributes(Position,elevation is not null ? elevation.Value : 0), OutgoingEdges = [] };
         }
         else
             BuiltVertex = new TVertex{ Attributes = AttributesNoElev, OutgoingEdges = [] };
@@ -2603,14 +2603,14 @@ public abstract class VertexBuilder<TVertex, TEdge>(Orienteering_ISOM_2017_2.Ver
     public abstract void ConnectAfterBuild();
 }
 
-public class BoundaryVertexBuilder<TVertex, TEdge>(Orienteering_ISOM_2017_2.VertexAttributes attributesNoElev) : VertexBuilder<TVertex, TEdge>(attributesNoElev)
-    where TVertex : IBuildableVertex<TEdge>, IInitializableVertex<TEdge, Orienteering_ISOM_2017_2.VertexAttributes>, new()
-    where TEdge : IEdge, IInitializableEdge<TVertex, Orienteering_ISOM_2017_2.EdgeAttributes>, new()
+public class BoundaryVertexBuilder<TVertex, TEdge>(Orienteering_ISOM_2017_2_RunSpeModSym.VertexAttributes attributesNoElev) : VertexBuilder<TVertex, TEdge>(attributesNoElev)
+    where TVertex : IBuildableVertex<TEdge>, IInitializableVertex<TEdge, Orienteering_ISOM_2017_2_RunSpeModSym.VertexAttributes>, new()
+    where TEdge : IEdge, IInitializableEdge<TVertex, Orienteering_ISOM_2017_2_RunSpeModSym.EdgeAttributes>, new()
 {
     
     // public override HashSet<VertexBuilder> NonBoundaryEdges => NonBoundaryAttributeEdges.Keys.ToHashSet();
-    public Dictionary<VertexBuilder<TVertex, TEdge>, Orienteering_ISOM_2017_2.EdgeAttributes> NonBoundaryEdges { get; } = new ();
-    public Dictionary<BoundaryVertexBuilder<TVertex, TEdge>, Orienteering_ISOM_2017_2.EdgeAttributes> BoundaryEdges { get; } = new ();
+    public Dictionary<VertexBuilder<TVertex, TEdge>, Orienteering_ISOM_2017_2_RunSpeModSym.EdgeAttributes> NonBoundaryEdges { get; } = new ();
+    public Dictionary<BoundaryVertexBuilder<TVertex, TEdge>, Orienteering_ISOM_2017_2_RunSpeModSym.EdgeAttributes> BoundaryEdges { get; } = new ();
     public override bool IsStationary { get; set;} = true;
     // public bool LeftSideIsOuter { get; set; } -> YES
     public override void ConnectAfterBuild()
@@ -2631,13 +2631,13 @@ public class BoundaryVertexBuilder<TVertex, TEdge>(Orienteering_ISOM_2017_2.Vert
     }
 }
 
-public class NetVertexBuilder<TVertex, TEdge>(Orienteering_ISOM_2017_2.VertexAttributes attributesNoElev): VertexBuilder<TVertex,TEdge>(attributesNoElev)
-    where TVertex : IBuildableVertex<TEdge>, IInitializableVertex<TEdge, Orienteering_ISOM_2017_2.VertexAttributes>, new()
-    where TEdge : IEdge, IInitializableEdge<TVertex, Orienteering_ISOM_2017_2.EdgeAttributes>, new()
+public class NetVertexBuilder<TVertex, TEdge>(Orienteering_ISOM_2017_2_RunSpeModSym.VertexAttributes attributesNoElev): VertexBuilder<TVertex,TEdge>(attributesNoElev)
+    where TVertex : IBuildableVertex<TEdge>, IInitializableVertex<TEdge, Orienteering_ISOM_2017_2_RunSpeModSym.VertexAttributes>, new()
+    where TEdge : IEdge, IInitializableEdge<TVertex, Orienteering_ISOM_2017_2_RunSpeModSym.EdgeAttributes>, new()
 {
-    public Dictionary<VertexBuilder<TVertex, TEdge>, (Orienteering_ISOM_2017_2.NaturalLinearObstacles?, Orienteering_ISOM_2017_2.Paths?, Orienteering_ISOM_2017_2.ManMadeLinearObstacles?)> NonBoundaryEdges { get; } = new();
+    public Dictionary<VertexBuilder<TVertex, TEdge>, (Orienteering_ISOM_2017_2_RunSpeModSym.NaturalLinearObstacles?, Orienteering_ISOM_2017_2_RunSpeModSym.Paths?, Orienteering_ISOM_2017_2_RunSpeModSym.ManMadeLinearObstacles?)> NonBoundaryEdges { get; } = new();
 
-    public (Orienteering_ISOM_2017_2.Grounds?, Orienteering_ISOM_2017_2.Boulders?, Orienteering_ISOM_2017_2.Stones?, Orienteering_ISOM_2017_2.Water?, Orienteering_ISOM_2017_2.VegetationAndManMade?, Orienteering_ISOM_2017_2.VegetationGoodVis?)
+    public (Orienteering_ISOM_2017_2_RunSpeModSym.Grounds?, Orienteering_ISOM_2017_2_RunSpeModSym.Boulders?, Orienteering_ISOM_2017_2_RunSpeModSym.Stones?, Orienteering_ISOM_2017_2_RunSpeModSym.Water?, Orienteering_ISOM_2017_2_RunSpeModSym.VegetationAndManMade?, Orienteering_ISOM_2017_2_RunSpeModSym.VegetationGoodVis?)
         Surroundings = (null, null, null, null, null, null);
 
     public override void ConnectAfterBuild()
@@ -2647,7 +2647,7 @@ public class NetVertexBuilder<TVertex, TEdge>(Orienteering_ISOM_2017_2.VertexAtt
          {
              TVertex? vertex = builder.BuiltVertex;
              if (vertex is null) continue;
-             BuiltVertex.AddEdge(new(){Attributes = new Orienteering_ISOM_2017_2.EdgeAttributes(Surroundings, linearFeatures), To = vertex});
+             BuiltVertex.AddEdge(new(){Attributes = new Orienteering_ISOM_2017_2_RunSpeModSym.EdgeAttributes(Surroundings, linearFeatures), To = vertex});
          }       
     }
 

@@ -5,33 +5,33 @@ using Optepafi.Models.Utils;
 namespace Optepafi.Models.TemplateMan.Templates;
 
 //TODO: comment
-public class Orienteering_ISOM_2017_2 : ITemplate<Orienteering_ISOM_2017_2.VertexAttributes, Orienteering_ISOM_2017_2.EdgeAttributes>
+public class Orienteering_ISOM_2017_2_RunSpeModSym : ITemplate<Orienteering_ISOM_2017_2_RunSpeModSym.VertexAttributes, Orienteering_ISOM_2017_2_RunSpeModSym.EdgeAttributes>
 {
-    public static Orienteering_ISOM_2017_2 Instance { get; } = new();
-    private Orienteering_ISOM_2017_2() {}
-    public string TemplateName { get; } = "Orienteering (ISOM 2017-2)";
+    public static Orienteering_ISOM_2017_2_RunSpeModSym Instance { get; } = new();
+    private Orienteering_ISOM_2017_2_RunSpeModSym() {}
+    public string TemplateName { get; } = "Orienteering (ISOM 2017-2, running speed modifying symbols only)";
 
     public TOut AcceptGeneric<TOut, TGenericParam, TConstraint, TOtherParams>(ITemplateGenericVisitor<TOut, TConstraint, TOtherParams> genericVisitor,
         TGenericParam genericParam, TOtherParams otherParams) where TGenericParam : TConstraint
     {
-        return genericVisitor.GenericVisit<Orienteering_ISOM_2017_2, VertexAttributes, EdgeAttributes, TGenericParam>(
+        return genericVisitor.GenericVisit<Orienteering_ISOM_2017_2_RunSpeModSym, VertexAttributes, EdgeAttributes, TGenericParam>(
             this, genericParam, otherParams);
     }
     
     public TOut AcceptGeneric<TOut, TOtherParams>(ITemplateGenericVisitor<TOut, TOtherParams> genericVisitor,
         TOtherParams otherParams)
     {
-        return  genericVisitor.GenericVisit<Orienteering_ISOM_2017_2,VertexAttributes, EdgeAttributes>(this, otherParams);
+        return  genericVisitor.GenericVisit<Orienteering_ISOM_2017_2_RunSpeModSym,VertexAttributes, EdgeAttributes>(this, otherParams);
     }
 
     public TOut AcceptGeneric<TOut>(ITemplateGenericVisitor<TOut> genericVisitor)
     {
-        return genericVisitor.GenericVisit<Orienteering_ISOM_2017_2,VertexAttributes,EdgeAttributes>(this);
+        return genericVisitor.GenericVisit<Orienteering_ISOM_2017_2_RunSpeModSym,VertexAttributes,EdgeAttributes>(this);
     }
 
     public void AcceptGeneric(ITemplateGenericVisitor genericVisitor)
     {
-        genericVisitor.GenericVisit<Orienteering_ISOM_2017_2,VertexAttributes,EdgeAttributes>(this);
+        genericVisitor.GenericVisit<Orienteering_ISOM_2017_2_RunSpeModSym,VertexAttributes,EdgeAttributes>(this);
     }
 
     

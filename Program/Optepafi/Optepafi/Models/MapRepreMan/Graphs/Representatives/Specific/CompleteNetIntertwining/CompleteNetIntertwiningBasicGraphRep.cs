@@ -24,8 +24,8 @@ public class CompleteNetIntertwiningBasicGraphRep<TVertexAttributes, TEdgeAttrib
 
     public override IImplementationIndicator<ITemplate, IMap, IMapRepre>[] CreateableImplementationsIndicators { get; } = 
         [
-/*Indep*/   CompleteNetIntertwiningBasicElevDataDepOrienteering_ISOM_2017_2OmapMapImplementationRep.Instance, 
-/*Dep*/     CompleteNetIntertwiningBasicElevDataIndepOrienteering_ISOM_2017_2OmapMapImplementationRep.Instance
+/*Indep*/   CompleteNetIntertwiningBasicElevDataDepOrienteering_ISOM_2017_2RunSpeModSymOmapMapImplementationRep.Instance, 
+/*Dep*/     CompleteNetIntertwiningBasicElevDataIndepOrienteering_ISOM_2017_2RunSpeModSymOmapMapImplementationRep.Instance
         ];
 
     public override bool RevelationForSearchingAlgorithmMan<TTemplate, TVertexAttributes1, TEdgeAttributes1>(

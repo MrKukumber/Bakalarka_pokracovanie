@@ -13,5 +13,5 @@ public class TemplateManager
 {
     public static TemplateManager Instance { get; } = new();
     private TemplateManager(){}
-    public ISet<ITemplate> Templates { get; } = ImmutableHashSet.Create<ITemplate>(Orienteering_ISOM_2017_2.Instance, BlankTemplate.Instance, NotUsableTemplate.Instance);
+    public ISet<ITemplate> Templates { get; } = ImmutableHashSet.Create<ITemplate>(Orienteering_ISOM_2017_2_RunSpeModSym.Instance, BlankTemplate.Instance, NotUsableTemplate.Instance);
 }

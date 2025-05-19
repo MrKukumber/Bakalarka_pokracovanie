@@ -43,47 +43,47 @@ public class EdgeObjectViewModel : GraphicObjectViewModel
 
         BoulderColor = surroundings.boulders switch
         {
-            Orienteering_ISOM_2017_2.Boulders.GiganticBoulder_206 => Colors.Black,
-            Orienteering_ISOM_2017_2.Boulders.BoulderField_208 => Colors.Black,
-            Orienteering_ISOM_2017_2.Boulders.DenseBoulderField_209 => Colors.Black,
+            Orienteering_ISOM_2017_2_RunSpeModSym.Boulders.GiganticBoulder_206 => Colors.Black,
+            Orienteering_ISOM_2017_2_RunSpeModSym.Boulders.BoulderField_208 => Colors.Black,
+            Orienteering_ISOM_2017_2_RunSpeModSym.Boulders.DenseBoulderField_209 => Colors.Black,
             null => Colors.Transparent
         };
         
         GroundColor = surroundings.ground switch
         {
-            Orienteering_ISOM_2017_2.Grounds.BrokenGround_113 => Colors.Chocolate,
-            Orienteering_ISOM_2017_2.Grounds.VeryBrokenGround_114 => Colors.Chocolate,
-            Orienteering_ISOM_2017_2.Grounds.CultivatedLand_412 => Colors.Gold,
+            Orienteering_ISOM_2017_2_RunSpeModSym.Grounds.BrokenGround_113 => Colors.Chocolate,
+            Orienteering_ISOM_2017_2_RunSpeModSym.Grounds.VeryBrokenGround_114 => Colors.Chocolate,
+            Orienteering_ISOM_2017_2_RunSpeModSym.Grounds.CultivatedLand_412 => Colors.Gold,
             null => Colors.Transparent,
         };
         
         StonesColor = surroundings.stones switch
         {
-            Orienteering_ISOM_2017_2.Stones.StonyGroundSlow_210 => Colors.Black,
-            Orienteering_ISOM_2017_2.Stones.StonyGroundWalk_211 => Colors.Black,
-            Orienteering_ISOM_2017_2.Stones.StonyGroundFight_212 => Colors.Black,
-            Orienteering_ISOM_2017_2.Stones.SandyGround_213 => Colors.NavajoWhite,
-            Orienteering_ISOM_2017_2.Stones.BareRock_214 => Colors.Gray,
+            Orienteering_ISOM_2017_2_RunSpeModSym.Stones.StonyGroundSlow_210 => Colors.Black,
+            Orienteering_ISOM_2017_2_RunSpeModSym.Stones.StonyGroundWalk_211 => Colors.Black,
+            Orienteering_ISOM_2017_2_RunSpeModSym.Stones.StonyGroundFight_212 => Colors.Black,
+            Orienteering_ISOM_2017_2_RunSpeModSym.Stones.SandyGround_213 => Colors.NavajoWhite,
+            Orienteering_ISOM_2017_2_RunSpeModSym.Stones.BareRock_214 => Colors.Gray,
             null => Colors.Transparent
         };
 
         VegetationManMadeColor = surroundings.vegetationAndManMade switch
         {
-            Orienteering_ISOM_2017_2.VegetationAndManMade.OpenLand_401 => Colors.Gold,
-            Orienteering_ISOM_2017_2.VegetationAndManMade.OpenLandWithTrees_402 => Colors.Gold,
-            Orienteering_ISOM_2017_2.VegetationAndManMade.RoughOpenLand_403 => Colors.NavajoWhite,
-            Orienteering_ISOM_2017_2.VegetationAndManMade.RoughOpenLandWithTrees_404 => Colors.NavajoWhite,
-            Orienteering_ISOM_2017_2.VegetationAndManMade.Forest_405 => Colors.White,
-            Orienteering_ISOM_2017_2.VegetationAndManMade.VegetationSlow_406 => Colors.DarkSeaGreen,
-            Orienteering_ISOM_2017_2.VegetationAndManMade.VegetationWalk_408 => Colors.MediumSeaGreen,
-            Orienteering_ISOM_2017_2.VegetationAndManMade.VegetationFight_410 => Colors.SeaGreen,
-            Orienteering_ISOM_2017_2.VegetationAndManMade.Orchard_413 => Colors.Gold,
-            Orienteering_ISOM_2017_2.VegetationAndManMade.RoughOrchard_413 => Colors.NavajoWhite,
-            Orienteering_ISOM_2017_2.VegetationAndManMade.Vineyard_414 => Colors.Gold,
-            Orienteering_ISOM_2017_2.VegetationAndManMade.RoughVineyard_414 => Colors.NavajoWhite,
-            Orienteering_ISOM_2017_2.VegetationAndManMade.PavedArea_501 => Colors.BurlyWood,
-            Orienteering_ISOM_2017_2.VegetationAndManMade.AreaThatShallNotBeEntered_520 => Colors.YellowGreen,
-            Orienteering_ISOM_2017_2.VegetationAndManMade.Building_521 => Colors.Black,
+            Orienteering_ISOM_2017_2_RunSpeModSym.VegetationAndManMade.OpenLand_401 => Colors.Gold,
+            Orienteering_ISOM_2017_2_RunSpeModSym.VegetationAndManMade.OpenLandWithTrees_402 => Colors.Gold,
+            Orienteering_ISOM_2017_2_RunSpeModSym.VegetationAndManMade.RoughOpenLand_403 => Colors.NavajoWhite,
+            Orienteering_ISOM_2017_2_RunSpeModSym.VegetationAndManMade.RoughOpenLandWithTrees_404 => Colors.NavajoWhite,
+            Orienteering_ISOM_2017_2_RunSpeModSym.VegetationAndManMade.Forest_405 => Colors.White,
+            Orienteering_ISOM_2017_2_RunSpeModSym.VegetationAndManMade.VegetationSlow_406 => Colors.DarkSeaGreen,
+            Orienteering_ISOM_2017_2_RunSpeModSym.VegetationAndManMade.VegetationWalk_408 => Colors.MediumSeaGreen,
+            Orienteering_ISOM_2017_2_RunSpeModSym.VegetationAndManMade.VegetationFight_410 => Colors.SeaGreen,
+            Orienteering_ISOM_2017_2_RunSpeModSym.VegetationAndManMade.Orchard_413 => Colors.Gold,
+            Orienteering_ISOM_2017_2_RunSpeModSym.VegetationAndManMade.RoughOrchard_413 => Colors.NavajoWhite,
+            Orienteering_ISOM_2017_2_RunSpeModSym.VegetationAndManMade.Vineyard_414 => Colors.Gold,
+            Orienteering_ISOM_2017_2_RunSpeModSym.VegetationAndManMade.RoughVineyard_414 => Colors.NavajoWhite,
+            Orienteering_ISOM_2017_2_RunSpeModSym.VegetationAndManMade.PavedArea_501 => Colors.BurlyWood,
+            Orienteering_ISOM_2017_2_RunSpeModSym.VegetationAndManMade.AreaThatShallNotBeEntered_520 => Colors.YellowGreen,
+            Orienteering_ISOM_2017_2_RunSpeModSym.VegetationAndManMade.Building_521 => Colors.Black,
             null => Colors.Transparent
         };
 
@@ -101,19 +101,19 @@ public class EdgeObjectViewModel : GraphicObjectViewModel
 
         NaturalObstacleColor = lines.naturalLinearObstacle switch
         {
-            Orienteering_ISOM_2017_2.NaturalLinearObstacles.EarthBank_104 => Colors.Chocolate,
-            Orienteering_ISOM_2017_2.NaturalLinearObstacles.EarthWall_105 => Colors.Chocolate,
-            Orienteering_ISOM_2017_2.NaturalLinearObstacles.ErosionGully_107 => Colors.Chocolate,
-            Orienteering_ISOM_2017_2.NaturalLinearObstacles.ImpassableCliff_201 => Colors.Black,
-            Orienteering_ISOM_2017_2.NaturalLinearObstacles.Cliff_202 => Colors.Black,
-            Orienteering_ISOM_2017_2.NaturalLinearObstacles.CrossableWatercourse_304 => Colors.DodgerBlue,
-            Orienteering_ISOM_2017_2.NaturalLinearObstacles.SmallCrossableWatercourse_305 => Colors.DodgerBlue,
+            Orienteering_ISOM_2017_2_RunSpeModSym.NaturalLinearObstacles.EarthBank_104 => Colors.Chocolate,
+            Orienteering_ISOM_2017_2_RunSpeModSym.NaturalLinearObstacles.EarthWall_105 => Colors.Chocolate,
+            Orienteering_ISOM_2017_2_RunSpeModSym.NaturalLinearObstacles.ErosionGully_107 => Colors.Chocolate,
+            Orienteering_ISOM_2017_2_RunSpeModSym.NaturalLinearObstacles.ImpassableCliff_201 => Colors.Black,
+            Orienteering_ISOM_2017_2_RunSpeModSym.NaturalLinearObstacles.Cliff_202 => Colors.Black,
+            Orienteering_ISOM_2017_2_RunSpeModSym.NaturalLinearObstacles.CrossableWatercourse_304 => Colors.DodgerBlue,
+            Orienteering_ISOM_2017_2_RunSpeModSym.NaturalLinearObstacles.SmallCrossableWatercourse_305 => Colors.DodgerBlue,
             null => Colors.Transparent
         };
 
         PathsColor = lines.path switch
         {
-            Orienteering_ISOM_2017_2.Paths.WideRoad_502 => Colors.BurlyWood,
+            Orienteering_ISOM_2017_2_RunSpeModSym.Paths.WideRoad_502 => Colors.BurlyWood,
             null => Colors.Transparent,
             _ => Colors.Black
         };

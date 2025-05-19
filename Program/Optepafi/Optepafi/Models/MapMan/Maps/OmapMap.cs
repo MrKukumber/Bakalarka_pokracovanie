@@ -68,8 +68,11 @@ public abstract class OmapMap : IMap, IPartitionableMap
                     case 2:
                     case 16:    
                     case 18:
-                       if (firstCoordOfCurrentPolygon != collectedSegments.Last().Last().LastPoint) // Handles cases, when current polygon is not enclosed. It encloses particular polygon of multipolygon.
+                       if (collectedSegments.Last().Count == 0) 
+                           collectedSegments.RemoveAt(collectedSegments.Count - 1); 
+                       else if (firstCoordOfCurrentPolygon != collectedSegments.Last().Last().LastPoint) // Handles cases, when current polygon is not enclosed. It encloses particular polygon of multipolygon.
                            collectedSegments.Last().Add(new LineSegment(TypedCoords.First().coords)); 
+                       
                        if (i + 1 >= TypedCoords.Length) { ++i; break; } 
                        collectedSegments.Add(new List<Segment>());
                        firstCoordOfCurrentPolygon = TypedCoords[++i].coords; 

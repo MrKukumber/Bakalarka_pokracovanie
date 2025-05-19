@@ -31,7 +31,7 @@ public class UserModelManager :
     /// <summary>
     ///  Set of usable user model types. Every instance in this set should be of type IUserModelRepresentative.
     /// </summary>
-    public IReadOnlySet<IUserModelType<IUserModel<ITemplate>, ITemplate>> UserModelTypes = ImmutableHashSet.Create<IUserModelType<IUserModel<ITemplate>, ITemplate>>(Orienteering_ISOM_2017_2UserModelRepresentative.Instance, BlankUserModelRepresentative.Instance); //TODO: este rozmysliet ako reprezentovat, mozno skor nejakym listom
+    public IReadOnlySet<IUserModelType<IUserModel<ITemplate>, ITemplate>> UserModelTypes = ImmutableHashSet.Create<IUserModelType<IUserModel<ITemplate>, ITemplate>>(Orienteering_ISOM_2017_2RunSpeModSymUserModelRepresentative.Instance, BlankUserModelRepresentative.Instance); //TODO: este rozmysliet ako reprezentovat, mozno skor nejakym listom
 
     /// <summary>
     /// Returns corresponding user model types to provided template by using generic visitor pattern on it.

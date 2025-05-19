@@ -16,17 +16,17 @@ using Optepafi.Models.Utils;
 
 namespace Optepafi.Models.MapRepreMan.Implementations.Representatives.Specific.CompleteIterativelySnapping;
 
-public class CompleteNetIntertwiningBasicElevDataDepOrienteering_ISOM_2017_2OmapMapImplementationRep :
-    ElevDataDepImplementationRep<Orienteering_ISOM_2017_2, OmapMap, GeoLocatedOmapMap, CompleteNetIntertwiningBasicElevDataDepOrienteering_ISOM_2017_2OmapMapImplementation, CompleteNetIntertwiningMapRepreConfiguration, ICompleteNetIntertwiningBasicGraph<Orienteering_ISOM_2017_2.VertexAttributes, Orienteering_ISOM_2017_2.EdgeAttributes>.Vertex, ICompleteNetIntertwiningBasicGraph<Orienteering_ISOM_2017_2.VertexAttributes, Orienteering_ISOM_2017_2.EdgeAttributes>.Edge, Orienteering_ISOM_2017_2.VertexAttributes, Orienteering_ISOM_2017_2.EdgeAttributes>
+public class CompleteNetIntertwiningBasicElevDataDepOrienteering_ISOM_2017_2RunSpeModSymOmapMapImplementationRep :
+    ElevDataDepImplementationRep<Orienteering_ISOM_2017_2_RunSpeModSym, OmapMap, GeoLocatedOmapMap, CompleteNetIntertwiningBasicElevDataDepOrienteering_ISOM_2017_2RunSpeModSymOmapMapImplementation, CompleteNetIntertwiningMapRepreConfiguration, ICompleteNetIntertwiningBasicGraph<Orienteering_ISOM_2017_2_RunSpeModSym.VertexAttributes, Orienteering_ISOM_2017_2_RunSpeModSym.EdgeAttributes>.Vertex, ICompleteNetIntertwiningBasicGraph<Orienteering_ISOM_2017_2_RunSpeModSym.VertexAttributes, Orienteering_ISOM_2017_2_RunSpeModSym.EdgeAttributes>.Edge, Orienteering_ISOM_2017_2_RunSpeModSym.VertexAttributes, Orienteering_ISOM_2017_2_RunSpeModSym.EdgeAttributes>
 {
     
-    public static CompleteNetIntertwiningBasicElevDataDepOrienteering_ISOM_2017_2OmapMapImplementationRep Instance { get; } = new();
-    private CompleteNetIntertwiningBasicElevDataDepOrienteering_ISOM_2017_2OmapMapImplementationRep(){ }
-    public override Orienteering_ISOM_2017_2 UsedTemplate { get; } = Orienteering_ISOM_2017_2.Instance;
+    public static CompleteNetIntertwiningBasicElevDataDepOrienteering_ISOM_2017_2RunSpeModSymOmapMapImplementationRep Instance { get; } = new();
+    private CompleteNetIntertwiningBasicElevDataDepOrienteering_ISOM_2017_2RunSpeModSymOmapMapImplementationRep(){ }
+    public override Orienteering_ISOM_2017_2_RunSpeModSym UsedTemplate { get; } = Orienteering_ISOM_2017_2_RunSpeModSym.Instance;
     public override IMapFormat<OmapMap> UsedMapFormat { get; } = OmapMapRepresentative.Instance;
 
-    public override CompleteNetIntertwiningBasicElevDataDepOrienteering_ISOM_2017_2OmapMapImplementation CreateImplementation(
-        Orienteering_ISOM_2017_2 template, GeoLocatedOmapMap map, IElevData elevData,
+    public override CompleteNetIntertwiningBasicElevDataDepOrienteering_ISOM_2017_2RunSpeModSymOmapMapImplementation CreateImplementation(
+        Orienteering_ISOM_2017_2_RunSpeModSym template, GeoLocatedOmapMap map, IElevData elevData,
         CompleteNetIntertwiningMapRepreConfiguration configuration, IProgress<MapRepreConstructionReport>? progress,
         CancellationToken? cancellationToken)
     {
@@ -37,8 +37,8 @@ public class CompleteNetIntertwiningBasicElevDataDepOrienteering_ISOM_2017_2Omap
     }
     
     private class BuildableVertex : 
-        ICompleteNetIntertwiningBasicGraph<Orienteering_ISOM_2017_2.VertexAttributes, Orienteering_ISOM_2017_2.EdgeAttributes>.Vertex,
-        IInitializableVertex<BuildableEdge, Orienteering_ISOM_2017_2.VertexAttributes>,
+        ICompleteNetIntertwiningBasicGraph<Orienteering_ISOM_2017_2_RunSpeModSym.VertexAttributes, Orienteering_ISOM_2017_2_RunSpeModSym.EdgeAttributes>.Vertex,
+        IInitializableVertex<BuildableEdge, Orienteering_ISOM_2017_2_RunSpeModSym.VertexAttributes>,
         IBuildableVertex<BuildableEdge>
     {
         public BuildableVertex() : base() { }
@@ -47,7 +47,7 @@ public class CompleteNetIntertwiningBasicElevDataDepOrienteering_ISOM_2017_2Omap
             get => (IList<BuildableEdge>) _outgoingEdges;
             init => _outgoingEdges = value;
         }
-        public new Orienteering_ISOM_2017_2.VertexAttributes Attributes 
+        public new Orienteering_ISOM_2017_2_RunSpeModSym.VertexAttributes Attributes 
         { 
             get => _attributes; 
             init => _attributes = value; 
@@ -58,15 +58,15 @@ public class CompleteNetIntertwiningBasicElevDataDepOrienteering_ISOM_2017_2Omap
     }
     
     private class BuildableEdge : 
-        ICompleteNetIntertwiningBasicGraph<Orienteering_ISOM_2017_2.VertexAttributes, Orienteering_ISOM_2017_2.EdgeAttributes>.Edge,
-        IInitializableEdge<BuildableVertex, Orienteering_ISOM_2017_2.EdgeAttributes>
+        ICompleteNetIntertwiningBasicGraph<Orienteering_ISOM_2017_2_RunSpeModSym.VertexAttributes, Orienteering_ISOM_2017_2_RunSpeModSym.EdgeAttributes>.Edge,
+        IInitializableEdge<BuildableVertex, Orienteering_ISOM_2017_2_RunSpeModSym.EdgeAttributes>
     {
         public BuildableEdge() : base() {}
-        public Orienteering_ISOM_2017_2.EdgeAttributes Attributes { get => _attributes; init => _attributes = value; }
+        public Orienteering_ISOM_2017_2_RunSpeModSym.EdgeAttributes Attributes { get => _attributes; init => _attributes = value; }
         public BuildableVertex To { get => (BuildableVertex) _to; init => _to = value; }
     }
     
-    private class CompleteNetIntertwiningBasicElevDataDepOrienteering_ISOM_2017_2OmapMapInnerImplementation(INearestNeighborsSearchableDataStructure<BuildableVertex> searchableVertices, int scale, double declination, IElevData elevData, GeoCoordinates referencePoint) : CompleteNetIntertwiningBasicElevDataDepOrienteering_ISOM_2017_2OmapMapImplementation(searchableVertices, scale)
+    private class CompleteNetIntertwiningBasicElevDataDepOrienteering_ISOM_2017_2OmapMapInnerImplementation(INearestNeighborsSearchableDataStructure<BuildableVertex> searchableVertices, int scale, double declination, IElevData elevData, GeoCoordinates referencePoint) : CompleteNetIntertwiningBasicElevDataDepOrienteering_ISOM_2017_2RunSpeModSymOmapMapImplementation(searchableVertices, scale)
     {
         public override void RestoreConsistency()
         {
@@ -83,14 +83,14 @@ public class CompleteNetIntertwiningBasicElevDataDepOrienteering_ISOM_2017_2Omap
         }
         
         private List<(BuildableVertex, BuildableEdge)> _graphVerticesConnectedToNewVerticesByEdge = [];
-        public override ICompleteNetIntertwiningBasicGraph<Orienteering_ISOM_2017_2.VertexAttributes, Orienteering_ISOM_2017_2.EdgeAttributes>.Vertex GetVertexFor(MapCoordinates coords)
+        public override ICompleteNetIntertwiningBasicGraph<Orienteering_ISOM_2017_2_RunSpeModSym.VertexAttributes, Orienteering_ISOM_2017_2_RunSpeModSym.EdgeAttributes>.Vertex GetVertexFor(MapCoordinates coords)
         {
             var nearestVertices = searchableVertices.GetNearestNeighbors((coords.XPos, coords.YPos), 1);
             if (nearestVertices.Length == 0) throw new InvalidDataException("No vertices in graph found.");
             // map and its graph representation are rotated to north magnetic pole. To compensate this rotation while retrieving corresponding elevation data, we must rotate position clockwise with declination (which is angular difference between north magnetic and north pole).
             var elevation = elevData.GetElevation(coords.RotateCounterClockwise(-double.DegreesToRadians(declination)), referencePoint, scale);
-            var newVertex = new BuildableVertex{ Attributes = new Orienteering_ISOM_2017_2.VertexAttributes(coords, elevation is not null ? elevation.Value : 0), OutgoingEdges = [new BuildableEdge(){ Attributes = new Orienteering_ISOM_2017_2.EdgeAttributes((null, null, null, null, Orienteering_ISOM_2017_2.VegetationAndManMade.Forest_405, null), (null, null, null)), To =nearestVertices[0]}]};
-            var edgeToNewVertex = new BuildableEdge{ Attributes = new Orienteering_ISOM_2017_2.EdgeAttributes( (null, null, null, null, Orienteering_ISOM_2017_2.VegetationAndManMade.Forest_405, null), (null, null, null)), To = newVertex};
+            var newVertex = new BuildableVertex{ Attributes = new Orienteering_ISOM_2017_2_RunSpeModSym.VertexAttributes(coords, elevation is not null ? elevation.Value : 0), OutgoingEdges = [new BuildableEdge(){ Attributes = new Orienteering_ISOM_2017_2_RunSpeModSym.EdgeAttributes((null, null, null, null, Orienteering_ISOM_2017_2_RunSpeModSym.VegetationAndManMade.Forest_405, null), (null, null, null)), To =nearestVertices[0]}]};
+            var edgeToNewVertex = new BuildableEdge{ Attributes = new Orienteering_ISOM_2017_2_RunSpeModSym.EdgeAttributes( (null, null, null, null, Orienteering_ISOM_2017_2_RunSpeModSym.VegetationAndManMade.Forest_405, null), (null, null, null)), To = newVertex};
             nearestVertices[0].OutgoingEdges.Add(edgeToNewVertex);
             _graphVerticesConnectedToNewVerticesByEdge.Add((nearestVertices[0], edgeToNewVertex)); 
             return newVertex;

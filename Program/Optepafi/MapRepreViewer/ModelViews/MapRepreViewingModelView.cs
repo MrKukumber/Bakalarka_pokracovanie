@@ -146,7 +146,7 @@ public class MapRepreViewingModelView
     private IMapFormat<IMap>? MapFormat { get; set; }
     private IMapRepre? MapRepresentation { get; set; }
     private IGroundGraphicsSource? MapGraphics { get; set; }
-    private ITemplate Template { get; set; } = Orienteering_ISOM_2017_2.Instance;
+    private ITemplate Template { get; set; } = Orienteering_ISOM_2017_2_RunSpeModSym.Instance;
     private IMapRepreRepresentative<IMapRepre>? MapRepreRepresentative { get; set; } = CompleteNetIntertwiningMapRepreRep.Instance;
     private IElevDataDistribution? ElevDataDistribution { get; set; } = UsgsSrtm1ArcSecondGlobal.Instance;
 

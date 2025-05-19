@@ -13,18 +13,18 @@ using Optepafi.Models.Utils;
 namespace Optepafi.Models.UserModelMan.UserModels.Specific;
 
 //TODO: comment
-public class Orienteering_ISOM_2017_2UserModel : 
-    IWeightComputing<Orienteering_ISOM_2017_2, Orienteering_ISOM_2017_2.VertexAttributes, Orienteering_ISOM_2017_2.EdgeAttributes>,
-    IAStarHeuristicsComputing<Orienteering_ISOM_2017_2, Orienteering_ISOM_2017_2.VertexAttributes, Orienteering_ISOM_2017_2.EdgeAttributes>,
-    IPositionRetrieving<Orienteering_ISOM_2017_2, Orienteering_ISOM_2017_2.VertexAttributes, Orienteering_ISOM_2017_2.EdgeAttributes>
+public class Orienteering_ISOM_2017_2RunSpeModSymUserModel : 
+    IWeightComputing<Orienteering_ISOM_2017_2_RunSpeModSym, Orienteering_ISOM_2017_2_RunSpeModSym.VertexAttributes, Orienteering_ISOM_2017_2_RunSpeModSym.EdgeAttributes>,
+    IAStarHeuristicsComputing<Orienteering_ISOM_2017_2_RunSpeModSym, Orienteering_ISOM_2017_2_RunSpeModSym.VertexAttributes, Orienteering_ISOM_2017_2_RunSpeModSym.EdgeAttributes>,
+    IPositionRetrieving<Orienteering_ISOM_2017_2_RunSpeModSym, Orienteering_ISOM_2017_2_RunSpeModSym.VertexAttributes, Orienteering_ISOM_2017_2_RunSpeModSym.EdgeAttributes>
 {
     [JsonIgnore]
-    public Orienteering_ISOM_2017_2 AssociatedTemplate => Orienteering_ISOM_2017_2.Instance;
+    public Orienteering_ISOM_2017_2_RunSpeModSym AssociatedTemplate => Orienteering_ISOM_2017_2_RunSpeModSym.Instance;
     [JsonIgnore]
     public string FilePath { get; set; } = "";
 
-    public Orienteering_ISOM_2017_2UserModel() { }
-    public Orienteering_ISOM_2017_2UserModel(bool newUserModel)
+    public Orienteering_ISOM_2017_2RunSpeModSymUserModel() { }
+    public Orienteering_ISOM_2017_2RunSpeModSymUserModel(bool newUserModel)
     {
         if(newUserModel)
         {
@@ -98,7 +98,7 @@ public class Orienteering_ISOM_2017_2UserModel :
 
     private const float coefficientLowerBound = 0.15f;
     // private const float topPaceInSecondsPerCentimeter = 0.0024f;
-    public float ComputeWeight(Orienteering_ISOM_2017_2.VertexAttributes from, Orienteering_ISOM_2017_2.EdgeAttributes through, Orienteering_ISOM_2017_2.VertexAttributes to, int scale = 1)
+    public float ComputeWeight(Orienteering_ISOM_2017_2_RunSpeModSym.VertexAttributes from, Orienteering_ISOM_2017_2_RunSpeModSym.EdgeAttributes through, Orienteering_ISOM_2017_2_RunSpeModSym.VertexAttributes to, int scale = 1)
     {
         var surroundingsCoef = ComputeCoeficientOfSurroundings(through.LeftSurroundings);
         var secondSurroundingsCoef = ComputeCoeficientOfSurroundings(through.RightSurroundings);
@@ -115,7 +115,7 @@ public class Orienteering_ISOM_2017_2UserModel :
         return AddTimeForLinearObstacles(through.LineFeatures, timeInMoreEfficientSurroundingsWithPath);
     }
 
-    private float ComputeCoeficientOfSurroundings((Orienteering_ISOM_2017_2.Grounds?, Orienteering_ISOM_2017_2.Boulders?, Orienteering_ISOM_2017_2.Stones?, Orienteering_ISOM_2017_2.Water?, Orienteering_ISOM_2017_2.VegetationAndManMade?, Orienteering_ISOM_2017_2.VegetationGoodVis?) surroundings)
+    private float ComputeCoeficientOfSurroundings((Orienteering_ISOM_2017_2_RunSpeModSym.Grounds?, Orienteering_ISOM_2017_2_RunSpeModSym.Boulders?, Orienteering_ISOM_2017_2_RunSpeModSym.Stones?, Orienteering_ISOM_2017_2_RunSpeModSym.Water?, Orienteering_ISOM_2017_2_RunSpeModSym.VegetationAndManMade?, Orienteering_ISOM_2017_2_RunSpeModSym.VegetationGoodVis?) surroundings)
     {
         var (ground, boulders, stones, water, vegetationAndManMade, vegetationGoodVis) = surroundings;
         return (ground is not null ? GroundMappings[ground.Value].Value : 1) *
@@ -126,16 +126,16 @@ public class Orienteering_ISOM_2017_2UserModel :
                (vegetationGoodVis is not null ? VegetationGoodVisMappings[vegetationGoodVis.Value].Value : 1);
     }
 
-    private float ApplyPathToSurroundingsCoef((Orienteering_ISOM_2017_2.NaturalLinearObstacles?, Orienteering_ISOM_2017_2.Paths?, Orienteering_ISOM_2017_2.ManMadeLinearObstacles?) linearFeatures, float moreEfficientSurroundingsCoef)
+    private float ApplyPathToSurroundingsCoef((Orienteering_ISOM_2017_2_RunSpeModSym.NaturalLinearObstacles?, Orienteering_ISOM_2017_2_RunSpeModSym.Paths?, Orienteering_ISOM_2017_2_RunSpeModSym.ManMadeLinearObstacles?) linearFeatures, float moreEfficientSurroundingsCoef)
     {
         var (_, path, _) = linearFeatures; 
         if (path is null) return moreEfficientSurroundingsCoef;
-        if (path is Orienteering_ISOM_2017_2.Paths.LessDistinctSmallFootpath_507 || path is Orienteering_ISOM_2017_2.Paths.NarrowRide_508)
+        if (path is Orienteering_ISOM_2017_2_RunSpeModSym.Paths.LessDistinctSmallFootpath_507 || path is Orienteering_ISOM_2017_2_RunSpeModSym.Paths.NarrowRide_508)
             return moreEfficientSurroundingsCoef * PathsMappings[path.Value].Value;
         return PathsMappings[path.Value].Value;
     }
 
-    private float AddTimeForLinearObstacles((Orienteering_ISOM_2017_2.NaturalLinearObstacles?, Orienteering_ISOM_2017_2.Paths?, Orienteering_ISOM_2017_2.ManMadeLinearObstacles?) linearFeatures, float moreEfficientSurroundingsWithPathTime)
+    private float AddTimeForLinearObstacles((Orienteering_ISOM_2017_2_RunSpeModSym.NaturalLinearObstacles?, Orienteering_ISOM_2017_2_RunSpeModSym.Paths?, Orienteering_ISOM_2017_2_RunSpeModSym.ManMadeLinearObstacles?) linearFeatures, float moreEfficientSurroundingsWithPathTime)
     {
         var (naturalLinearObstacles, _, manMadeLinearObstacles) = linearFeatures; 
         return moreEfficientSurroundingsWithPathTime + 
@@ -143,7 +143,7 @@ public class Orienteering_ISOM_2017_2UserModel :
                (manMadeLinearObstacles is null ? 0 : ManMadeLinearObstaclesMappings[manMadeLinearObstacles.Value].Value);
     }
 
-    private double ComputePaceForElevatedPositions(Orienteering_ISOM_2017_2.VertexAttributes from, Orienteering_ISOM_2017_2.VertexAttributes to, int mapScale)
+    private double ComputePaceForElevatedPositions(Orienteering_ISOM_2017_2_RunSpeModSym.VertexAttributes from, Orienteering_ISOM_2017_2_RunSpeModSym.VertexAttributes to, int mapScale)
     {
         var horizontalDistance = (to.Position - from.Position).Length() * mapScale / 1_000_000;
         var verticalDistance = to.Elevation - from.Elevation;
@@ -152,7 +152,7 @@ public class Orienteering_ISOM_2017_2UserModel :
         return paceInSecPerMeter;
     }
 
-    public float GetWeightFromHeuristics(Orienteering_ISOM_2017_2.VertexAttributes from, Orienteering_ISOM_2017_2.VertexAttributes to, int scale)
+    public float GetWeightFromHeuristics(Orienteering_ISOM_2017_2_RunSpeModSym.VertexAttributes from, Orienteering_ISOM_2017_2_RunSpeModSym.VertexAttributes to, int scale)
     {
         float surroundingsMaxCoefficient = 0;
         foreach (var (_,adjustable) in GroundMappings)
@@ -164,13 +164,13 @@ public class Orienteering_ISOM_2017_2UserModel :
         foreach (var (_,adjustable) in WaterMappings)
              surroundingsMaxCoefficient = Math.Max(adjustable.Value, surroundingsMaxCoefficient);
         foreach (var (vegetationAndManMade,adjustable) in VegetationAndManMadeMappings)
-             if (vegetationAndManMade != Orienteering_ISOM_2017_2.VegetationAndManMade.PavedArea_501) surroundingsMaxCoefficient = Math.Max(adjustable.Value, surroundingsMaxCoefficient); 
+             if (vegetationAndManMade != Orienteering_ISOM_2017_2_RunSpeModSym.VegetationAndManMade.PavedArea_501) surroundingsMaxCoefficient = Math.Max(adjustable.Value, surroundingsMaxCoefficient); 
         foreach (var (_,adjustable) in VegetationGoodVisMappings)
              surroundingsMaxCoefficient = Math.Max(adjustable.Value, surroundingsMaxCoefficient);
         
-        float pathMaxCoefficient = VegetationAndManMadeMappings[Orienteering_ISOM_2017_2.VegetationAndManMade.PavedArea_501].Value;
+        float pathMaxCoefficient = VegetationAndManMadeMappings[Orienteering_ISOM_2017_2_RunSpeModSym.VegetationAndManMade.PavedArea_501].Value;
         foreach (var (path, adjustable) in PathsMappings)
-            if (path == Orienteering_ISOM_2017_2.Paths.LessDistinctSmallFootpath_507 || path == Orienteering_ISOM_2017_2.Paths.NarrowRide_508)
+            if (path == Orienteering_ISOM_2017_2_RunSpeModSym.Paths.LessDistinctSmallFootpath_507 || path == Orienteering_ISOM_2017_2_RunSpeModSym.Paths.NarrowRide_508)
                 pathMaxCoefficient = Math.Max(adjustable.Value * surroundingsMaxCoefficient, pathMaxCoefficient);
             else pathMaxCoefficient = Math.Max(adjustable.Value, pathMaxCoefficient);
 
@@ -179,21 +179,21 @@ public class Orienteering_ISOM_2017_2UserModel :
         return (float)(pace / Math.Max(surroundingsMaxCoefficient, pathMaxCoefficient) * (to.Position - from.Position).Length() * scale / 1_000_000);
     }
     
-    public MapCoordinates RetrievePosition(Orienteering_ISOM_2017_2.VertexAttributes vertexAttributes)
+    public MapCoordinates RetrievePosition(Orienteering_ISOM_2017_2_RunSpeModSym.VertexAttributes vertexAttributes)
         => vertexAttributes.Position;
     
 
-    private Dictionary<Orienteering_ISOM_2017_2.Grounds, BoundedFloatValueAdjustable>? _groundMappings;
-    private Dictionary<Orienteering_ISOM_2017_2.Grounds, BoundedFloatValueAdjustable> GroundMappings
+    private Dictionary<Orienteering_ISOM_2017_2_RunSpeModSym.Grounds, BoundedFloatValueAdjustable>? _groundMappings;
+    private Dictionary<Orienteering_ISOM_2017_2_RunSpeModSym.Grounds, BoundedFloatValueAdjustable> GroundMappings
     {
         get
         {
             if (_groundMappings is null) 
                 _groundMappings = new()
                 {
-                    { Orienteering_ISOM_2017_2.Grounds.BrokenGround_113, BrokenGroundCoefficient},
-                    { Orienteering_ISOM_2017_2.Grounds.VeryBrokenGround_114, VeryBrokenGroundCoefficient},
-                    { Orienteering_ISOM_2017_2.Grounds.CultivatedLand_412, CultivatedLandCoefficient}
+                    { Orienteering_ISOM_2017_2_RunSpeModSym.Grounds.BrokenGround_113, BrokenGroundCoefficient},
+                    { Orienteering_ISOM_2017_2_RunSpeModSym.Grounds.VeryBrokenGround_114, VeryBrokenGroundCoefficient},
+                    { Orienteering_ISOM_2017_2_RunSpeModSym.Grounds.CultivatedLand_412, CultivatedLandCoefficient}
                 };
             return _groundMappings;
         }
@@ -202,17 +202,17 @@ public class Orienteering_ISOM_2017_2UserModel :
     private class VeryBrokenGroundAdjustable() : BoundedFloatValueAdjustable("", null, 0, 1) { public VeryBrokenGroundAdjustable(float value) : this() => Value = value; }
     private class CultivatedLandAdjustable() : BoundedFloatValueAdjustable("", null, 0, 1) { public CultivatedLandAdjustable(float value) : this() => Value = value; }
 
-    private Dictionary<Orienteering_ISOM_2017_2.Boulders, BoundedFloatValueAdjustable>? _boulderMappings;
-    private Dictionary<Orienteering_ISOM_2017_2.Boulders, BoundedFloatValueAdjustable> BoulderMappings
+    private Dictionary<Orienteering_ISOM_2017_2_RunSpeModSym.Boulders, BoundedFloatValueAdjustable>? _boulderMappings;
+    private Dictionary<Orienteering_ISOM_2017_2_RunSpeModSym.Boulders, BoundedFloatValueAdjustable> BoulderMappings
     {
         get
         {
             if (_boulderMappings is null) 
                 _boulderMappings = new()
                 {
-                    { Orienteering_ISOM_2017_2.Boulders.GiganticBoulder_206, GiganticBoulderCoefficient},
-                    { Orienteering_ISOM_2017_2.Boulders.BoulderField_208, BoulderFieldCoefficient},
-                    { Orienteering_ISOM_2017_2.Boulders.DenseBoulderField_209, DenseBoulderFieldCoefficient},
+                    { Orienteering_ISOM_2017_2_RunSpeModSym.Boulders.GiganticBoulder_206, GiganticBoulderCoefficient},
+                    { Orienteering_ISOM_2017_2_RunSpeModSym.Boulders.BoulderField_208, BoulderFieldCoefficient},
+                    { Orienteering_ISOM_2017_2_RunSpeModSym.Boulders.DenseBoulderField_209, DenseBoulderFieldCoefficient},
                 };
             return _boulderMappings;
         }
@@ -222,19 +222,19 @@ public class Orienteering_ISOM_2017_2UserModel :
     private class BoulderFieldAdjustable() : BoundedFloatValueAdjustable("", null, 0, 1){ public BoulderFieldAdjustable(float value) : this() => Value = value;}
     private class DenseBoulderFieldAdjustable() : BoundedFloatValueAdjustable("", null, 0, 1){ public DenseBoulderFieldAdjustable(float value) : this() => Value = value;}
 
-    private Dictionary<Orienteering_ISOM_2017_2.Stones, BoundedFloatValueAdjustable>? _stoneMappings;
-    private Dictionary<Orienteering_ISOM_2017_2.Stones, BoundedFloatValueAdjustable> StoneMappings
+    private Dictionary<Orienteering_ISOM_2017_2_RunSpeModSym.Stones, BoundedFloatValueAdjustable>? _stoneMappings;
+    private Dictionary<Orienteering_ISOM_2017_2_RunSpeModSym.Stones, BoundedFloatValueAdjustable> StoneMappings
     {
         get
         {
             if (_stoneMappings is null) 
                 _stoneMappings = new()
                 {
-                    { Orienteering_ISOM_2017_2.Stones.StonyGroundSlow_210, StonyGroundSlowCoefficient },
-                    { Orienteering_ISOM_2017_2.Stones.StonyGroundWalk_211, StonyGroundWalkCoefficient},
-                    { Orienteering_ISOM_2017_2.Stones.StonyGroundFight_212, StonyGroundFightCoefficient},
-                    { Orienteering_ISOM_2017_2.Stones.SandyGround_213, SandyGroundCoefficient},
-                    { Orienteering_ISOM_2017_2.Stones.BareRock_214, BareRockCoefficient}
+                    { Orienteering_ISOM_2017_2_RunSpeModSym.Stones.StonyGroundSlow_210, StonyGroundSlowCoefficient },
+                    { Orienteering_ISOM_2017_2_RunSpeModSym.Stones.StonyGroundWalk_211, StonyGroundWalkCoefficient},
+                    { Orienteering_ISOM_2017_2_RunSpeModSym.Stones.StonyGroundFight_212, StonyGroundFightCoefficient},
+                    { Orienteering_ISOM_2017_2_RunSpeModSym.Stones.SandyGround_213, SandyGroundCoefficient},
+                    { Orienteering_ISOM_2017_2_RunSpeModSym.Stones.BareRock_214, BareRockCoefficient}
                 };
             return _stoneMappings;
         }
@@ -245,19 +245,19 @@ public class Orienteering_ISOM_2017_2UserModel :
     private class SandyGroundAdjustable() : BoundedFloatValueAdjustable("", null, 0, 1){ public SandyGroundAdjustable(float value) : this() => Value = value;}
     private class BareRockAdjustable() : BoundedFloatValueAdjustable("", null, 0, 1){ public BareRockAdjustable(float value) : this() => Value = value;}
 
-    private Dictionary<Orienteering_ISOM_2017_2.Water, BoundedFloatValueAdjustable>? _waterMappings;
-    private Dictionary<Orienteering_ISOM_2017_2.Water, BoundedFloatValueAdjustable> WaterMappings
+    private Dictionary<Orienteering_ISOM_2017_2_RunSpeModSym.Water, BoundedFloatValueAdjustable>? _waterMappings;
+    private Dictionary<Orienteering_ISOM_2017_2_RunSpeModSym.Water, BoundedFloatValueAdjustable> WaterMappings
     {
         get
         {
             if (_waterMappings is null) 
                 _waterMappings = new()
                 {
-                    { Orienteering_ISOM_2017_2.Water.UncrossableBodyOfWater_301, UncrossableBodyOfWaterCoefficient},
-                    { Orienteering_ISOM_2017_2.Water.ShallowBodyOfWater_302, ShallowBodyOfWaterCoefficient},
-                    { Orienteering_ISOM_2017_2.Water.UncrossableMarsh_307, UncrossableMarshCoefficient},
-                    { Orienteering_ISOM_2017_2.Water.Marsh_308, MarshCoefficient},
-                    { Orienteering_ISOM_2017_2.Water.IndistinctMarsh_310, IndistinctMarshCoefficient}
+                    { Orienteering_ISOM_2017_2_RunSpeModSym.Water.UncrossableBodyOfWater_301, UncrossableBodyOfWaterCoefficient},
+                    { Orienteering_ISOM_2017_2_RunSpeModSym.Water.ShallowBodyOfWater_302, ShallowBodyOfWaterCoefficient},
+                    { Orienteering_ISOM_2017_2_RunSpeModSym.Water.UncrossableMarsh_307, UncrossableMarshCoefficient},
+                    { Orienteering_ISOM_2017_2_RunSpeModSym.Water.Marsh_308, MarshCoefficient},
+                    { Orienteering_ISOM_2017_2_RunSpeModSym.Water.IndistinctMarsh_310, IndistinctMarshCoefficient}
                 };
             return _waterMappings;
         }
@@ -269,29 +269,29 @@ public class Orienteering_ISOM_2017_2UserModel :
     private class MarshAdjustable() : BoundedFloatValueAdjustable("", null, 0, 1) { public MarshAdjustable(float value) : this() => Value = value; }
     private class IndistinctMarshAdjustable() : BoundedFloatValueAdjustable("", null, 0, 1) { public IndistinctMarshAdjustable(float value) : this() => Value = value; }
     
-    private Dictionary<Orienteering_ISOM_2017_2.VegetationAndManMade, BoundedFloatValueAdjustable>? _vegetationAndManMadeMappings;
-    private Dictionary<Orienteering_ISOM_2017_2.VegetationAndManMade, BoundedFloatValueAdjustable> VegetationAndManMadeMappings
+    private Dictionary<Orienteering_ISOM_2017_2_RunSpeModSym.VegetationAndManMade, BoundedFloatValueAdjustable>? _vegetationAndManMadeMappings;
+    private Dictionary<Orienteering_ISOM_2017_2_RunSpeModSym.VegetationAndManMade, BoundedFloatValueAdjustable> VegetationAndManMadeMappings
     {
         get
         {
             if (_vegetationAndManMadeMappings is null) 
                 _vegetationAndManMadeMappings = new()
                 {
-                    { Orienteering_ISOM_2017_2.VegetationAndManMade.OpenLand_401, OpenLandCoefficient},
-                    { Orienteering_ISOM_2017_2.VegetationAndManMade.OpenLandWithTrees_402, OpenLandWithTreesCoefficient},
-                    { Orienteering_ISOM_2017_2.VegetationAndManMade.RoughOpenLand_403, RoughOpenLandCoefficient },
-                    { Orienteering_ISOM_2017_2.VegetationAndManMade.RoughOpenLandWithTrees_404, RoughOpenLandWithTreesCoefficient},
-                    { Orienteering_ISOM_2017_2.VegetationAndManMade.Forest_405, ForestCoefficient},
-                    { Orienteering_ISOM_2017_2.VegetationAndManMade.VegetationSlow_406, VegetationSlowCoefficient},
-                    { Orienteering_ISOM_2017_2.VegetationAndManMade.VegetationWalk_408, VegetationWalkCoefficient},
-                    { Orienteering_ISOM_2017_2.VegetationAndManMade.VegetationFight_410, VegetationFightCoefficient},
-                    { Orienteering_ISOM_2017_2.VegetationAndManMade.Orchard_413, OrchardCoefficient},
-                    { Orienteering_ISOM_2017_2.VegetationAndManMade.RoughOrchard_413, RoughOrchardCoefficient},
-                    { Orienteering_ISOM_2017_2.VegetationAndManMade.Vineyard_414, VineyardCoefficient},
-                    { Orienteering_ISOM_2017_2.VegetationAndManMade.RoughVineyard_414, RoughVineyardCoefficient},
-                    { Orienteering_ISOM_2017_2.VegetationAndManMade.PavedArea_501, PavedAreaCoefficient},
-                    { Orienteering_ISOM_2017_2.VegetationAndManMade.AreaThatShallNotBeEntered_520, AreaThatShallNotBeEnteredCoefficient},
-                    { Orienteering_ISOM_2017_2.VegetationAndManMade.Building_521, BuildingCoefficient}
+                    { Orienteering_ISOM_2017_2_RunSpeModSym.VegetationAndManMade.OpenLand_401, OpenLandCoefficient},
+                    { Orienteering_ISOM_2017_2_RunSpeModSym.VegetationAndManMade.OpenLandWithTrees_402, OpenLandWithTreesCoefficient},
+                    { Orienteering_ISOM_2017_2_RunSpeModSym.VegetationAndManMade.RoughOpenLand_403, RoughOpenLandCoefficient },
+                    { Orienteering_ISOM_2017_2_RunSpeModSym.VegetationAndManMade.RoughOpenLandWithTrees_404, RoughOpenLandWithTreesCoefficient},
+                    { Orienteering_ISOM_2017_2_RunSpeModSym.VegetationAndManMade.Forest_405, ForestCoefficient},
+                    { Orienteering_ISOM_2017_2_RunSpeModSym.VegetationAndManMade.VegetationSlow_406, VegetationSlowCoefficient},
+                    { Orienteering_ISOM_2017_2_RunSpeModSym.VegetationAndManMade.VegetationWalk_408, VegetationWalkCoefficient},
+                    { Orienteering_ISOM_2017_2_RunSpeModSym.VegetationAndManMade.VegetationFight_410, VegetationFightCoefficient},
+                    { Orienteering_ISOM_2017_2_RunSpeModSym.VegetationAndManMade.Orchard_413, OrchardCoefficient},
+                    { Orienteering_ISOM_2017_2_RunSpeModSym.VegetationAndManMade.RoughOrchard_413, RoughOrchardCoefficient},
+                    { Orienteering_ISOM_2017_2_RunSpeModSym.VegetationAndManMade.Vineyard_414, VineyardCoefficient},
+                    { Orienteering_ISOM_2017_2_RunSpeModSym.VegetationAndManMade.RoughVineyard_414, RoughVineyardCoefficient},
+                    { Orienteering_ISOM_2017_2_RunSpeModSym.VegetationAndManMade.PavedArea_501, PavedAreaCoefficient},
+                    { Orienteering_ISOM_2017_2_RunSpeModSym.VegetationAndManMade.AreaThatShallNotBeEntered_520, AreaThatShallNotBeEnteredCoefficient},
+                    { Orienteering_ISOM_2017_2_RunSpeModSym.VegetationAndManMade.Building_521, BuildingCoefficient}
                 };
             return _vegetationAndManMadeMappings;
         }
@@ -313,16 +313,16 @@ public class Orienteering_ISOM_2017_2UserModel :
     private class AreaThatShallNotBeEnteredAdjustable() : BoundedFloatValueAdjustable("", null, 0, 1) { public AreaThatShallNotBeEnteredAdjustable(float value) : this() => Value = value;} 
     private class BuildingAdjustable() : BoundedFloatValueAdjustable("", null, 0, 1) { public BuildingAdjustable(float value) : this() => Value = value;}
 
-    private Dictionary<Orienteering_ISOM_2017_2.VegetationGoodVis, BoundedFloatValueAdjustable>? _vegetationGoodVisMappings;
-    private Dictionary<Orienteering_ISOM_2017_2.VegetationGoodVis, BoundedFloatValueAdjustable> VegetationGoodVisMappings
+    private Dictionary<Orienteering_ISOM_2017_2_RunSpeModSym.VegetationGoodVis, BoundedFloatValueAdjustable>? _vegetationGoodVisMappings;
+    private Dictionary<Orienteering_ISOM_2017_2_RunSpeModSym.VegetationGoodVis, BoundedFloatValueAdjustable> VegetationGoodVisMappings
     {
         get
         {
             if (_vegetationGoodVisMappings is null)
                 _vegetationGoodVisMappings = new ()
                 {
-                    { Orienteering_ISOM_2017_2.VegetationGoodVis.VegetationSlowGoodVis_407, VegetationSlowGoodVisibilityCoefficient},
-                    { Orienteering_ISOM_2017_2.VegetationGoodVis.VegetationWalkGoodVis_409, VegetationWalkGoodVisibilityCoefficient}
+                    { Orienteering_ISOM_2017_2_RunSpeModSym.VegetationGoodVis.VegetationSlowGoodVis_407, VegetationSlowGoodVisibilityCoefficient},
+                    { Orienteering_ISOM_2017_2_RunSpeModSym.VegetationGoodVis.VegetationWalkGoodVis_409, VegetationWalkGoodVisibilityCoefficient}
                 };
             return _vegetationGoodVisMappings;
         }
@@ -331,21 +331,21 @@ public class Orienteering_ISOM_2017_2UserModel :
     private class VegetationSlowGoodVisAdjustable() : BoundedFloatValueAdjustable("", null, 0, 1) { public VegetationSlowGoodVisAdjustable(float value) : this() => Value = value;}
     private class VegetationWalkGoodVisAdjustable() : BoundedFloatValueAdjustable("", null, 0, 1) { public VegetationWalkGoodVisAdjustable(float value) : this() => Value = value;}
 
-    private Dictionary<Orienteering_ISOM_2017_2.NaturalLinearObstacles, BoundedFloatValueAdjustable>? _naturalLinearObstaclesMappings;
-    private Dictionary<Orienteering_ISOM_2017_2.NaturalLinearObstacles, BoundedFloatValueAdjustable> NaturalLinearObstaclesMappings
+    private Dictionary<Orienteering_ISOM_2017_2_RunSpeModSym.NaturalLinearObstacles, BoundedFloatValueAdjustable>? _naturalLinearObstaclesMappings;
+    private Dictionary<Orienteering_ISOM_2017_2_RunSpeModSym.NaturalLinearObstacles, BoundedFloatValueAdjustable> NaturalLinearObstaclesMappings
     {
         get
         {
             if (_naturalLinearObstaclesMappings is null)
                 _naturalLinearObstaclesMappings = new()
                 {
-                    { Orienteering_ISOM_2017_2.NaturalLinearObstacles.EarthBank_104, EarthBankOvercomeCoefficient },
-                    { Orienteering_ISOM_2017_2.NaturalLinearObstacles.EarthWall_105, EarthWallOvercomeCoefficient },
-                    { Orienteering_ISOM_2017_2.NaturalLinearObstacles.ErosionGully_107, ErosionGullyOvercomeCoefficient },
-                    { Orienteering_ISOM_2017_2.NaturalLinearObstacles.ImpassableCliff_201, ImpassableCliffOvercomeCoefficient },
-                    { Orienteering_ISOM_2017_2.NaturalLinearObstacles.Cliff_202, CliffOvercomeCoefficient },
-                    { Orienteering_ISOM_2017_2.NaturalLinearObstacles.CrossableWatercourse_304, CrossableWaterCourseOvercomeCoefficient },
-                    { Orienteering_ISOM_2017_2.NaturalLinearObstacles.SmallCrossableWatercourse_305, SmallCrossableWaterCourseOvercomeCoefficient },
+                    { Orienteering_ISOM_2017_2_RunSpeModSym.NaturalLinearObstacles.EarthBank_104, EarthBankOvercomeCoefficient },
+                    { Orienteering_ISOM_2017_2_RunSpeModSym.NaturalLinearObstacles.EarthWall_105, EarthWallOvercomeCoefficient },
+                    { Orienteering_ISOM_2017_2_RunSpeModSym.NaturalLinearObstacles.ErosionGully_107, ErosionGullyOvercomeCoefficient },
+                    { Orienteering_ISOM_2017_2_RunSpeModSym.NaturalLinearObstacles.ImpassableCliff_201, ImpassableCliffOvercomeCoefficient },
+                    { Orienteering_ISOM_2017_2_RunSpeModSym.NaturalLinearObstacles.Cliff_202, CliffOvercomeCoefficient },
+                    { Orienteering_ISOM_2017_2_RunSpeModSym.NaturalLinearObstacles.CrossableWatercourse_304, CrossableWaterCourseOvercomeCoefficient },
+                    { Orienteering_ISOM_2017_2_RunSpeModSym.NaturalLinearObstacles.SmallCrossableWatercourse_305, SmallCrossableWaterCourseOvercomeCoefficient },
                 };
             return _naturalLinearObstaclesMappings;
         }
@@ -359,22 +359,22 @@ public class Orienteering_ISOM_2017_2UserModel :
     private class CrossableWatercourseAdjustable() : BoundedFloatValueAdjustable("", "seconds", 0, float.PositiveInfinity) { public CrossableWatercourseAdjustable(float value) : this() => Value = value;}
     private class SmallCrossableWatercourseAdjustable() : BoundedFloatValueAdjustable("", "seconds", 0, float.PositiveInfinity) { public SmallCrossableWatercourseAdjustable(float value) : this() => Value = value;}
 
-    private Dictionary<Orienteering_ISOM_2017_2.Paths, BoundedFloatValueAdjustable>? _pathsMappings;
-    private Dictionary<Orienteering_ISOM_2017_2.Paths, BoundedFloatValueAdjustable> PathsMappings
+    private Dictionary<Orienteering_ISOM_2017_2_RunSpeModSym.Paths, BoundedFloatValueAdjustable>? _pathsMappings;
+    private Dictionary<Orienteering_ISOM_2017_2_RunSpeModSym.Paths, BoundedFloatValueAdjustable> PathsMappings
     {
         get
         {
             if (_pathsMappings is null)
                 _pathsMappings = new()
                 {
-                    { Orienteering_ISOM_2017_2.Paths.WideRoad_502, WideRoadCoefficient},
-                    { Orienteering_ISOM_2017_2.Paths.Road_503, RoadCoefficient},
-                    { Orienteering_ISOM_2017_2.Paths.VehicleTrack_504, VehicleTrackCoefficient},
-                    { Orienteering_ISOM_2017_2.Paths.Footpath_505, FootpathCoefficient},
-                    { Orienteering_ISOM_2017_2.Paths.SmallFootpath_506, SmallFootpathCoefficient},
-                    { Orienteering_ISOM_2017_2.Paths.LessDistinctSmallFootpath_507, LessDistinctSmallFootpathCoefficient},
-                    { Orienteering_ISOM_2017_2.Paths.NarrowRide_508, NarrowRideCoefficient},
-                    { Orienteering_ISOM_2017_2.Paths.Stairway_532, StairwayCoefficient},
+                    { Orienteering_ISOM_2017_2_RunSpeModSym.Paths.WideRoad_502, WideRoadCoefficient},
+                    { Orienteering_ISOM_2017_2_RunSpeModSym.Paths.Road_503, RoadCoefficient},
+                    { Orienteering_ISOM_2017_2_RunSpeModSym.Paths.VehicleTrack_504, VehicleTrackCoefficient},
+                    { Orienteering_ISOM_2017_2_RunSpeModSym.Paths.Footpath_505, FootpathCoefficient},
+                    { Orienteering_ISOM_2017_2_RunSpeModSym.Paths.SmallFootpath_506, SmallFootpathCoefficient},
+                    { Orienteering_ISOM_2017_2_RunSpeModSym.Paths.LessDistinctSmallFootpath_507, LessDistinctSmallFootpathCoefficient},
+                    { Orienteering_ISOM_2017_2_RunSpeModSym.Paths.NarrowRide_508, NarrowRideCoefficient},
+                    { Orienteering_ISOM_2017_2_RunSpeModSym.Paths.Stairway_532, StairwayCoefficient},
                 };
             return _pathsMappings;
         }
@@ -389,21 +389,21 @@ public class Orienteering_ISOM_2017_2UserModel :
     private class NarrowRideAdjustable() : BoundedFloatValueAdjustable("", null, 1, 2) { public NarrowRideAdjustable(float value) : this() => Value = value;}
     private class StairwayAdjustable() : BoundedFloatValueAdjustable("", null, 0.1f, 1) { public StairwayAdjustable(float value) : this() => Value = value;}
     
-    private Dictionary<Orienteering_ISOM_2017_2.ManMadeLinearObstacles, BoundedFloatValueAdjustable>? _manMadeLinearObstaclesMappings;
-    private Dictionary<Orienteering_ISOM_2017_2.ManMadeLinearObstacles, BoundedFloatValueAdjustable> ManMadeLinearObstaclesMappings
+    private Dictionary<Orienteering_ISOM_2017_2_RunSpeModSym.ManMadeLinearObstacles, BoundedFloatValueAdjustable>? _manMadeLinearObstaclesMappings;
+    private Dictionary<Orienteering_ISOM_2017_2_RunSpeModSym.ManMadeLinearObstacles, BoundedFloatValueAdjustable> ManMadeLinearObstaclesMappings
     {
         get
         {
             if (_manMadeLinearObstaclesMappings is null)
                 _manMadeLinearObstaclesMappings = new()
                 {
-                    { Orienteering_ISOM_2017_2.ManMadeLinearObstacles.Trench_215, TrenchOvercomeCoefficient},
-                    { Orienteering_ISOM_2017_2.ManMadeLinearObstacles.Wall_513, WallOvercomeCoefficient},
-                    { Orienteering_ISOM_2017_2.ManMadeLinearObstacles.ImpassableWall_515, ImpassableWallOvercomeCoefficient},
-                    { Orienteering_ISOM_2017_2.ManMadeLinearObstacles.Fence_516, FenceOvercomeCoefficient},
-                    { Orienteering_ISOM_2017_2.ManMadeLinearObstacles.ImpassableFence_518, ImpassableFenceOvercomeCoefficient},
-                    { Orienteering_ISOM_2017_2.ManMadeLinearObstacles.ProminentLineFeature_528, ProminentLineFeatureOvercomeCoefficient},
-                    { Orienteering_ISOM_2017_2.ManMadeLinearObstacles.ImpassableProminentLineFeature_529, ImpassableProminentLineFeatureOvercomeCoefficient},
+                    { Orienteering_ISOM_2017_2_RunSpeModSym.ManMadeLinearObstacles.Trench_215, TrenchOvercomeCoefficient},
+                    { Orienteering_ISOM_2017_2_RunSpeModSym.ManMadeLinearObstacles.Wall_513, WallOvercomeCoefficient},
+                    { Orienteering_ISOM_2017_2_RunSpeModSym.ManMadeLinearObstacles.ImpassableWall_515, ImpassableWallOvercomeCoefficient},
+                    { Orienteering_ISOM_2017_2_RunSpeModSym.ManMadeLinearObstacles.Fence_516, FenceOvercomeCoefficient},
+                    { Orienteering_ISOM_2017_2_RunSpeModSym.ManMadeLinearObstacles.ImpassableFence_518, ImpassableFenceOvercomeCoefficient},
+                    { Orienteering_ISOM_2017_2_RunSpeModSym.ManMadeLinearObstacles.ProminentLineFeature_528, ProminentLineFeatureOvercomeCoefficient},
+                    { Orienteering_ISOM_2017_2_RunSpeModSym.ManMadeLinearObstacles.ImpassableProminentLineFeature_529, ImpassableProminentLineFeatureOvercomeCoefficient},
                 };
             return _manMadeLinearObstaclesMappings;
         }
@@ -481,9 +481,9 @@ public class Orienteering_ISOM_2017_2UserModel :
     [JsonInclude] private ImpassableProminentLineFeatureAdjustable ImpassableProminentLineFeatureOvercomeCoefficient { get; set; }
     
     public TOut AcceptGeneric<TOut, TOtherParams>(IUserModelGenericVisitor<TOut, TOtherParams> genericVisitor, TOtherParams otherParams)
-        => genericVisitor.GenericVisit<Orienteering_ISOM_2017_2UserModel, Orienteering_ISOM_2017_2>(this, otherParams);
+        => genericVisitor.GenericVisit<Orienteering_ISOM_2017_2RunSpeModSymUserModel, Orienteering_ISOM_2017_2_RunSpeModSym>(this, otherParams);
     public TOut AcceptGeneric<TOut>(IUserModelGenericVisitor<TOut> genericVisitor)
-        => genericVisitor.GenericVisit<Orienteering_ISOM_2017_2UserModel, Orienteering_ISOM_2017_2>(this);
+        => genericVisitor.GenericVisit<Orienteering_ISOM_2017_2RunSpeModSymUserModel, Orienteering_ISOM_2017_2_RunSpeModSym>(this);
     public void AcceptGeneric(IUserModelGenericVisitor genericVisitor)
-        => genericVisitor.GenericVisit<Orienteering_ISOM_2017_2UserModel, Orienteering_ISOM_2017_2>(this);
+        => genericVisitor.GenericVisit<Orienteering_ISOM_2017_2RunSpeModSymUserModel, Orienteering_ISOM_2017_2_RunSpeModSym>(this);
 }

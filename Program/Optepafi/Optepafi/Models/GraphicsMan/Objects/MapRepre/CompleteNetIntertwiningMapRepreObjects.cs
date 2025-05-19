@@ -11,7 +11,7 @@ public record VertexObject(MapCoordinates Position, double Elevation) : IGraphic
     public TOut AcceptGeneric<TOut>(IGraphicObjectGenericVisitor<TOut> genericVisitor) => genericVisitor.GenericVisit(this);
 }
 
-public record EdgeObject(MapCoordinates From, MapCoordinates To, Orienteering_ISOM_2017_2.EdgeAttributes Attributes) : IGraphicObject
+public record EdgeObject(MapCoordinates From, MapCoordinates To, Orienteering_ISOM_2017_2_RunSpeModSym.EdgeAttributes Attributes) : IGraphicObject
 {
     public TOut AcceptGeneric<TOut, TOtherParams>(IGraphicObjectGenericVisitor<TOut, TOtherParams> genericVisitor, TOtherParams otherParams) => genericVisitor.GenericVisit(this, otherParams);
     public TOut AcceptGeneric<TOut>(IGraphicObjectGenericVisitor<TOut> genericVisitor) => genericVisitor.GenericVisit(this);

@@ -144,10 +144,25 @@
 - nechat nech view vykresluje iba objekty ktore sa v danej chvili su vidiet na obrazovke...neviemsice uplne teraz preco ale proste mohlo by to pomoct nejakym sposobom mozno ku zlepseniu vykonu
 - poriadne spravit lokalizaciu
 - zlepsit graficku stranku aplikacie
-- podpora pluginov
 - zlepsit uzivatelsku privetivost
+  - PathFinding
+    - zvyraznit mapy/template-y, ktore nesedia ku vybranemu protajsku
+    - opravit zoomvanie na canvase tak, aby sa zoomovalo do stredu obrazovky
+    - skusit spravit zumovanie na touchpad-e
+    - zprivetivit ovladanie zadavania tras a vyhladavnia ciest
+    - pridat moznost konfiguracie zdroja vyskovych dat do vytvarania mapovej reprezentacie, pokial niesu elev data k dispozicii a su potrebne
+    - pridat konfiguraciu algoritmov, grafovych repre a uzivatelskych modelov, aby sa dali prenastavit defaultne nastavenia
+    - moznost zmenit uzivatelsky model a vyhladavaci algoritmus v path finding window
+  - Main
+    - upravit nastavenia, aby sa konfiguracie algoritmov, grafovych reprezentacii a uzivatelskych modelov robili v extra view-e
+    - ukladanie konfiguacii algoritmov, grafovych repre a uzivatelskych modelov
+    - pridat tlacidla na hlavne okno, aby sa dalo pomocou nich dostat do akehokolvek otvoreneho sessinu, zaroven pri nich zobrazovat zakladne info o session-u (meno otvorenej mapy, otvoreneho uzivatelskeho modelu, cislovat ich alebo pridat moznost pomenovat session)
+- podpora pluginov
 - spracovat vinohrady a jednosmernu vegetaciu
 - upravit parsovanie mapy - pokial by na vstupe bol obrovitansky objekt, ktory moze zmrazit program, odignorovat ho - dajme tomu, ze by mal viac ako 100_000 suradnic - je mozne, ze zmrazenie dojde uz pri citani daneho objektu zo suboru, ale to neviem ako by som riesil...mozem pozriet, ci ta kniznica na parsovanie xml to nejak handluje
+
+- model-creating session
+- spravit relevance feedback
 
 ## DONE
 

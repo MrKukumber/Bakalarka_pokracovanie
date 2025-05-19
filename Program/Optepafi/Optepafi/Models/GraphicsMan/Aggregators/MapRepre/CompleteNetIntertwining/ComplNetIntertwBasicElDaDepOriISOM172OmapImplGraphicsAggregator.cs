@@ -11,12 +11,12 @@ using Optepafi.Models.Utils;
 namespace Optepafi.Models.GraphicsMan.Aggregators.MapRepre.CompleteNetIntertwining;
 
 public class CompleteNetIntertwiningBasicElevDataDepOrienteering_ISOM_2017_2OmapMapImplementationGraphicsAggregator 
-    : IMapRepreGraphicsAggregator<CompleteNetIntertwiningBasicElevDataDepOrienteering_ISOM_2017_2OmapMapImplementation>
+    : IMapRepreGraphicsAggregator<CompleteNetIntertwiningBasicElevDataDepOrienteering_ISOM_2017_2RunSpeModSymOmapMapImplementation>
 {
     public static CompleteNetIntertwiningBasicElevDataDepOrienteering_ISOM_2017_2OmapMapImplementationGraphicsAggregator Instance { get; } = new();
     private CompleteNetIntertwiningBasicElevDataDepOrienteering_ISOM_2017_2OmapMapImplementationGraphicsAggregator(){}
     public void AggregateGraphics(
-        CompleteNetIntertwiningBasicElevDataDepOrienteering_ISOM_2017_2OmapMapImplementation implementation,
+        CompleteNetIntertwiningBasicElevDataDepOrienteering_ISOM_2017_2RunSpeModSymOmapMapImplementation implementation,
         IGraphicObjectCollector collectorForAggregatedObjects, CancellationToken? cancellationToken)
     {
         HashSet<(MapCoordinates, MapCoordinates)> foundEdgeCoordinates = new HashSet<(MapCoordinates, MapCoordinates)>();
