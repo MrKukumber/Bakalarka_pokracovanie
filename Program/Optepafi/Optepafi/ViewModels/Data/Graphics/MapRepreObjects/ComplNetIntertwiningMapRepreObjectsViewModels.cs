@@ -41,7 +41,7 @@ public class EdgeObjectViewModel : GraphicObjectViewModel
         var surroundings = obj.Attributes.LeftSurroundings;
         var lines = obj.Attributes.LineFeatures;
 
-        BoulderColor = surroundings.boulders switch
+        BoulderColor = surroundings.Item1.boulders switch
         {
             Orienteering_ISOM_2017_2_RunSpeModSym.Boulders.GiganticBoulder_206 => Colors.Black,
             Orienteering_ISOM_2017_2_RunSpeModSym.Boulders.BoulderField_208 => Colors.Black,
@@ -49,7 +49,7 @@ public class EdgeObjectViewModel : GraphicObjectViewModel
             null => Colors.Transparent
         };
         
-        GroundColor = surroundings.ground switch
+        GroundColor = surroundings.Item1.ground switch
         {
             Orienteering_ISOM_2017_2_RunSpeModSym.Grounds.BrokenGround_113 => Colors.Chocolate,
             Orienteering_ISOM_2017_2_RunSpeModSym.Grounds.VeryBrokenGround_114 => Colors.Chocolate,
@@ -57,26 +57,32 @@ public class EdgeObjectViewModel : GraphicObjectViewModel
             null => Colors.Transparent,
         };
         
-        StonesColor = surroundings.stones switch
+        StonesColor = surroundings.Item1.stones switch
         {
             Orienteering_ISOM_2017_2_RunSpeModSym.Stones.StonyGroundSlow_210 => Colors.Black,
             Orienteering_ISOM_2017_2_RunSpeModSym.Stones.StonyGroundWalk_211 => Colors.Black,
             Orienteering_ISOM_2017_2_RunSpeModSym.Stones.StonyGroundFight_212 => Colors.Black,
-            Orienteering_ISOM_2017_2_RunSpeModSym.Stones.SandyGround_213 => Colors.NavajoWhite,
-            Orienteering_ISOM_2017_2_RunSpeModSym.Stones.BareRock_214 => Colors.Gray,
             null => Colors.Transparent
         };
 
-        VegetationManMadeColor = surroundings.vegetationAndManMade switch
+        VegetationManMadeColor = surroundings.Item1.vegetationAndManMade switch
         {
+            Orienteering_ISOM_2017_2_RunSpeModSym.VegetationAndManMade.SandyGround_213 => Colors.NavajoWhite,
+            Orienteering_ISOM_2017_2_RunSpeModSym.VegetationAndManMade.BareRock_214 => Colors.Gray,
             Orienteering_ISOM_2017_2_RunSpeModSym.VegetationAndManMade.OpenLand_401 => Colors.Gold,
             Orienteering_ISOM_2017_2_RunSpeModSym.VegetationAndManMade.OpenLandWithTrees_402 => Colors.Gold,
             Orienteering_ISOM_2017_2_RunSpeModSym.VegetationAndManMade.RoughOpenLand_403 => Colors.NavajoWhite,
             Orienteering_ISOM_2017_2_RunSpeModSym.VegetationAndManMade.RoughOpenLandWithTrees_404 => Colors.NavajoWhite,
             Orienteering_ISOM_2017_2_RunSpeModSym.VegetationAndManMade.Forest_405 => Colors.White,
             Orienteering_ISOM_2017_2_RunSpeModSym.VegetationAndManMade.VegetationSlow_406 => Colors.DarkSeaGreen,
+            Orienteering_ISOM_2017_2_RunSpeModSym.VegetationAndManMade.VegetationSlowNormalOneDir_406_1 => Colors.DarkSeaGreen,
             Orienteering_ISOM_2017_2_RunSpeModSym.VegetationAndManMade.VegetationWalk_408 => Colors.MediumSeaGreen,
+            Orienteering_ISOM_2017_2_RunSpeModSym.VegetationAndManMade.VegetationWalkNormalOneDir_408_1 => Colors.MediumSeaGreen,
+            Orienteering_ISOM_2017_2_RunSpeModSym.VegetationAndManMade.VegetationWalkSlowOneDir_408_2 => Colors.MediumSeaGreen,
             Orienteering_ISOM_2017_2_RunSpeModSym.VegetationAndManMade.VegetationFight_410 => Colors.SeaGreen,
+            Orienteering_ISOM_2017_2_RunSpeModSym.VegetationAndManMade.VegetationFightNormalOneDir_410_1 => Colors.SeaGreen,
+            Orienteering_ISOM_2017_2_RunSpeModSym.VegetationAndManMade.VegetationFightSlowOneDir_410_2 => Colors.SeaGreen,
+            Orienteering_ISOM_2017_2_RunSpeModSym.VegetationAndManMade.VegetationFightWalkOneDir_410_3 => Colors.SeaGreen,
             Orienteering_ISOM_2017_2_RunSpeModSym.VegetationAndManMade.Orchard_413 => Colors.Gold,
             Orienteering_ISOM_2017_2_RunSpeModSym.VegetationAndManMade.RoughOrchard_413 => Colors.NavajoWhite,
             Orienteering_ISOM_2017_2_RunSpeModSym.VegetationAndManMade.Vineyard_414 => Colors.Gold,
@@ -87,13 +93,13 @@ public class EdgeObjectViewModel : GraphicObjectViewModel
             null => Colors.Transparent
         };
 
-        WaterColor = surroundings.water switch
+        WaterColor = surroundings.Item1.water switch
         {
             null => Colors.Transparent,
             _ => Colors.DodgerBlue
         };
 
-        VegetationGoodVisColor = surroundings.vegetationGoodVis switch
+        VegetationGoodVisColor = surroundings.Item1.vegetationGoodVis switch
         {
             null => Colors.Transparent,
             _ => Colors.DarkSeaGreen

@@ -83,10 +83,7 @@
   "RoughOrchardCoefficient": {
     "Value": 0.15
   },
-  "VineyardCoefficient": {
-    "Value": 0.15
-  },
-  "RoughVineyardCoefficient": {
+  "VineyardCrossingCoefficient": {
     "Value": 0.15
   },
   "PavedAreaCoefficient": {

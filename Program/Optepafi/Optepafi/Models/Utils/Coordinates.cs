@@ -40,6 +40,9 @@ public record struct MapCoordinates(int XPos, int YPos)
         return new MapCoordinates(rotatedTransposedX + center.XPos, rotatedTransposedY + center.YPos);
     }
 
+    public MapCoordinates RotateClockwise(double angle, MapCoordinates center = new())
+        => RotateCounterClockwise(-angle, center);
+
     public MapCoordinates LeftHandNormalVector()
         => new MapCoordinates(-YPos, XPos);
     public MapCoordinates RightHandNormalVector()
