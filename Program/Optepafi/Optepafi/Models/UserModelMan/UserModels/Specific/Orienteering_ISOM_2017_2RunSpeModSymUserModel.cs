@@ -4,6 +4,7 @@ using System.IO;
 using System.Reflection.Metadata;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using DynamicData.Kernel;
 using Optepafi.Models.GraphicsMan.Objects.Map;
 using Optepafi.Models.TemplateMan.Templates;
 using Optepafi.Models.UserModelMan.UserModels.Functionalities;
@@ -115,33 +116,30 @@ public class Orienteering_ISOM_2017_2RunSpeModSymUserModel :
         return AddTimeForLinearObstacles(through.LineFeatures, timeInMoreEfficientSurroundingsWithPath);
     }
 
-    private float ComputeCoefficientOfSurroundings(((Orienteering_ISOM_2017_2_RunSpeModSym.Grounds?, Orienteering_ISOM_2017_2_RunSpeModSym.Boulders?, Orienteering_ISOM_2017_2_RunSpeModSym.Stones?, Orienteering_ISOM_2017_2_RunSpeModSym.Water?, Orienteering_ISOM_2017_2_RunSpeModSym.VegetationAndManMade?, Orienteering_ISOM_2017_2_RunSpeModSym.VegetationGoodVis?), float) surroundings, MapCoordinates fromToVector)
+    private float ComputeCoefficientOfSurroundings(Orienteering_ISOM_2017_2_RunSpeModSym.Surroundings surroundings, MapCoordinates fromToVector)
     {
-        //TODO: zakomponvat rotation if shape of vegetation is dependent of it
-        var ((ground, boulders, stones, water, vegetationAndManMade, vegetationGoodVis), vegetationAndManMadeRotation) = surroundings;
-        return (ground is not null ? GroundCoefficients[ground.Value]: 1) *
-               (boulders is not null ? BoulderCoefficients[boulders.Value]: 1) *
-               (stones is not null ? StoneCoefficients[stones.Value]: 1) *
-               (water is not null ? WaterCoefficients[water.Value]: 1) *
-               (vegetationAndManMade is not null ? VegetationAndManMadeCoefficients[vegetationAndManMade.Value]((vegetationAndManMadeRotation, fromToVector)): 1) *
-               (vegetationGoodVis is not null ? VegetationGoodVisCoefficients[vegetationGoodVis.Value]: 1);
+        return (surroundings.Ground is not null ? GroundCoefficients[surroundings.Ground.Value]: 1) *
+               (surroundings.Boulders is not null ? BoulderCoefficients[surroundings.Boulders.Value]: 1) *
+               (surroundings.Stones is not null ? StoneCoefficients[surroundings.Stones.Value]: 1) *
+               (surroundings.Water is not null ? WaterCoefficients[surroundings.Water.Value]: 1) *
+               (surroundings.VegetationAndManMade is not null ? VegetationAndManMadeCoefficients[surroundings.VegetationAndManMade.Value]((surroundings.VegetationAndManMadeRotation, fromToVector)): 1) *
+               (surroundings.VegetationGoodVis is not null ? VegetationGoodVisCoefficients[surroundings.VegetationGoodVis.Value]: 1);
     }
 
-    private float ApplyPathToSurroundingsCoef((Orienteering_ISOM_2017_2_RunSpeModSym.NaturalLinearObstacles?, Orienteering_ISOM_2017_2_RunSpeModSym.Paths?, Orienteering_ISOM_2017_2_RunSpeModSym.ManMadeLinearObstacles?) linearFeatures, float moreEfficientSurroundingsCoef)
+    private float ApplyPathToSurroundingsCoef(Orienteering_ISOM_2017_2_RunSpeModSym.LinearFeatures linearFeatures, float moreEfficientSurroundingsCoef)
     {
-        var (_, path, _) = linearFeatures; 
+        var path = linearFeatures.Path; 
         if (path is null) return moreEfficientSurroundingsCoef;
         if (path is Orienteering_ISOM_2017_2_RunSpeModSym.Paths.LessDistinctSmallFootpath_507 || path is Orienteering_ISOM_2017_2_RunSpeModSym.Paths.NarrowRide_508)
             return moreEfficientSurroundingsCoef * PathsCoefficients[path.Value];
         return PathsCoefficients[path.Value];
     }
 
-    private float AddTimeForLinearObstacles((Orienteering_ISOM_2017_2_RunSpeModSym.NaturalLinearObstacles?, Orienteering_ISOM_2017_2_RunSpeModSym.Paths?, Orienteering_ISOM_2017_2_RunSpeModSym.ManMadeLinearObstacles?) linearFeatures, float moreEfficientSurroundingsWithPathTime)
+    private float AddTimeForLinearObstacles(Orienteering_ISOM_2017_2_RunSpeModSym.LinearFeatures linearFeatures, float moreEfficientSurroundingsWithPathTime)
     {
-        var (naturalLinearObstacles, _, manMadeLinearObstacles) = linearFeatures; 
         return moreEfficientSurroundingsWithPathTime + 
-               (naturalLinearObstacles is null ? 0 : NaturalLinearObstaclesCoefficients[naturalLinearObstacles.Value]) + 
-               (manMadeLinearObstacles is null ? 0 : ManMadeLinearObstaclesCoefficients[manMadeLinearObstacles.Value]);
+               (linearFeatures.NaturalLinearObstacle is null ? 0 : NaturalLinearObstaclesCoefficients[linearFeatures.NaturalLinearObstacle.Value]) + 
+               (linearFeatures.ManMadeLinearObstacle is null ? 0 : ManMadeLinearObstaclesCoefficients[linearFeatures.ManMadeLinearObstacle.Value]);
     }
 
     private double ComputePaceForElevatedPositions(Orienteering_ISOM_2017_2_RunSpeModSym.VertexAttributes from, Orienteering_ISOM_2017_2_RunSpeModSym.VertexAttributes to, int mapScale)

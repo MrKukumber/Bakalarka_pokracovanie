@@ -84,8 +84,8 @@ public class CompleteNetIntertwiningBasicElevDataIndepOrienteering_ISOM_2017_2Ru
         {
             var nearestVertices = searchableVertices.GetNearestNeighbors((coords.XPos, coords.YPos), 1);
             if (nearestVertices.Length == 0) throw new InvalidDataException("No vertices in graph found."); 
-            var newVertex = new BuildableVertex{ Attributes = new Orienteering_ISOM_2017_2_RunSpeModSym.VertexAttributes(coords), OutgoingEdges = [new BuildableEdge(){ Attributes = new Orienteering_ISOM_2017_2_RunSpeModSym.EdgeAttributes(((null, null, null, null, Orienteering_ISOM_2017_2_RunSpeModSym.VegetationAndManMade.Forest_405, null), 0), (null, null, null)), To =nearestVertices[0]}]};
-            var edgeToNewVertex = new BuildableEdge{ Attributes = new Orienteering_ISOM_2017_2_RunSpeModSym.EdgeAttributes(((null, null, null, null, Orienteering_ISOM_2017_2_RunSpeModSym.VegetationAndManMade.Forest_405, null), 0), (null, null, null)), To = newVertex};
+            var newVertex = new BuildableVertex{ Attributes = new Orienteering_ISOM_2017_2_RunSpeModSym.VertexAttributes(coords), OutgoingEdges = [new BuildableEdge(){ Attributes = new Orienteering_ISOM_2017_2_RunSpeModSym.EdgeAttributes(new ((null, null, null, null, Orienteering_ISOM_2017_2_RunSpeModSym.VegetationAndManMade.Forest_405, null), 0)), To =nearestVertices[0]}]};
+            var edgeToNewVertex = new BuildableEdge{ Attributes = new Orienteering_ISOM_2017_2_RunSpeModSym.EdgeAttributes(new ((null, null, null, null, Orienteering_ISOM_2017_2_RunSpeModSym.VegetationAndManMade.Forest_405, null), 0)), To = newVertex};
             nearestVertices[0].OutgoingEdges.Add(edgeToNewVertex);
             _graphVerticesConnectedToNewVerticesByEdge.Add((nearestVertices[0], edgeToNewVertex)); 
             return newVertex;

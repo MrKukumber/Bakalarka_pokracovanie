@@ -158,7 +158,6 @@
     - ukladanie konfiguacii algoritmov, grafovych repre a uzivatelskych modelov
     - pridat tlacidla na hlavne okno, aby sa dalo pomocou nich dostat do akehokolvek otvoreneho sessinu, zaroven pri nich zobrazovat zakladne info o session-u (meno otvorenej mapy, otvoreneho uzivatelskeho modelu, cislovat ich alebo pridat moznost pomenovat session)
 - podpora pluginov
-- spracovat vinohrady a jednosmernu vegetaciu
 - upravit parsovanie mapy - pokial by na vstupe bol obrovitansky objekt, ktory moze zmrazit program, odignorovat ho - dajme tomu, ze by mal viac ako 100_000 suradnic - je mozne, ze zmrazenie dojde uz pri citani daneho objektu zo suboru, ale to neviem ako by som riesil...mozem pozriet, ci ta kniznica na parsovanie xml to nejak handluje
 
 - model-creating session
@@ -174,6 +173,7 @@
 - pridat spravne spracovavanie dier v polygonoch v omap file-och - nateraz diery v polygonoch ignorujem - upravit aj vykreslovanie map aj vytvaranie mapovych reprezentacii + pri vytvarani chainov spracovavat nove vytvorene diery vzniknute specifickym zapletenim polygonu objektu (neprocesovat novo vzniknute chainy oddelene ale naraz)
 - v tejto chvili by malo byt mozne vo vytvarani mapovej reprezentacie pripajat chain-u na vsetky blizke vrcholy grafu, nie len na tie, ktorym bola pretata hrana - malo by sa este overit - razantne zlepsenia hladania ciest v mestach
 - test toho, ci uz nahodou nejake optepafi niekde nebezi
+- spracovat vinohrady a jednosmernu vegetaciu
 
 ## Myslienky do buducna
 
