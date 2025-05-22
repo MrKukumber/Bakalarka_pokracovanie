@@ -41,7 +41,7 @@ public abstract class SearchingAlgorithm<TConfiguration> : ISearchingAlgorithm w
     public abstract string Name { get; }
     
     /// <inheritdoc cref="ISearchingAlgorithm.Implementations"/>
-    public abstract ISearchingAlgorithmImplementationRequirementsIndicator[] Implementations { get; }
+    public abstract ISearchingAlgorithmImplementation[] Implementations { get; }
 
     /// <summary>
     /// Default configuration to be used in execution of searching algorithm.
@@ -80,7 +80,7 @@ public abstract class SearchingAlgorithm<TConfiguration> : ISearchingAlgorithm w
     {
         foreach (var implementation in Implementations)
         {
-            if (implementation is ISearchingAlgorithmImplementation<TConfiguration> impl && implementation.IsUsableGraph<TVertex, TEdge, TVertexAttributes, TEdgeAttributes>(graph) && implementation.AreUsableUserModels(userModels))
+            if (implementation is SearchingAlgorithmImplementation<TConfiguration> impl && implementation.IsUsableGraph<TVertex, TEdge, TVertexAttributes, TEdgeAttributes>(graph) && implementation.AreUsableUserModels(userModels))
             {
                 lock (graph)
                 {
@@ -109,7 +109,7 @@ public abstract class SearchingAlgorithm<TConfiguration> : ISearchingAlgorithm w
     {
         foreach (var implementation in Implementations)
         {
-            if (implementation is ISearchingAlgorithmImplementation<TConfiguration> impl && implementation.IsUsableGraph<TVertex, TEdge, TVertexAttributes, TEdgeAttributes>(graph) && implementation.IsUsableUserModel(userModel))
+            if (implementation is SearchingAlgorithmImplementation<TConfiguration> impl && implementation.IsUsableGraph<TVertex, TEdge, TVertexAttributes, TEdgeAttributes>(graph) && implementation.IsUsableUserModel(userModel))
             {
                 if(configuration is TConfiguration config)
                     return impl.GetExecutor(graph, userModel, config);

@@ -15,7 +15,7 @@ public class AStar : SearchingAlgorithm<AStarConfiguration>
     /// <inheritdoc cref="SearchingAlgorithm{TConfiguration}"/> 
     public override string Name { get; } = "A*";
     /// <inheritdoc cref="SearchingAlgorithm{TConfiguration}"/> 
-    public override ISearchingAlgorithmImplementationRequirementsIndicator[] Implementations { get; } = [AStarUsesPredsDict.Instance, AStarUsesPredsInVerts.Instance];
+    public override ISearchingAlgorithmImplementation[] Implementations { get; } = [AStarUsesPredsDict.Instance, AStarUsesPredsInVerts.Instance];
     /// <inheritdoc cref="SearchingAlgorithm{TConfiguration}"/> 
     public override AStarConfiguration DefaultConfiguration { get; } = new ();
 }

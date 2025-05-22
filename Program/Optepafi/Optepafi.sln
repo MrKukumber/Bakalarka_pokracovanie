@@ -6,6 +6,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OptepafiTests", "OptepafiTe
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MapRepreViewer", "MapRepreViewer\MapRepreViewer.csproj", "{D4E6ABC7-886B-4B9B-B14E-8BB02B20A4F6}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClassLibrary1", "ClassLibrary1\ClassLibrary1.csproj", "{AEB46DF7-5822-4032-9C85-848711339CB9}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Plugins", "Plugins", "{0AD0116D-3531-4A56-BAEB-C6FAEA43AAF5}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "MapRepre", "MapRepre", "{107578A0-FBCD-477A-ACF2-68336B20970A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -24,5 +30,12 @@ Global
 		{D4E6ABC7-886B-4B9B-B14E-8BB02B20A4F6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D4E6ABC7-886B-4B9B-B14E-8BB02B20A4F6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D4E6ABC7-886B-4B9B-B14E-8BB02B20A4F6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AEB46DF7-5822-4032-9C85-848711339CB9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AEB46DF7-5822-4032-9C85-848711339CB9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AEB46DF7-5822-4032-9C85-848711339CB9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AEB46DF7-5822-4032-9C85-848711339CB9}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{107578A0-FBCD-477A-ACF2-68336B20970A} = {0AD0116D-3531-4A56-BAEB-C6FAEA43AAF5}
 	EndGlobalSection
 EndGlobal

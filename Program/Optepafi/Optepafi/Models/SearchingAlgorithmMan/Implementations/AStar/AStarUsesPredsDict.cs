@@ -19,38 +19,35 @@ using Tmds.DBus.Protocol;
 
 namespace Optepafi.Models.SearchingAlgorithmMan.Implementations.AStar;
 
-public class AStarUsesPredsDict : ISearchingAlgorithmImplementation<AStarConfiguration>
+public class AStarUsesPredsDict : SearchingAlgorithmImplementation<AStarConfiguration>
 {
-    
     public static AStarUsesPredsDict Instance { get; } = new AStarUsesPredsDict();
     private AStarUsesPredsDict() {}
-    public bool DoesRepresentUsableGraph<TVertex, TEdge, TVertexAttributes, TEdgeAttributes>(
-        IGraphRepresentative<IGraph<TVertex, TEdge>, TVertex, TEdge> graphRepresentative) where TVertex : IVertex where TEdge : IEdge where TVertexAttributes : IVertexAttributes where TEdgeAttributes : IEdgeAttributes
+    
+    public override bool DoesRepresentUsableGraph<TVertex, TEdge, TVertexAttributes, TEdgeAttributes>(
+        IGraphRepresentative<IGraph<TVertex, TEdge>, TVertex, TEdge> graphRepresentative) 
     {
         return graphRepresentative is IGraphRepresentative< ICanBeSearched<TVertex, TEdge, float, TVertexAttributes, TEdgeAttributes>, TVertex, TEdge>;
     }
-
-    public bool DoesRepresentUsableUserModel<TTemplate, TVertexAttributes, TEdgeAttributes>(IUserModelType<IComputing<TTemplate, TVertexAttributes, TEdgeAttributes>, TTemplate> userModelType) where TTemplate : ITemplate<TVertexAttributes, TEdgeAttributes> where TVertexAttributes : IVertexAttributes where TEdgeAttributes : IEdgeAttributes
+    public override bool DoesRepresentUsableUserModel<TTemplate, TVertexAttributes, TEdgeAttributes>(IUserModelType<IComputing<TTemplate, TVertexAttributes, TEdgeAttributes>, TTemplate> userModelType) 
     {
         return userModelType 
             is IUserModelType<IAStarHeuristicsComputing<TTemplate, TVertexAttributes, TEdgeAttributes> , TTemplate> 
             and IUserModelType<IWeightComputing<TTemplate, TVertexAttributes, TEdgeAttributes>, TTemplate> ;
     }
-
-    public bool IsUsableGraph<TVertex, TEdge, TVertexAttributes, TEdgeAttributes>(IGraph<TVertex, TEdge> graph) where TVertex : IVertex where TEdge : IEdge where TVertexAttributes : IVertexAttributes where TEdgeAttributes : IEdgeAttributes
+    public override bool IsUsableGraph<TVertex, TEdge, TVertexAttributes, TEdgeAttributes>(IGraph<TVertex, TEdge> graph) 
     {
         return graph is ICanBeSearched<TVertex, TEdge, float, TVertexAttributes, TEdgeAttributes>;
     }
-
-    public bool IsUsableUserModel<TVertexAttributes, TEdgeAttributes>(IUserModel<ITemplate<TVertexAttributes, TEdgeAttributes>> userModel) where TVertexAttributes : IVertexAttributes where TEdgeAttributes : IEdgeAttributes
+    public override bool IsUsableUserModel<TVertexAttributes, TEdgeAttributes>(IUserModel<ITemplate<TVertexAttributes, TEdgeAttributes>> userModel) 
     {
         return userModel 
             is IAStarHeuristicsComputing<ITemplate<TVertexAttributes,TEdgeAttributes>, TVertexAttributes, TEdgeAttributes> 
             and IWeightComputing<ITemplate<TVertexAttributes, TEdgeAttributes>, TVertexAttributes, TEdgeAttributes>;
     }
 
-    public IPath<TVertexAttributes, TEdgeAttributes>[] SearchForPaths<TVertexAttributes, TEdgeAttributes, TVertex, TEdge>(Leg[] track, IGraph<TVertex, TEdge> graph, IList<IUserModel<ITemplate<TVertexAttributes, TEdgeAttributes>>> userModels,
-        AStarConfiguration configuration, IProgress<ISearchingReport>? progress, CancellationToken? cancellationToken) where TVertexAttributes : IVertexAttributes where TEdgeAttributes : IEdgeAttributes where TVertex : IVertex where TEdge : IEdge
+    public override IPath<TVertexAttributes, TEdgeAttributes>[] SearchForPaths<TVertexAttributes, TEdgeAttributes, TVertex, TEdge>(Leg[] track, IGraph<TVertex, TEdge> graph, IList<IUserModel<ITemplate<TVertexAttributes, TEdgeAttributes>>> userModels,
+        AStarConfiguration configuration, IProgress<ISearchingReport>? progress, CancellationToken? cancellationToken) 
     {
         List<IPath<TVertexAttributes, TEdgeAttributes>> paths = new();
         foreach (var userModel in userModels)
@@ -61,8 +58,8 @@ public class AStarUsesPredsDict : ISearchingAlgorithmImplementation<AStarConfigu
         return paths.ToArray();
     }
 
-    public IPath<TVertexAttributes, TEdgeAttributes> ExecutorSearch<TVertexAttributes, TEdgeAttributes, TVertex, TEdge>(Leg[] track, IGraph<TVertex, TEdge> graph,
-        IUserModel<ITemplate<TVertexAttributes, TEdgeAttributes>> userModel, AStarConfiguration configuration, IProgress<ISearchingReport>? progress, CancellationToken? cancellationToken) where TVertexAttributes : IVertexAttributes where TEdgeAttributes : IEdgeAttributes where TVertex : IVertex where TEdge : IEdge
+    protected override IPath<TVertexAttributes, TEdgeAttributes> ExecutorSearch<TVertexAttributes, TEdgeAttributes, TVertex, TEdge>(Leg[] track, IGraph<TVertex, TEdge> graph,
+        IUserModel<ITemplate<TVertexAttributes, TEdgeAttributes>> userModel, AStarConfiguration configuration, IProgress<ISearchingReport>? progress, CancellationToken? cancellationToken) 
         => Algorithm<TVertexAttributes, TEdgeAttributes>.Instance.Search(track, graph, userModel, configuration, progress, cancellationToken); 
     
     private class Algorithm<TVertexAttributes, TEdgeAttributes> :
@@ -120,6 +117,10 @@ public class AStarUsesPredsDict : ISearchingAlgorithmImplementation<AStarConfigu
                         if (!visited.Contains(edge.To))
                         {
                             float g = frontierVerticesCosts[vertex] + GetEdgeWeight(vertex, edge, weightComputingUserModel, basicGraph.Scale);
+                            if (g is float.NaN)
+                            {
+                                Console.WriteLine();
+                            }
                             float f = g + aStarHeuristicsComputingUserModel.GetWeightFromHeuristics(edge.To.Attributes, finishVertex.Attributes, basicGraph.Scale);
                             if (frontier.Contains(edge.To))
                                 if (frontier.GetPriority(edge.To) < f) continue;
@@ -132,7 +133,7 @@ public class AStarUsesPredsDict : ISearchingAlgorithmImplementation<AStarConfigu
                 }
                 return new SegmentedLinesPath<TVertexAttributes, TEdgeAttributes>();
             }
-            throw new ArgumentException("User model does not provided required functionality.");
+            throw new ArgumentException("User model did not provide required functionality.");
         }
 
         private float GetEdgeWeight<TVertex, TEdge>(TVertex vertex, TEdge edge, IWeightComputing<ITemplate<TVertexAttributes, TEdgeAttributes>, TVertexAttributes, TEdgeAttributes> weightComputingUserModel, int mapScale)

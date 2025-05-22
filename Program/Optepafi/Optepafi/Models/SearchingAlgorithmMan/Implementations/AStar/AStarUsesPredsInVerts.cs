@@ -31,44 +31,41 @@ namespace Optepafi.Models.SearchingAlgorithmMan.Implementations.AStar;
 /// At this moment, it does not report progress of search. Also, it does not use any configuration of its behaviour.
 /// </summary>
 public class AStarUsesPredsInVerts : 
-    ISearchingAlgorithmImplementation<AStarConfiguration>
+    SearchingAlgorithmImplementation<AStarConfiguration>
 {
     public static AStarUsesPredsInVerts Instance { get; } = new AStarUsesPredsInVerts();
     private AStarUsesPredsInVerts() {}
-    /// <inheritdoc cref="ISearchingAlgorithmImplementation{TConfiguration}"/> 
-    public bool DoesRepresentUsableGraph<TVertex, TEdge, TVertexAttributes, TEdgeAttributes>(IGraphRepresentative<IGraph<TVertex, TEdge>, TVertex, TEdge> graphRepresentative) 
-        where TVertex : IVertex where TEdge : IEdge where TVertexAttributes : IVertexAttributes where TEdgeAttributes : IEdgeAttributes
+    /// <inheritdoc cref="SearchingAlgorithmImplementation{TConfiguration}"/> 
+    public override bool DoesRepresentUsableGraph<TVertex, TEdge, TVertexAttributes, TEdgeAttributes>(IGraphRepresentative<IGraph<TVertex, TEdge>, TVertex, TEdge> graphRepresentative) 
     {
         return graphRepresentative is IGraphRepresentative<IRemembersPredecessors<TVertex, TEdge, float, TVertexAttributes, TEdgeAttributes>, TVertex, TEdge>;
     }
 
-    /// <inheritdoc cref="ISearchingAlgorithmImplementation{TConfiguration}"/> 
-    public bool DoesRepresentUsableUserModel<TTemplate, TVertexAttributes, TEdgeAttributes>(IUserModelType<IComputing<TTemplate, TVertexAttributes, TEdgeAttributes>, TTemplate> userModelType) 
-        where TTemplate : ITemplate<TVertexAttributes, TEdgeAttributes> where TVertexAttributes : IVertexAttributes where TEdgeAttributes : IEdgeAttributes
+    /// <inheritdoc cref="SearchingAlgorithmImplementation{TConfiguration}"/> 
+    public override bool DoesRepresentUsableUserModel<TTemplate, TVertexAttributes, TEdgeAttributes>(IUserModelType<IComputing<TTemplate, TVertexAttributes, TEdgeAttributes>, TTemplate> userModelType) 
     {
         return userModelType 
             is IUserModelType<IAStarHeuristicsComputing<TTemplate, TVertexAttributes, TEdgeAttributes> , TTemplate> 
             and IUserModelType<IWeightComputing<TTemplate, TVertexAttributes, TEdgeAttributes>, TTemplate> ;
     }
 
-    /// <inheritdoc cref="ISearchingAlgorithmImplementation{TConfiguration}"/> 
-    public bool IsUsableGraph<TVertex, TEdge, TVertexAttributes, TEdgeAttributes>(IGraph<TVertex, TEdge> graph) 
-        where TVertex : IVertex where TEdge : IEdge where TVertexAttributes : IVertexAttributes where TEdgeAttributes : IEdgeAttributes
+    /// <inheritdoc cref="SearchingAlgorithmImplementation{TConfiguration}"/> 
+    public override bool IsUsableGraph<TVertex, TEdge, TVertexAttributes, TEdgeAttributes>(IGraph<TVertex, TEdge> graph) 
     {
         return graph is IRemembersPredecessors<TVertex, TEdge, float, TVertexAttributes, TEdgeAttributes>;
     }
 
-    /// <inheritdoc cref="ISearchingAlgorithmImplementation{TConfiguration}"/> 
-    public bool IsUsableUserModel<TVertexAttributes, TEdgeAttributes>(IUserModel<ITemplate<TVertexAttributes, TEdgeAttributes>> userModel) where TVertexAttributes : IVertexAttributes where TEdgeAttributes : IEdgeAttributes
+    /// <inheritdoc cref="SearchingAlgorithmImplementation{TConfiguration}"/> 
+    public override bool IsUsableUserModel<TVertexAttributes, TEdgeAttributes>(IUserModel<ITemplate<TVertexAttributes, TEdgeAttributes>> userModel) 
     {
         return userModel 
             is IAStarHeuristicsComputing<ITemplate<TVertexAttributes,TEdgeAttributes>, TVertexAttributes, TEdgeAttributes> 
             and IWeightComputing<ITemplate<TVertexAttributes, TEdgeAttributes>, TVertexAttributes, TEdgeAttributes>;
     }
 
-    /// <inheritdoc cref="ISearchingAlgorithmImplementation{TConfiguration}"/> 
-    public IPath<TVertexAttributes, TEdgeAttributes>[] SearchForPaths<TVertexAttributes, TEdgeAttributes, TVertex, TEdge>(Leg[] track, IGraph<TVertex, TEdge> graph, IList<IUserModel<ITemplate<TVertexAttributes, TEdgeAttributes>>> userModels,
-        AStarConfiguration configuration, IProgress<ISearchingReport>? progress, CancellationToken? cancellationToken) where TVertexAttributes : IVertexAttributes where TEdgeAttributes : IEdgeAttributes where TVertex : IVertex where TEdge : IEdge
+    /// <inheritdoc cref="SearchingAlgorithmImplementation{TConfiguration}"/> 
+    public override IPath<TVertexAttributes, TEdgeAttributes>[] SearchForPaths<TVertexAttributes, TEdgeAttributes, TVertex, TEdge>(Leg[] track, IGraph<TVertex, TEdge> graph, IList<IUserModel<ITemplate<TVertexAttributes, TEdgeAttributes>>> userModels,
+        AStarConfiguration configuration, IProgress<ISearchingReport>? progress, CancellationToken? cancellationToken)
     {
         List<IPath<TVertexAttributes, TEdgeAttributes>> paths = new();
         foreach (var userModel in userModels)
@@ -79,15 +76,11 @@ public class AStarUsesPredsInVerts :
         return paths.ToArray();
     }
 
-    /// <inheritdoc cref="ISearchingAlgorithmImplementation{TConfiguration}"/> 
-    public IPath<TVertexAttributes, TEdgeAttributes> ExecutorSearch<TVertexAttributes, TEdgeAttributes, TVertex, TEdge>(
+    /// <inheritdoc cref="SearchingAlgorithmImplementation{TConfiguration}"/> 
+    protected override IPath<TVertexAttributes, TEdgeAttributes> ExecutorSearch<TVertexAttributes, TEdgeAttributes, TVertex, TEdge>(
         Leg[] track, IGraph<TVertex, TEdge> graph,
         IUserModel<ITemplate<TVertexAttributes, TEdgeAttributes>> userModel, AStarConfiguration configuration,
         IProgress<ISearchingReport>? progress, CancellationToken? cancellationToken)
-        where TVertexAttributes : IVertexAttributes
-        where TEdgeAttributes : IEdgeAttributes
-        where TVertex : IVertex
-        where TEdge : IEdge
         => Algorithm<TVertexAttributes, TEdgeAttributes>.Instance.Search(track, graph, userModel, configuration, progress, cancellationToken); 
 
     private class Algorithm<TVertexAttributes, TEdgeAttributes> :

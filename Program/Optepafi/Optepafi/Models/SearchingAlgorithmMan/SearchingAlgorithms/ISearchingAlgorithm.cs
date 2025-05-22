@@ -30,7 +30,7 @@ namespace Optepafi.Models.SearchingAlgorithmMan.SearchingAlgorithms;
 /// IMPORTANT!!! When algorithm is executing the graphs state will become inconsistent. That means that in time of execution it can not be used by other process than the current one.  
 /// When algorithm is done with searching for path, it has to let graph to clean itself so it can be returned to its consistent state.
 /// 
-/// Also this interface should not be implemented right away. <see cref="SearchingAlgorithm{TConfiguration}"/> class should be derived instead.
+/// Also, this interface should not be implemented right away. <see cref="SearchingAlgorithm{TConfiguration}"/> class should be derived instead.
 /// Each algorithm implementation should have good knowledge of graph functionalities it uses. Wrong usage can end up in bad behaviour of graph.   
 /// </summary>
 public interface ISearchingAlgorithm
@@ -42,7 +42,7 @@ public interface ISearchingAlgorithm
     /// Implementations should be in collection sorted in a way such that implementation which are the fastest and simplest 
     /// are at the beginning, and implementations which are the slowest and most complicated are at the end.
     /// </summary>
-    protected ISearchingAlgorithmImplementationRequirementsIndicator[] Implementations { get; }
+    protected ISearchingAlgorithmImplementation[] Implementations { get; }
     
     /// <summary>
     /// Default configuration to be used in execution of searching algorithm.

@@ -144,6 +144,7 @@
 - nechat nech view vykresluje iba objekty ktore sa v danej chvili su vidiet na obrazovke...neviemsice uplne teraz preco ale proste mohlo by to pomoct nejakym sposobom mozno ku zlepseniu vykonu
 - poriadne spravit lokalizaciu
 - zlepsit graficku stranku aplikacie
+  - vykreslovanie vinohradov a jednosmernych porastov
 - zlepsit uzivatelsku privetivost
   - PathFinding
     - zvyraznit mapy/template-y, ktore nesedia ku vybranemu protajsku
@@ -158,8 +159,8 @@
     - ukladanie konfiguacii algoritmov, grafovych repre a uzivatelskych modelov
     - pridat tlacidla na hlavne okno, aby sa dalo pomocou nich dostat do akehokolvek otvoreneho sessinu, zaroven pri nich zobrazovat zakladne info o session-u (meno otvorenej mapy, otvoreneho uzivatelskeho modelu, cislovat ich alebo pridat moznost pomenovat session)
 - podpora pluginov
-- upravit parsovanie mapy - pokial by na vstupe bol obrovitansky objekt, ktory moze zmrazit program, odignorovat ho - dajme tomu, ze by mal viac ako 100_000 suradnic - je mozne, ze zmrazenie dojde uz pri citani daneho objektu zo suboru, ale to neviem ako by som riesil...mozem pozriet, ci ta kniznica na parsovanie xml to nejak handluje
 
+- upravit parsovanie mapy - pokial by na vstupe bol obrovitansky objekt, ktory moze zmrazit program, odignorovat ho - dajme tomu, ze by mal viac ako 100_000 suradnic - je mozne, ze zmrazenie dojde uz pri citani daneho objektu zo suboru, ale to neviem ako by som riesil...mozem pozriet, ci ta kniznica na parsovanie xml to nejak handluje
 - model-creating session
 - spravit relevance feedback
 

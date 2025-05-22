@@ -27,31 +27,30 @@ namespace Optepafi.Models.SearchingAlgorithmMan.Implementations.SmileyFaceDrawer
 /// It simulates drawing of bunch of smiley faces according to provided track.  
 /// It report progress of drawing an in the end returns path which defines positions of "drawn" smiley faces.  
 /// This type is just demonstrative algorithm implementation for presenting application functionality.  
-/// For more information on implementations of searching algorithms see <see cref="ISearchingAlgorithmImplementation{TConfiguration}"/>.  
+/// For more information on implementations of searching algorithms see <see cref="SearchingAlgorithmImplementation{TConfiguration}"/>.  
 /// </summary>
-public class SmileyFacesDrawerGeneral : ISearchingAlgorithmImplementation<NullConfiguration>
+public class SmileyFacesDrawerGeneral : SearchingAlgorithmImplementation<NullConfiguration>
 {
     public static SmileyFacesDrawerGeneral Instance { get; } = new();
     private SmileyFacesDrawerGeneral(){}
 
-    /// <inheritdoc cref="ISearchingAlgorithmImplementISearchingAlgorithmImplementation{TConfiguration}"/>
+    /// <inheritdoc cref="SearchingAlgorithmImplementation{TConfiguration}.DoesRepresentUsableGraph{TVertex,TEdge,TVertexAttributes,TEdgeAttributes}"/>
     /// <remarks>
     /// Used graph does not have to provide no special functionality.
     /// </remarks>
-    public bool DoesRepresentUsableGraph<TVertex, TEdge, TVertexAttributes, TEdgeAttributes>(
-        IGraphRepresentative<IGraph<TVertex, TEdge>, TVertex, TEdge> graphRepresentative) where TVertex : IVertex where TEdge : IEdge where TVertexAttributes : IVertexAttributes where TEdgeAttributes : IEdgeAttributes
+    public override bool DoesRepresentUsableGraph<TVertex, TEdge, TVertexAttributes, TEdgeAttributes>(
+        IGraphRepresentative<IGraph<TVertex, TEdge>, TVertex, TEdge> graphRepresentative) 
     {
         if (graphRepresentative is IGraphRepresentative<IGraph<TVertex, TEdge>, TVertex, TEdge>) 
             return true;
         return false;
     }
 
-    /// <inheritdoc cref="ISearchingAlgorithmImplementISearchingAlgorithmImplementation{TConfiguration}l{TVertexAttributes,TEdgeAttributes}"/>
+    /// <inheritdoc cref="SearchingAlgorithmImplementation{TConfiguration}.DoesRepresentUsableUserModel{TTemplate,TVertexAttributes,TEdgeAttributes}"/>
     /// <remarks>
     /// Used user model does not have to provide no special functionality.
     /// </remarks>
-    public bool DoesRepresentUsableUserModel<TTemplate, TVertexAttributes, TEdgeAttributes>(IUserModelType<IComputing<TTemplate, TVertexAttributes, TEdgeAttributes>, TTemplate> userModelType)
-        where TTemplate : ITemplate<TVertexAttributes, TEdgeAttributes> where TVertexAttributes : IVertexAttributes where TEdgeAttributes : IEdgeAttributes
+    public override bool DoesRepresentUsableUserModel<TTemplate, TVertexAttributes, TEdgeAttributes>(IUserModelType<IComputing<TTemplate, TVertexAttributes, TEdgeAttributes>, TTemplate> userModelType)
     {
         if (userModelType is IUserModelType<IComputing<TTemplate, TVertexAttributes, TEdgeAttributes>, TTemplate>)
             return true;
@@ -59,11 +58,11 @@ public class SmileyFacesDrawerGeneral : ISearchingAlgorithmImplementation<NullCo
     }
 
     
-    /// <inheritdoc cref="ISearchingAlgorithmImplementISearchingAlgorithmImplementation{TConfiguration}utes,TEdgeAttributes}"/>
+    /// <inheritdoc cref="SearchingAlgorithmImplementation{TConfiguration}.IsUsableGraph{TVertex,TEdge,TVertexAttributes,TEdgeAttributes}"/>
     /// <remarks>
     /// Used graph does not have to provide no special functionality.
     /// </remarks>
-    public bool IsUsableGraph<TVertex, TEdge, TVertexAttributes, TEdgeAttributes>(IGraph<TVertex, TEdge> graph) where TVertex : IVertex where TEdge : IEdge where TVertexAttributes : IVertexAttributes where TEdgeAttributes : IEdgeAttributes
+    public override bool IsUsableGraph<TVertex, TEdge, TVertexAttributes, TEdgeAttributes>(IGraph<TVertex, TEdge> graph)
     {
         if (graph is IGraph<TVertex, TEdge>)
             return true;
@@ -71,40 +70,40 @@ public class SmileyFacesDrawerGeneral : ISearchingAlgorithmImplementation<NullCo
     }
 
 
-    /// <inheritdoc cref="ISearchingAlgorithmImplementISearchingAlgorithmImplementation{TConfiguration}tributes,TEdgeAttributes}"/>
+    /// <inheritdoc cref="SearchingAlgorithmImplementation{TConfiguration}.IsUsableUserModel{TVertexAttributes,TEdgeAttributes}"/>
     /// <remarks>
     /// Used user models do not have to provide no special functionality.
     /// </remarks>
-    public bool IsUsableUserModel<TVertexAttributes, TEdgeAttributes>(IUserModel<ITemplate<TVertexAttributes, TEdgeAttributes>> userModel) where TVertexAttributes : IVertexAttributes where TEdgeAttributes : IEdgeAttributes
+    public override bool IsUsableUserModel<TVertexAttributes, TEdgeAttributes>(IUserModel<ITemplate<TVertexAttributes, TEdgeAttributes>> userModel)
     {
         if (userModel is IComputing<ITemplate<TVertexAttributes, TEdgeAttributes>, TVertexAttributes, TEdgeAttributes>)
             return true;
         return false;
     }
 
-    /// <inheritdoc cref="ISearchingAlgorithmImplementISearchingAlgorithmImplementation{TConfiguration}butes,TEdgeAttributes}"/>
+    /// <inheritdoc cref="SearchingAlgorithmImplementation{TConfiguration}.SearchForPaths{TVertexAttributes,TEdgeAttributes,TVertex,TEdge}"/>
     /// <remarks>
     /// If more then one user model is provided, path is computed only with the first one and resulting path is then returned multiple times according to count of user models.  
     /// It does not matter because drawing of smiley faces does not depend of user model.  
     /// Searching is done using <c>ExecutorSearch</c> method.  
     /// </remarks>
-    public IPath<TVertexAttributes, TEdgeAttributes>[] SearchForPaths<TVertexAttributes, TEdgeAttributes, TVertex, TEdge>(Leg[] track, IGraph<TVertex, TEdge> graph, IList<IUserModel<ITemplate<TVertexAttributes, TEdgeAttributes>>> userModels,
-        NullConfiguration configuration, IProgress<ISearchingReport>? progress, CancellationToken? cancellationToken) where TVertexAttributes : IVertexAttributes where TEdgeAttributes : IEdgeAttributes where TVertex : IVertex where TEdge : IEdge
+    public override IPath<TVertexAttributes, TEdgeAttributes>[] SearchForPaths<TVertexAttributes, TEdgeAttributes, TVertex, TEdge>
+    (Leg[] track, IGraph<TVertex, TEdge> graph, IList<IUserModel<ITemplate<TVertexAttributes, TEdgeAttributes>>> userModels, NullConfiguration configuration, IProgress<ISearchingReport>? progress, CancellationToken? cancellationToken) 
     {
         if (userModels.Count == 0) return [];
         var drawnFacePaths = ExecutorSearch(track, graph, userModels[0], configuration, progress, cancellationToken);
         return Enumerable.Repeat(drawnFacePaths, userModels.Count).ToArray();
     }
 
-    /// <inheritdoc cref="ISearchingAlgorithmImplementISearchingAlgorithmImplementation{TConfiguration}butes,TEdgeAttributes}"/>
+    /// <inheritdoc cref="SearchingAlgorithmImplementation{TConfiguration}.ExecutorSearch{TVertexAttributes,TEdgeAttributes,TVertex,TEdge}"/>
     /// <remarks>
     /// Drawing is performed by cycle when in each iteration one smiley face is drawn for specified leg.  
     /// Drawing progress is continuously reported so that it could be shown to user.  
     /// By refreshing to new searching state after each iteration we achieve showing only objects of currently drawn smiley face.  
     /// During drawing the path is continuously constructed and in the end it is returned as result.  
     /// </remarks>
-    public IPath<TVertexAttributes, TEdgeAttributes> ExecutorSearch<TVertexAttributes, TEdgeAttributes, TVertex, TEdge>(Leg[] track, IGraph<TVertex, TEdge> graph,
-        IUserModel<ITemplate<TVertexAttributes, TEdgeAttributes>> userModel, NullConfiguration configuration, IProgress<ISearchingReport>? progress, CancellationToken? cancellationToken) where TVertexAttributes : IVertexAttributes where TEdgeAttributes : IEdgeAttributes where TVertex : IVertex where TEdge : IEdge
+    protected override IPath<TVertexAttributes, TEdgeAttributes> ExecutorSearch<TVertexAttributes, TEdgeAttributes, TVertex, TEdge>(Leg[] track, IGraph<TVertex, TEdge> graph,
+        IUserModel<ITemplate<TVertexAttributes, TEdgeAttributes>> userModel, NullConfiguration configuration, IProgress<ISearchingReport>? progress, CancellationToken? cancellationToken)
     {
         int drawingDuration = 500; SmileyFacePathDrawingState<TVertexAttributes, TEdgeAttributes>.SmileyFaceObject[] allFacialObjectsExceptLeftEye =
         [

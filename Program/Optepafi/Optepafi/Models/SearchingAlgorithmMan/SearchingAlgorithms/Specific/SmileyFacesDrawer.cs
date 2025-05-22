@@ -23,5 +23,5 @@ public class SmileyFacesDrawer : SearchingAlgorithm<NullConfiguration>
     public override string Name { get; } = "Smiley face drawer";
     
     /// <inheritdoc cref="SearchingAlgorithm{TConfiguration}.Implementations"/>
-    public override ISearchingAlgorithmImplementationRequirementsIndicator[] Implementations { get; } = [SmileyFacesDrawerGeneral.Instance];
+    public override ISearchingAlgorithmImplementation[] Implementations { get; } = [SmileyFacesDrawerGeneral.Instance];
 }

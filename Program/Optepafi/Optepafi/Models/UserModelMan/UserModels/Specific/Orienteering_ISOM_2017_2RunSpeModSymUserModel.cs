@@ -106,6 +106,10 @@ public class Orienteering_ISOM_2017_2RunSpeModSymUserModel :
         var moreEfficientSurroundingsCoef = Math.Max(surroundingsCoef, secondSurroundingsCoef);
         if (moreEfficientSurroundingsCoef < 0.000000001) return float.PositiveInfinity; 
         
+        if (surroundingsCoef is float.NaN || secondSurroundingsCoef is float.NaN)
+        {
+            Console.WriteLine();
+        }
         var moreEfficientSurroundingsWithPathCoef = ApplyPathToSurroundingsCoef(through.LineFeatures, moreEfficientSurroundingsCoef);
         if (moreEfficientSurroundingsWithPathCoef < coefficientLowerBound) moreEfficientSurroundingsWithPathCoef = coefficientLowerBound;
 
@@ -285,55 +289,57 @@ public class Orienteering_ISOM_2017_2RunSpeModSymUserModel :
                     { Orienteering_ISOM_2017_2_RunSpeModSym.VegetationAndManMade.VegetationSlow_406, _ => VegetationSlowCoefficient.Value},
                     { Orienteering_ISOM_2017_2_RunSpeModSym.VegetationAndManMade.VegetationSlowNormalOneDir_406_1, symbolRotationAndFromToVector => 
                     {
-                        var rotatedFromToVector = symbolRotationAndFromToVector.Item2.RotateClockwise(symbolRotationAndFromToVector.Item1);
-                        var positiveRotatedFromToVector = new MapCoordinates(Math.Abs(rotatedFromToVector.XPos), Math.Abs(rotatedFromToVector.YPos));
-                        return VegetationSlowCoefficient.Value * positiveRotatedFromToVector.XPos / (positiveRotatedFromToVector.XPos + positiveRotatedFromToVector.YPos)+ ForestCoefficient.Value * positiveRotatedFromToVector.YPos / (positiveRotatedFromToVector.XPos + positiveRotatedFromToVector.YPos);
+                        var (rotatedX, rotatedY) = RotateClockwise(symbolRotationAndFromToVector.Item2.XPos, symbolRotationAndFromToVector.Item2.YPos, symbolRotationAndFromToVector.Item1);
+                        var (positiveRotatedX, positiveRotatedY) = (Math.Abs(rotatedX), Math.Abs(rotatedY));
+                        var a = VegetationSlowCoefficient.Value * positiveRotatedX / (positiveRotatedX + positiveRotatedY);
+                        var b = ForestCoefficient.Value * positiveRotatedY / (positiveRotatedX + positiveRotatedY);
+                        return (float) (a + b);
                     }},
                     { Orienteering_ISOM_2017_2_RunSpeModSym.VegetationAndManMade.VegetationWalk_408, _ => VegetationWalkCoefficient.Value},
                     { Orienteering_ISOM_2017_2_RunSpeModSym.VegetationAndManMade.VegetationWalkNormalOneDir_408_1, symbolRotationAndFromToVector =>
                     {
-                        var rotatedFromToVector = symbolRotationAndFromToVector.Item2.RotateClockwise(symbolRotationAndFromToVector.Item1);
-                        var positiveRotatedFromToVector = new MapCoordinates(Math.Abs(rotatedFromToVector.XPos), Math.Abs(rotatedFromToVector.YPos));
-                        return VegetationWalkCoefficient.Value * positiveRotatedFromToVector.XPos / (positiveRotatedFromToVector.XPos + positiveRotatedFromToVector.YPos) + ForestCoefficient.Value * positiveRotatedFromToVector.YPos / (positiveRotatedFromToVector.XPos + positiveRotatedFromToVector.YPos);
+                        var (rotatedX, rotatedY) = RotateClockwise(symbolRotationAndFromToVector.Item2.XPos, symbolRotationAndFromToVector.Item2.YPos, symbolRotationAndFromToVector.Item1);
+                        var (positiveRotatedX, positiveRotatedY) = (Math.Abs(rotatedX), Math.Abs(rotatedY));
+                        return (float) (VegetationWalkCoefficient.Value * positiveRotatedX / (positiveRotatedX + positiveRotatedY) + ForestCoefficient.Value * positiveRotatedY / (positiveRotatedX + positiveRotatedY));
                     }},
                     { Orienteering_ISOM_2017_2_RunSpeModSym.VegetationAndManMade.VegetationWalkSlowOneDir_408_2, symbolRotationAndFromToVector =>
                     {
-                        var rotatedFromToVector = symbolRotationAndFromToVector.Item2.RotateClockwise(symbolRotationAndFromToVector.Item1);
-                        var positiveRotatedFromToVector = new MapCoordinates(Math.Abs(rotatedFromToVector.XPos), Math.Abs(rotatedFromToVector.YPos));
-                        return VegetationWalkCoefficient.Value * positiveRotatedFromToVector.XPos / (positiveRotatedFromToVector.XPos + positiveRotatedFromToVector.YPos) + VegetationSlowCoefficient.Value * positiveRotatedFromToVector.YPos / (positiveRotatedFromToVector.XPos + positiveRotatedFromToVector.YPos);
+                        var (rotatedX, rotatedY) = RotateClockwise(symbolRotationAndFromToVector.Item2.XPos, symbolRotationAndFromToVector.Item2.YPos, symbolRotationAndFromToVector.Item1);
+                        var (positiveRotatedX, positiveRotatedY) = (Math.Abs(rotatedX), Math.Abs(rotatedY));
+                        return (float) (VegetationWalkCoefficient.Value * positiveRotatedX / (positiveRotatedX + positiveRotatedY) + VegetationSlowCoefficient.Value * positiveRotatedY / (positiveRotatedX + positiveRotatedY));
                     }},
                     { Orienteering_ISOM_2017_2_RunSpeModSym.VegetationAndManMade.VegetationFight_410, _ => VegetationFightCoefficient.Value},
                     { Orienteering_ISOM_2017_2_RunSpeModSym.VegetationAndManMade.VegetationFightNormalOneDir_410_1, symbolRotationAndFromToVector =>
                     {
-                        var rotatedFromToVector = symbolRotationAndFromToVector.Item2.RotateClockwise(symbolRotationAndFromToVector.Item1);
-                        var positiveRotatedFromToVector = new MapCoordinates(Math.Abs(rotatedFromToVector.XPos), Math.Abs(rotatedFromToVector.YPos));
-                        return VegetationFightCoefficient.Value * positiveRotatedFromToVector.XPos / (positiveRotatedFromToVector.XPos + positiveRotatedFromToVector.YPos) + ForestCoefficient.Value * positiveRotatedFromToVector.YPos / (positiveRotatedFromToVector.XPos + positiveRotatedFromToVector.YPos);
+                        var (rotatedX, rotatedY) = RotateClockwise(symbolRotationAndFromToVector.Item2.XPos, symbolRotationAndFromToVector.Item2.YPos, symbolRotationAndFromToVector.Item1);
+                        var (positiveRotatedX, positiveRotatedY) = (Math.Abs(rotatedX), Math.Abs(rotatedY));
+                        return (float) (VegetationFightCoefficient.Value * positiveRotatedX / (positiveRotatedX + positiveRotatedY) + ForestCoefficient.Value * positiveRotatedY / (positiveRotatedX + positiveRotatedY));
                     }},
                     { Orienteering_ISOM_2017_2_RunSpeModSym.VegetationAndManMade.VegetationFightSlowOneDir_410_2, symbolRotationAndFromToVector =>
                     {
-                        var rotatedFromToVector = symbolRotationAndFromToVector.Item2.RotateClockwise(symbolRotationAndFromToVector.Item1);
-                        var positiveRotatedFromToVector = new MapCoordinates(Math.Abs(rotatedFromToVector.XPos), Math.Abs(rotatedFromToVector.YPos));
-                        return VegetationFightCoefficient.Value * positiveRotatedFromToVector.XPos / (positiveRotatedFromToVector.XPos + positiveRotatedFromToVector.YPos) + VegetationSlowCoefficient.Value * positiveRotatedFromToVector.YPos / (positiveRotatedFromToVector.XPos + positiveRotatedFromToVector.YPos);
+                        var (rotatedX, rotatedY) = RotateClockwise(symbolRotationAndFromToVector.Item2.XPos, symbolRotationAndFromToVector.Item2.YPos, symbolRotationAndFromToVector.Item1);
+                        var (positiveRotatedX, positiveRotatedY) = (Math.Abs(rotatedX), Math.Abs(rotatedY));
+                        return (float) (VegetationFightCoefficient.Value * positiveRotatedX / (positiveRotatedX + positiveRotatedY) + VegetationSlowCoefficient.Value * positiveRotatedY / (positiveRotatedX + positiveRotatedY));
                     }},
                     { Orienteering_ISOM_2017_2_RunSpeModSym.VegetationAndManMade.VegetationFightWalkOneDir_410_3, symbolRotationAndFromToVector =>
                     {
-                        var rotatedFromToVector = symbolRotationAndFromToVector.Item2.RotateClockwise(symbolRotationAndFromToVector.Item1);
-                        var positiveRotatedFromToVector = new MapCoordinates(Math.Abs(rotatedFromToVector.XPos), Math.Abs(rotatedFromToVector.YPos));
-                        return VegetationFightCoefficient.Value * positiveRotatedFromToVector.XPos / (positiveRotatedFromToVector.XPos + positiveRotatedFromToVector.YPos) + VegetationWalkCoefficient.Value * positiveRotatedFromToVector.YPos / (positiveRotatedFromToVector.XPos + positiveRotatedFromToVector.YPos);
+                        var (rotatedX, rotatedY) = RotateClockwise(symbolRotationAndFromToVector.Item2.XPos, symbolRotationAndFromToVector.Item2.YPos, symbolRotationAndFromToVector.Item1);
+                        var (positiveRotatedX, positiveRotatedY) = (Math.Abs(rotatedX), Math.Abs(rotatedY));
+                        return (float) (VegetationFightCoefficient.Value * positiveRotatedX / (positiveRotatedX + positiveRotatedY) + VegetationWalkCoefficient.Value * positiveRotatedY / (positiveRotatedX + positiveRotatedY));
                     }},
                     { Orienteering_ISOM_2017_2_RunSpeModSym.VegetationAndManMade.Orchard_413, _ => OrchardCoefficient.Value},
                     { Orienteering_ISOM_2017_2_RunSpeModSym.VegetationAndManMade.RoughOrchard_413, _ => RoughOrchardCoefficient.Value},
                     { Orienteering_ISOM_2017_2_RunSpeModSym.VegetationAndManMade.Vineyard_414, symbolRotationAndFromToVector =>
                     {
-                        var rotatedFromToVector = symbolRotationAndFromToVector.Item2.RotateClockwise(symbolRotationAndFromToVector.Item1);
-                        var positiveRotatedFromToVector = new MapCoordinates(Math.Abs(rotatedFromToVector.XPos), Math.Abs(rotatedFromToVector.YPos));
-                        return VineyardCrossingCoefficient.Value * positiveRotatedFromToVector.XPos / (positiveRotatedFromToVector.XPos + positiveRotatedFromToVector.YPos) + OpenLandCoefficient.Value * positiveRotatedFromToVector.YPos / (positiveRotatedFromToVector.XPos + positiveRotatedFromToVector.YPos);
+                        var (rotatedX, rotatedY) = RotateClockwise(symbolRotationAndFromToVector.Item2.XPos, symbolRotationAndFromToVector.Item2.YPos, symbolRotationAndFromToVector.Item1);
+                        var (positiveRotatedX, positiveRotatedY) = (Math.Abs(rotatedX), Math.Abs(rotatedY));
+                        return (float) (VineyardCrossingCoefficient.Value * positiveRotatedX / (positiveRotatedX + positiveRotatedY) + OpenLandCoefficient.Value * positiveRotatedY / (positiveRotatedX + positiveRotatedY));
                     }},
                     { Orienteering_ISOM_2017_2_RunSpeModSym.VegetationAndManMade.RoughVineyard_414, symbolRotationAndFromToVector =>
                     {
-                        var rotatedFromToVector = symbolRotationAndFromToVector.Item2.RotateClockwise(symbolRotationAndFromToVector.Item1);
-                        var positiveRotatedFromToVector = new MapCoordinates(Math.Abs(rotatedFromToVector.XPos), Math.Abs(rotatedFromToVector.YPos));
-                        return VineyardCrossingCoefficient.Value * positiveRotatedFromToVector.XPos / (positiveRotatedFromToVector.XPos + positiveRotatedFromToVector.YPos) + RoughOpenLandCoefficient.Value * positiveRotatedFromToVector.YPos / (positiveRotatedFromToVector.XPos + positiveRotatedFromToVector.YPos);
+                        (double rotatedX, double rotatedY) = RotateClockwise(symbolRotationAndFromToVector.Item2.XPos, symbolRotationAndFromToVector.Item2.YPos, symbolRotationAndFromToVector.Item1);
+                        (double positiveRotatedX, double positiveRotatedY) = (Math.Abs(rotatedX), Math.Abs(rotatedY));
+                        return (float) (VineyardCrossingCoefficient.Value * positiveRotatedX / (positiveRotatedX + positiveRotatedY) + RoughOpenLandCoefficient.Value * positiveRotatedY / (positiveRotatedX + positiveRotatedY));
                     }},
                     { Orienteering_ISOM_2017_2_RunSpeModSym.VegetationAndManMade.PavedArea_501, _ => PavedAreaCoefficient.Value},
                     { Orienteering_ISOM_2017_2_RunSpeModSym.VegetationAndManMade.AreaThatShallNotBeEntered_520, _ => AreaThatShallNotBeEnteredCoefficient.Value},
@@ -341,6 +347,13 @@ public class Orienteering_ISOM_2017_2RunSpeModSymUserModel :
                 };
             return _vegetationAndManMadeCoefficients;
         }
+    }
+
+    private (double, double) RotateClockwise(int x, int y, float angle)
+    {
+        double rotatedTransposedX = x * Math.Cos(angle) + y * Math.Sin(angle);
+        double rotatedTransposedY = -x * Math.Sin(angle) + y * Math.Cos(angle);
+        return (rotatedTransposedX, rotatedTransposedY);
     }
 
     private class OpenLandAdjustable() : BoundedFloatValueAdjustable("", null, 0, 1) { public OpenLandAdjustable(float value) : this() => Value = value; }

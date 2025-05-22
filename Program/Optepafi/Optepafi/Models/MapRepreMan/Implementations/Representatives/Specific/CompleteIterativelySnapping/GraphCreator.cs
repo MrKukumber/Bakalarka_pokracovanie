@@ -2645,8 +2645,6 @@ public class NetVertexBuilder<TVertex, TEdge>(Orienteering_ISOM_2017_2_RunSpeMod
     public required Orienteering_ISOM_2017_2_RunSpeModSym.Surroundings
         Surroundings { get; set; } = new ((null, null, null, null, null, null), 0);
 
-    // public required float SurroundingsVegetationAndManMadeRotation;
-
     public override void ConnectAfterBuild()
     {
          if (BuiltVertex is null) return;
