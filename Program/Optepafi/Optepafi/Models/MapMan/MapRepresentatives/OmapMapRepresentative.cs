@@ -54,6 +54,7 @@ public sealed class OmapMapRepresentative : IMapRepresentative<OmapMap>
 public static class OmapMapParser
 {
     private static int _cancellationCheckInterval = 10000;
+    private static int _maxObjectCoordsCount = 100_000;
     public enum ParseResult {Ok, Cancelled, Incomplete, UnsupportedVersion, XmlError, OmapError}
     public static ParseResult Parse((Stream mapStream,string path) input, CancellationToken? cancellationToken, out OmapMap? map)
     {
@@ -324,6 +325,8 @@ public static class OmapMapParser
             string strCoord = GetWordTill(strAllCoords, ';', ref i, strBuilder);
             
             if (IsCancellationRequested(cancellationToken, ref readsOrParsesSinceLastCheck)) return false;
+            if (coordsList.Count >= _maxObjectCoordsCount) return false;
+            
             int x; int y; byte type;
             
             int j = 0;
