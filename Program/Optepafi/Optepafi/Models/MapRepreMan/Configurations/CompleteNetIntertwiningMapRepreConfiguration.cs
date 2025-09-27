@@ -12,10 +12,10 @@ public class CompleteNetIntertwiningMapRepreConfiguration(int defaultStandardEdg
 
     public readonly BoundedIntValueConfigItem standardEdgeLength = new BoundedIntValueConfigItem("Standard edge length", defaultStandardEdgeLength, "micrometers", 500, 20_000);
     public readonly BoundedFloatValueConfigItem minBoundaryEdgeRatio = new BoundedFloatValueConfigItem("Ratio of minimal boundary edge length to standard one", defaultMinBoundaryEdgeRatio, "between 0.01 and 0.5", 0.01f,  0.5f);
-    public readonly CategoricalConfigItem typeOfNet = new CategoricalConfigItem("Type of net", [NetTypesEnumeration.Triangular], indexOfDefaultNetType);
+    public readonly CategoricalConfigItem typeOfNet = new CategoricalConfigItem("Type of net", [NetTypesEnumeration.Triangular, NetTypesEnumeration.Grid, NetTypesEnumeration.ExtendedGrid], indexOfDefaultNetType);
     // public readonly CategoricalConfigItem<NetTypesEnumeration> typeOfNet = new CategoricalConfigItem<NetTypesEnumeration>("Type of net", NetTypesEnumeration.GetValuesAsUnderlyingType<NetTypesEnumeration>().OfType<NetTypesEnumeration>() .ToArray(), indexOfDefaultNetType);
     public ImmutableList<IConfigItem> ConfigItems => [standardEdgeLength, minBoundaryEdgeRatio, typeOfNet];
-    public enum NetTypesEnumeration { Triangular = 0 }
+    public enum NetTypesEnumeration { Triangular = 0, Grid, ExtendedGrid }
     
     public IConfiguration DeepCopy()
     {

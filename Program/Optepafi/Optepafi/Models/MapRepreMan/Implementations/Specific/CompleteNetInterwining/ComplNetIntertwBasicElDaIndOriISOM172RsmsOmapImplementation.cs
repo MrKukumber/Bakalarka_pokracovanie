@@ -17,7 +17,7 @@ public abstract class CompleteNetIntertwiningBasicElevDataIndepOrienteering_ISOM
 {
     public string Name { get; } = "Complete net intertwining map repre. elev. data independent basic implementation for Orienteering (ISOM 2017-2) and Omap file format.";
 
-    // public INearestNeighborsSearchableDataStructure<ICompleteNetIntertwiningBasicGraph< Orienteering_ISOM_2017_2.VertexAttributes, Orienteering_ISOM_2017_2.EdgeAttributes>.Vertex> SearchableVertices { get; } = searchableVertices; //for debugging
+    public INearestNeighborsSearchableDataStructure<ICompleteNetIntertwiningBasicGraph< Orienteering_ISOM_2017_2_RunSpeModSym.VertexAttributes, Orienteering_ISOM_2017_2_RunSpeModSym.EdgeAttributes>.Vertex> SearchableVertices { get; } = searchableVertices; //for debugging
     public abstract void RestoreConsistency();
     public abstract ICompleteNetIntertwiningBasicGraph<Orienteering_ISOM_2017_2_RunSpeModSym.VertexAttributes, Orienteering_ISOM_2017_2_RunSpeModSym.EdgeAttributes>.Vertex GetVertexFor(MapCoordinates coords);
     

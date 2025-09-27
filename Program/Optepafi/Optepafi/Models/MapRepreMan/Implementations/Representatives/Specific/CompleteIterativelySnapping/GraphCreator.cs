@@ -116,9 +116,115 @@ public class GraphCreator<TVertex, TEdge>
         => configuration.typeOfNet.AllValues[configuration.typeOfNet.IndexOfSelectedValue] switch
     {
         CompleteNetIntertwiningMapRepreConfiguration.NetTypesEnumeration.Triangular => CreateTriangularNet(map, configuration),
+        CompleteNetIntertwiningMapRepreConfiguration.NetTypesEnumeration.Grid => CreateGridNet(map, configuration),
+        CompleteNetIntertwiningMapRepreConfiguration.NetTypesEnumeration.ExtendedGrid => CreateExtendedGridNet(map, configuration),
         _ => throw new InvalidEnumArgumentException()
     };
 
+    private List<NetVertexBuilder<TVertex, TEdge>> CreateGridNet(OmapMap map, CompleteNetIntertwiningMapRepreConfiguration configuration)
+    {
+         (int left, int top, int right, int bottom) boundaries = (map.BottomLeftBoundingCorner.XPos, map.TopRightBoundingCorner.YPos, map.TopRightBoundingCorner.XPos, map.BottomLeftBoundingCorner.YPos);
+         double gridTileSize = Math.Sqrt(Math.Pow(configuration.standardEdgeLength.Value, 2) / 2);
+         int rows = (int)((boundaries.top - boundaries.bottom) / gridTileSize) +1;
+         int colls = (int)((boundaries.right - boundaries.left) / gridTileSize) + 1;
+         NetVertexBuilder<TVertex, TEdge>[][] grid = new NetVertexBuilder<TVertex, TEdge>[rows][];
+         Orienteering_ISOM_2017_2_RunSpeModSym.Surroundings justForest =  new ((null, null, null, null, Orienteering_ISOM_2017_2_RunSpeModSym.VegetationAndManMade.Forest_405, null), 0);
+         Orienteering_ISOM_2017_2_RunSpeModSym.LinearFeatures blankLinearFeatures = new (null, null, null);
+         for (int row = 0; row < rows; ++row)
+         {
+             grid[row] = new NetVertexBuilder<TVertex, TEdge>[colls];
+             for (int coll = 0; coll < colls; ++coll)
+             {
+                 grid[row][coll] = new NetVertexBuilder<TVertex, TEdge>(new (new MapCoordinates((int)(boundaries.left + coll * gridTileSize), (int)(boundaries.top - row * gridTileSize)))) {Surroundings = justForest};
+                 if (row > 0)
+                 {
+                     if (coll > 0)
+                     {
+                         grid[row][coll].NonBoundaryEdges[grid[row - 1][coll - 1]] = blankLinearFeatures;
+                         grid[row - 1][coll - 1].NonBoundaryEdges[grid[row][coll]] = blankLinearFeatures;
+                     }
+                     if (coll < colls - 1)
+                     {
+                         grid[row][coll].NonBoundaryEdges[grid[row - 1][coll + 1]] = blankLinearFeatures;
+                         grid[row - 1][coll + 1].NonBoundaryEdges[grid[row][coll]] = blankLinearFeatures;
+                     }
+                     grid[row][coll].NonBoundaryEdges[grid[row - 1][coll]] = blankLinearFeatures;
+                     grid[row - 1][coll].NonBoundaryEdges[grid[row][coll]] = blankLinearFeatures;
+                 }
+                 if (coll > 0)
+                 {
+                     grid[row][coll].NonBoundaryEdges[grid[row][coll - 1]] = blankLinearFeatures;
+                     grid[row][coll - 1].NonBoundaryEdges[grid[row][coll]] = blankLinearFeatures;
+                 }
+             }
+         }
+         return grid.SelectMany(row => row).ToList();       
+    }
+
+    private List<NetVertexBuilder<TVertex, TEdge>> CreateExtendedGridNet(OmapMap map, CompleteNetIntertwiningMapRepreConfiguration configuration)
+    {
+        (int left, int top, int right, int bottom) boundaries = (map.BottomLeftBoundingCorner.XPos, map.TopRightBoundingCorner.YPos, map.TopRightBoundingCorner.XPos, map.BottomLeftBoundingCorner.YPos);
+        double gridTileSize = Math.Sqrt(Math.Pow(configuration.standardEdgeLength.Value, 2) / 5);
+        int rows = (int)((boundaries.top - boundaries.bottom) / gridTileSize) +1;
+        int colls = (int)((boundaries.right - boundaries.left) / gridTileSize) + 1;
+        NetVertexBuilder<TVertex, TEdge>[][] grid = new NetVertexBuilder<TVertex, TEdge>[rows][];
+        Orienteering_ISOM_2017_2_RunSpeModSym.Surroundings justForest =  new ((null, null, null, null, Orienteering_ISOM_2017_2_RunSpeModSym.VegetationAndManMade.Forest_405, null), 0);
+        Orienteering_ISOM_2017_2_RunSpeModSym.LinearFeatures blankLinearFeatures = new (null, null, null);
+        for (int row = 0; row < rows; ++row)
+        {
+            grid[row] = new NetVertexBuilder<TVertex, TEdge>[colls];
+            for (int coll = 0; coll < colls; ++coll)
+            {
+                grid[row][coll] = new NetVertexBuilder<TVertex, TEdge>(new (new MapCoordinates((int)(boundaries.left + coll * gridTileSize), (int)(boundaries.top - row * gridTileSize))))
+                    {Surroundings = justForest};
+                
+                if (row > 0)
+                {
+                    if (row > 1)
+                    {
+                        if (coll > 0)
+                        {
+                            grid[row][coll].NonBoundaryEdges[grid[row - 2][coll - 1]] = blankLinearFeatures;
+                            grid[row - 2][coll - 1].NonBoundaryEdges[grid[row][coll]] = blankLinearFeatures;
+                        }
+                        if (coll < colls - 1)
+                        {
+                            grid[row][coll].NonBoundaryEdges[grid[row - 2][coll + 1]] = blankLinearFeatures;
+                            grid[row - 2][coll + 1].NonBoundaryEdges[grid[row][coll]] = blankLinearFeatures;
+                        }
+                    }
+                    if (coll > 0)
+                    {
+                        if (coll > 1)
+                        {
+                            grid[row][coll].NonBoundaryEdges[grid[row - 1][coll - 2]] = blankLinearFeatures;
+                            grid[row - 1][coll - 2].NonBoundaryEdges[grid[row][coll]] = blankLinearFeatures;
+                        }
+                        grid[row][coll].NonBoundaryEdges[grid[row - 1][coll - 1]] = blankLinearFeatures;
+                        grid[row - 1][coll - 1].NonBoundaryEdges[grid[row][coll]] = blankLinearFeatures;
+                    }
+                    if (coll < colls - 1)
+                    {
+                        if (coll < colls - 2)
+                        {
+                            grid[row][coll].NonBoundaryEdges[grid[row - 1][coll + 2]] = blankLinearFeatures;
+                            grid[row - 1][coll + 2].NonBoundaryEdges[grid[row][coll]] = blankLinearFeatures;
+                        }
+                        grid[row][coll].NonBoundaryEdges[grid[row - 1][coll + 1]] = blankLinearFeatures;
+                        grid[row - 1][coll + 1].NonBoundaryEdges[grid[row][coll]] = blankLinearFeatures;
+                    }
+                    grid[row][coll].NonBoundaryEdges[grid[row - 1][coll]] = blankLinearFeatures;
+                    grid[row - 1][coll].NonBoundaryEdges[grid[row][coll]] = blankLinearFeatures;
+                }
+                if (coll > 0)
+                {
+                    grid[row][coll].NonBoundaryEdges[grid[row][coll - 1]] = blankLinearFeatures;
+                    grid[row][coll - 1].NonBoundaryEdges[grid[row][coll]] = blankLinearFeatures;
+                }
+            }
+        }
+        return grid.SelectMany(row => row).ToList();
+    }
     private List<NetVertexBuilder<TVertex, TEdge>> CreateTriangularNet(OmapMap map, CompleteNetIntertwiningMapRepreConfiguration configuration)
     {
         (int left, int top, int right, int bottom) boundaries = (map.BottomLeftBoundingCorner.XPos, map.TopRightBoundingCorner.YPos, map.TopRightBoundingCorner.XPos, map.BottomLeftBoundingCorner.YPos);
