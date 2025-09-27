@@ -158,9 +158,7 @@
     - upravit nastavenia, aby sa konfiguracie algoritmov, grafovych reprezentacii a uzivatelskych modelov robili v extra view-e
     - ukladanie konfiguacii algoritmov, grafovych repre a uzivatelskych modelov
     - pridat tlacidla na hlavne okno, aby sa dalo pomocou nich dostat do akehokolvek otvoreneho sessinu, zaroven pri nich zobrazovat zakladne info o session-u (meno otvorenej mapy, otvoreneho uzivatelskeho modelu, cislovat ich alebo pridat moznost pomenovat session)
-- podpora pluginov
 
-- upravit parsovanie mapy - pokial by na vstupe bol obrovitansky objekt, ktory moze zmrazit program, odignorovat ho - dajme tomu, ze by mal viac ako 100_000 suradnic - je mozne, ze zmrazenie dojde uz pri citani daneho objektu zo suboru, ale to neviem ako by som riesil...mozem pozriet, ci ta kniznica na parsovanie xml to nejak handluje
 - model-creating session
 - spravit relevance feedback
 
@@ -175,10 +173,12 @@
 - v tejto chvili by malo byt mozne vo vytvarani mapovej reprezentacie pripajat chain-u na vsetky blizke vrcholy grafu, nie len na tie, ktorym bola pretata hrana - malo by sa este overit - razantne zlepsenia hladania ciest v mestach
 - test toho, ci uz nahodou nejake optepafi niekde nebezi
 - spracovat vinohrady a jednosmernu vegetaciu
+- upravit parsovanie mapy - pokial by na vstupe bol obrovitansky objekt, ktory moze zmrazit program, odignorovat ho - dajme tomu, ze by mal viac ako 100_000 suradnic - je mozne, ze zmrazenie dojde uz pri citani daneho objektu zo suboru, ale to neviem ako by som riesil...mozem pozriet, ci ta kniznica na parsovanie xml to nejak handluje
 
 ## Myslienky do buducna
 
 - ked spravim moznost definovat pre mapovu reprezentaciu viac grafovych rerpezetnacii, spravit aj grafy, v ktorych sa pohybujeme vo vrcholoch nedeterministicky, potom na to pustit nejakeho UI agenta, ktory bude pocitat s tym, ze sa nemusi nachadzat tam kde chcel ist, zacnu byt symboly dolezite aj koli orientacii, obzervovanie prostredia bude taktiez obmedzene
+- podpora pluginov - az ked bude hotova diplomka - zozlozitovalo by to vyvoj
 
 ## Stare myslienky
 
