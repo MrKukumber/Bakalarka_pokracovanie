@@ -15,7 +15,7 @@ using Optepafi.Models.Utils.Configurations;
 namespace Optepafi.Models.MapRepreMan.Graphs.Representatives;
 
 //TODO: comment + repair comments in methods
-public interface IGraphCreator<out TMapRepre>
+public interface IGraphicMapRepreProcessor<out TMapRepre>
     where TMapRepre : IMapRepre
 {
     /// <summary>
@@ -75,12 +75,6 @@ public interface IGraphCreator<out TMapRepre>
         where TEdgeAttributes : IEdgeAttributes;
 
     //TODO: comment
-    bool RevelationForSearchingAlgorithmMan<TTemplate, TVertexAttributes, TEdgeAttributes>(
-        SearchingAlgorithmManager searchingAlgorithmMan, 
-        IUserModelType<IComputing<TTemplate, TVertexAttributes, TEdgeAttributes>, TTemplate> userModelType,
-        ISearchingAlgorithm algorithm)
-        where TTemplate : ITemplate<TVertexAttributes, TEdgeAttributes>
-        where TVertexAttributes : IVertexAttributes
-        where TEdgeAttributes : IEdgeAttributes;
+    TOut GenericTraverse<TOut, TOtherParams>( IFromGraphicMapRepreProcToGraphRepGenericTraverser<TOut, TOtherParams> traverser, TOtherParams otherParams);
 
 }

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Threading;
+using Avalonia.Markup.Xaml.Templates;
 using Optepafi.Models.MapRepreMan.Graphs;
 using Optepafi.Models.MapRepreMan.Graphs.Representatives;
 using Optepafi.Models.MapRepreMan.MapRepres;
@@ -67,10 +68,10 @@ public class SearchingAlgorithmManager :
         HashSet<ISearchingAlgorithm> usableAlgorithms = new();
         if (userModelType is IUserModelType< IComputing<ITemplate<TVertexAttributes, TEdgeAttributes>, TVertexAttributes, TEdgeAttributes>, ITemplate<TVertexAttributes, TEdgeAttributes>> computingUserModelType)
         {
-            foreach(var graphCreator in mapRepreRep.GetGraphCreators<TVertexAttributes, TEdgeAttributes>())
+            foreach(var graphCreator in mapRepreRep.GetMapRepreProcessors<TVertexAttributes, TEdgeAttributes>())
                 foreach (var searchingAlgorithm in SearchingAlgorithms)
                 {
-                    if (graphCreator.RevelationForSearchingAlgorithmMan(this, computingUserModelType, searchingAlgorithm))
+                    if (FromGraphicMapRepreProcToGraphRepGenericTraverser<ITemplate<TVertexAttributes, TEdgeAttributes>, TVertexAttributes, TEdgeAttributes>.Instance.DoesRepresentUsableGraphicMapRepreProcUserModelCombinationForAlgorithm(graphCreator, computingUserModelType, searchingAlgorithm)) 
                         usableAlgorithms.Add(searchingAlgorithm);
                 }
         }
@@ -117,11 +118,33 @@ public class SearchingAlgorithmManager :
         var (mapRepreRep, userModelType, algorithm) = otherParams;
         if (userModelType is IUserModelType<IComputing<TTemplate, TVertexAttributes, TEdgeAttributes> , TTemplate> computingUserModelType)
         {
-            var graphCreators = mapRepreRep.GetGraphCreators<TVertexAttributes, TEdgeAttributes>();
-            for (int i = 0; i < mapRepreRep.GetGraphCreators<TVertexAttributes, TEdgeAttributes>().Length; ++i)
-                if (graphCreators[i].RevelationForSearchingAlgorithmMan(this, computingUserModelType, algorithm)) return i;
+            var graphicMapRepreProcs = mapRepreRep.GetMapRepreProcessors<TVertexAttributes, TEdgeAttributes>();
+            for (int i = 0; i < mapRepreRep.GetMapRepreProcessors<TVertexAttributes, TEdgeAttributes>().Length; ++i)
+                if (FromGraphicMapRepreProcToGraphRepGenericTraverser<TTemplate, TVertexAttributes, TEdgeAttributes>.Instance.DoesRepresentUsableGraphicMapRepreProcUserModelCombinationForAlgorithm(graphicMapRepreProcs[i], computingUserModelType, algorithm)) return i;
         }
         return -1;
+    }
+
+    private class FromGraphicMapRepreProcToGraphRepGenericTraverser<TTemplate, TVertexAttributes, TEdgeAttributes> :
+        IFromGraphicMapRepreProcToGraphRepGenericTraverser<bool, (IUserModelType<IComputing<TTemplate, TVertexAttributes, TEdgeAttributes>, TTemplate>, ISearchingAlgorithm)>
+        where TTemplate : ITemplate<TVertexAttributes, TEdgeAttributes>
+        where TVertexAttributes : IVertexAttributes
+        where TEdgeAttributes : IEdgeAttributes
+    {
+        public static FromGraphicMapRepreProcToGraphRepGenericTraverser<TTemplate, TVertexAttributes, TEdgeAttributes> Instance { get; } = new();
+        private FromGraphicMapRepreProcToGraphRepGenericTraverser(){}
+        public bool DoesRepresentUsableGraphicMapRepreProcUserModelCombinationForAlgorithm(
+            IGraphicMapRepreProcessor<IMapRepre> graphicMapRepreProc,
+            IUserModelType<IComputing<TTemplate, TVertexAttributes, TEdgeAttributes>, TTemplate> userModelType,
+            ISearchingAlgorithm algorithm)
+            => graphicMapRepreProc.GenericTraverse(this, (userModelType, algorithm));
+
+        public bool AcceptedGenericTraverse<TVertex, TEdge>(IGraphRepresentative<IGraph<TVertex, TEdge>, TVertex, TEdge> graphRepresentative,
+            (IUserModelType<IComputing<TTemplate, TVertexAttributes, TEdgeAttributes>, TTemplate>, ISearchingAlgorithm) otherParams) where TVertex : IVertex where TEdge : IEdge
+        {
+            var (computingUserModelType, algorithm) = otherParams;
+            return algorithm.DoesRepresentUsableGraphUserModelCombination(graphRepresentative, computingUserModelType);
+        }
     }
 
     public bool AcceptGraphCreatorsRevelation<TVertex, TEdge, TTemplate, TVertexAttributes, TEdgeAttributes>(

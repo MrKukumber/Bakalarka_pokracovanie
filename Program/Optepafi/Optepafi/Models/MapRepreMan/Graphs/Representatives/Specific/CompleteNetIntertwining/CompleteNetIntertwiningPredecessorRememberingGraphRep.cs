@@ -24,6 +24,6 @@ public class CompleteNetIntertwiningPredecessorRememberingGraphRep<TVertexAttrib
     
     public override IImplementationIndicator<ITemplate, IMap, IMapRepre>[] CreateableImplementationsIndicators { get; } = [CompleteNetIntertwiningPredecessorRememberingElevDataIndepOrienteering_ISOM_2017_2RunSpeModSymOmapMapImplementationRep.Instance];
 
-    public override bool RevelationForSearchingAlgorithmMan<TUserModelTemplate, TUserModelVertexAttributes, TUserModelEdgeAttributes>(SearchingAlgorithmManager searchingAlgorithmMan, IUserModelType<IComputing<TUserModelTemplate, TUserModelVertexAttributes, TUserModelEdgeAttributes>, TUserModelTemplate> userModelType, ISearchingAlgorithm algorithm) 
-        => searchingAlgorithmMan.AcceptGraphCreatorsRevelation(this, userModelType, algorithm);
+    public override TOut GenericTraverse<TOut, TOtherParams>( IFromGraphicMapRepreProcToGraphRepGenericTraverser<TOut, TOtherParams> traverser, TOtherParams otherParams)
+        => traverser.AcceptedGenericTraverse(this, otherParams);
 }

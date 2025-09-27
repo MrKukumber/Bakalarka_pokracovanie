@@ -30,16 +30,16 @@ namespace Optepafi.Models.MapRepreMan.Graphs.Representatives;
 /// <typeparam name="TEdge">Type of edges used in represented graph.</typeparam>
 public abstract class GraphRepresentative<TGraph, TVertex, TEdge> : 
     IGraphRepresentative<TGraph, TVertex, TEdge>,
-    IGraphCreator<TGraph> 
+    IGraphicMapRepreProcessor<TGraph> 
     where TGraph : IGraph<TVertex, TEdge>
     where TVertex: IVertex
     where TEdge: IEdge
 {
     
-    /// <inheritdoc cref="IGraphCreator{TMapRepre}.CreateableImplementationsIndicators"/>
+    /// <inheritdoc cref="IGraphicMapRepreProcessor{TMapRepre}.CreateableImplementationsIndicators"/>
     public abstract IImplementationIndicator<ITemplate, IMap, IMapRepre>[] CreateableImplementationsIndicators { get; }
     
-    /// <inheritdoc cref="IGraphCreator{TMapRepre}.CreateGraph{TTemplate,TMap,TConfiguration,TVertexAttributes,TEdgeAttributes}(TTemplate,TMap,TConfiguration,System.IProgress{Optepafi.Models.MapRepreMan.MapRepreConstructionReport}?,System.Nullable{System.Threading.CancellationToken})"/> 
+    /// <inheritdoc cref="IGraphicMapRepreProcessor{TMapRepre}.CreateGraph{TTemplate,TMap,TConfiguration,TVertexAttributes,TEdgeAttributes}(TTemplate,TMap,TConfiguration,System.IProgress{Optepafi.Models.MapRepreMan.MapRepreConstructionReport}?,System.Nullable{System.Threading.CancellationToken})"/> 
     public TGraph CreateGraph<TTemplate, TMap, TConfiguration, TVertexAttributes, TEdgeAttributes>(
         TTemplate template, TMap map, TConfiguration configuration,
         IProgress<MapRepreConstructionReport>? progress, CancellationToken? cancellationToken)
@@ -61,7 +61,7 @@ public abstract class GraphRepresentative<TGraph, TVertex, TEdge> :
     }
 
 
-    ///<inheritdoc cref="IGraphCreator{TMapRepre}.CreateGraph{TTemplate,TMap,TConfiguration,TVertexAttributes,TEdgeAttributes}(TTemplate,TMap,Optepafi.Models.ElevationDataMan.IElevData,TConfiguration,System.IProgress{Optepafi.Models.MapRepreMan.MapRepreConstructionReport}?,System.Nullable{System.Threading.CancellationToken})"/> 
+    ///<inheritdoc cref="IGraphicMapRepreProcessor{TMapRepre}.CreateGraph{TTemplate,TMap,TConfiguration,TVertexAttributes,TEdgeAttributes}(TTemplate,TMap,Optepafi.Models.ElevationDataMan.IElevData,TConfiguration,System.IProgress{Optepafi.Models.MapRepreMan.MapRepreConstructionReport}?,System.Nullable{System.Threading.CancellationToken})"/> 
     public TGraph CreateGraph<TTemplate, TMap, TConfiguration, TVertexAttributes, TEdgeAttributes>(
         TTemplate template, TMap map, IElevData elevData,
         TConfiguration configuration, IProgress<MapRepreConstructionReport>? progress,
@@ -83,13 +83,8 @@ public abstract class GraphRepresentative<TGraph, TVertex, TEdge> :
         throw new ArgumentException(
             "There is no constructor for given template and map which requires elevation data.");
     }
-
-    public abstract bool RevelationForSearchingAlgorithmMan<TTemplate, TVertexAttributes, TEdgeAttributes>(
-        SearchingAlgorithmManager searchingAlgorithmMan,
-        IUserModelType<IComputing<TTemplate, TVertexAttributes, TEdgeAttributes>, TTemplate> userModelType,
-        ISearchingAlgorithm algorithm)
-        where TTemplate : ITemplate<TVertexAttributes, TEdgeAttributes>
-        where TVertexAttributes : IVertexAttributes
-        where TEdgeAttributes : IEdgeAttributes;
+    
+    /// <inheritdoc cref="IGraphicMapRepreProcessor{TMapRepre}.GenericTraverse{TOut,TOtherParams}"/> 
+     public abstract TOut GenericTraverse<TOut, TOtherParams>( IFromGraphicMapRepreProcToGraphRepGenericTraverser<TOut, TOtherParams> traverser, TOtherParams otherParams);
         
 }

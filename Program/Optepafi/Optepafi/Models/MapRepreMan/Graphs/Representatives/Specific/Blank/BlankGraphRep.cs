@@ -18,7 +18,7 @@ namespace Optepafi.Models.MapRepreMan.Graphs.Representatives.Specific.Blank;
 /// 
 /// Its instance is contained in <c>BlankRepreRep</c> so it can be used for creation of represented map representation/graph. 
 /// </summary>
-public class BlankGraphRep<TVertexAttributes, TEdgeAttributes> : GraphRepresentative<IBlankGraph<TVertexAttributes, TEdgeAttributes>, IBlankGraph<TVertexAttributes, TEdgeAttributes>.Vertex, IBlankGraph<TVertexAttributes, TEdgeAttributes>.Edge>
+public class BlankGraphRep<TVertexAttributes, TEdgeAttributes> : GraphRepresentative<IBlankMapGraph<TVertexAttributes, TEdgeAttributes>, IBlankMapGraph<TVertexAttributes, TEdgeAttributes>.Vertex, IBlankMapGraph<TVertexAttributes, TEdgeAttributes>.Edge>
     where TVertexAttributes : IVertexAttributes
     where TEdgeAttributes : IEdgeAttributes
 {
@@ -28,7 +28,7 @@ public class BlankGraphRep<TVertexAttributes, TEdgeAttributes> : GraphRepresenta
     ///<inheritdoc cref="GraphRepresentative{TGraph,TVertex,TEdge}.CreateableImplementationsIndicators"/>
     public override IImplementationIndicator<ITemplate, IMap, IMapRepre>[] CreateableImplementationsIndicators { get; } = [BlankElevDataDepBlankTemplateTextMapImplementationRep.Instance, BlankElevDataIndepBlankTemplateOmapMapImplementationRep.Instance];
 
-    public override bool RevelationForSearchingAlgorithmMan<TUserModelTemplate, TUserModelVertexAttributes, TUserModelEdgeAttributes>(SearchingAlgorithmManager searchingAlgorithmMan, IUserModelType<IComputing<TUserModelTemplate, TUserModelVertexAttributes, TUserModelEdgeAttributes>, TUserModelTemplate> userModelType, ISearchingAlgorithm algorithm) 
-        => searchingAlgorithmMan.AcceptGraphCreatorsRevelation(this, userModelType, algorithm);
+    public override TOut GenericTraverse<TOut, TOtherParams>( IFromGraphicMapRepreProcToGraphRepGenericTraverser<TOut, TOtherParams> traverser, TOtherParams otherParams)
+        => traverser.AcceptedGenericTraverse(this, otherParams);
 
 }
