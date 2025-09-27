@@ -43,11 +43,17 @@ public partial class PathFindingSettingsView : ReactiveUserControl<PathFindingSe
         var files = await topLevel.StorageProvider.OpenFilePickerAsync(new FilePickerOpenOptions()
         {
             AllowMultiple = false,
-            FileTypeFilter = ViewModel!.UsableUserModelTypes
-                .Select(userModelType => new FilePickerFileType(userModelType.UserModelTypeName) 
-                {
-                    Patterns = new[] {"*." + userModelType.UserModelFileNameSuffix + "." + userModelType.UserModelFileExtension}
-                }).ToArray()
+            // FileTypeFilter = ViewModel!.UsableUserModelTypes
+                // .Select(userModelType => new FilePickerFileType(userModelType.UserModelTypeName) 
+                // {
+                    // Patterns = new[] {"*." + userModelType.UserModelFileNameSuffix + "." + userModelType.UserModelFileExtension}
+                // }).ToArray()
+            FileTypeFilter =  [new FilePickerFileType(null)
+            {
+                Patterns = ViewModel!.UsableUserModelTypes
+                    .Select(userModelType => "*." + userModelType.UserModelFileNameSuffix + "." + userModelType.UserModelFileExtension)
+                    .ToArray()
+            }]
         });
         
         IStorageFile file;
@@ -91,11 +97,17 @@ public partial class PathFindingSettingsView : ReactiveUserControl<PathFindingSe
         var files = await topLevel.StorageProvider.OpenFilePickerAsync(new FilePickerOpenOptions()
         {
             AllowMultiple = false,
-            FileTypeFilter = ViewModel!.UsableMapFormats
-                .Select(mapFormat => new FilePickerFileType(mapFormat.MapFormatName) 
-                {
-                    Patterns = new[] {"*." + mapFormat.Extension}
-                }).ToArray()
+            // FileTypeFilter = ViewModel!.UsableMapFormats
+                // .Select(mapFormat => new FilePickerFileType(mapFormat.MapFormatName) 
+                // {
+                    // Patterns = new[] {"*." + mapFormat.Extension}
+                // }).ToArray()
+            FileTypeFilter =  [new FilePickerFileType(null)
+            {
+                Patterns = ViewModel!.UsableMapFormats
+                    .Select(mapFormat => "*." + mapFormat.Extension)
+                    .ToArray()
+            }]
         });
         IStorageFile file;
         if (files.Count >= 1) { file = files[0]; }
