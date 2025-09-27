@@ -10,9 +10,9 @@ namespace Optepafi.Models.MapRepreMan.Graphs.Specific.Blank;
 /// It is just blank object used as demonstrative type for presenting application functionality.  
 /// For more information about graphs see <see cref="IGraph{TVertexAttributes,TEdgeAttributes}"/>.  
 /// </summary>
-public interface IBlankGraph<TVertexAttributes, TEdgeAttributes> :
-    IBlankRepre,
-    IGraph<IBlankGraph<TVertexAttributes, TEdgeAttributes>.Vertex, IBlankGraph<TVertexAttributes, TEdgeAttributes>.Edge>
+public interface IBlankMapGraph<TVertexAttributes, TEdgeAttributes> :
+    IBlankMapRepre,
+    IGraph<IBlankMapGraph<TVertexAttributes, TEdgeAttributes>.Vertex, IBlankMapGraph<TVertexAttributes, TEdgeAttributes>.Edge>
     where TVertexAttributes : IVertexAttributes
     where TEdgeAttributes : IEdgeAttributes
 {

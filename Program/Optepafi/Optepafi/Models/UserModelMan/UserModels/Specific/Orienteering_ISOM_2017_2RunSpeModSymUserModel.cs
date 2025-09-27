@@ -106,10 +106,6 @@ public class Orienteering_ISOM_2017_2RunSpeModSymUserModel :
         var moreEfficientSurroundingsCoef = Math.Max(surroundingsCoef, secondSurroundingsCoef);
         if (moreEfficientSurroundingsCoef < 0.000000001) return float.PositiveInfinity; 
         
-        if (surroundingsCoef is float.NaN || secondSurroundingsCoef is float.NaN)
-        {
-            Console.WriteLine();
-        }
         var moreEfficientSurroundingsWithPathCoef = ApplyPathToSurroundingsCoef(through.LineFeatures, moreEfficientSurroundingsCoef);
         if (moreEfficientSurroundingsWithPathCoef < coefficientLowerBound) moreEfficientSurroundingsWithPathCoef = coefficientLowerBound;
 

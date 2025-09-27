@@ -45,7 +45,7 @@ public interface IMapRepreRepresentative<out TMapRepre> where TMapRepre : IMapRe
     /// graphs are at the beginning, and creators which creates the heaviest and the slowest ones are at the end.
     /// </summary>
     /// <returns>Creator of corresponding graph to the map representation.</returns>
-    IGraphCreator<TMapRepre>[] GetGraphCreators<TVertexAttributes, TEdgeAttriubtes>()
+    IGraphicMapRepreProcessor<TMapRepre>[] GetMapRepreProcessors<TVertexAttributes, TEdgeAttriubtes>()
         where TVertexAttributes : IVertexAttributes
         where TEdgeAttriubtes : IEdgeAttributes;
 

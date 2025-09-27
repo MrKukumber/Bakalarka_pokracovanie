@@ -12,15 +12,15 @@ namespace Optepafi.Models.MapRepreMan.MapRepres.Representatives.Specific;
 /// It is included in <c>MapRepreManager</c> where indicates representations usability.  
 /// For more information about map representations representatives see <see cref="IMapRepreRepresentative{TMapRepre}"/>.  
 /// </summary>
-public class BlankRepreRep : MapRepreRepresentative<IBlankRepre, NullConfiguration>
+public class BlankMapRepreRep : MapRepreRepresentative<IBlankMapRepre, NullConfiguration>
 {
-    public static BlankRepreRep Instance { get; } = new();
-    private BlankRepreRep(){}
+    public static BlankMapRepreRep Instance { get; } = new();
+    private BlankMapRepreRep(){}
     
     ///<inheritdoc cref="IMapRepreRepresentative{TMapRepre}.MapRepreName"/>
     public override string MapRepreName { get; } = "Blank representation.";
 
-    ///<inheritdoc cref="MapRepreRepresentative{TMapRepre,TConfiguration}.GetGraphCreators{TVertexAttributes,TEdgeAttributes}"/>
-    public override IGraphCreator<IBlankRepre>[] GetGraphCreators<TVertexAttributes, TEdgeAttrbiutes>() => [BlankGraphRep<TVertexAttributes, TEdgeAttrbiutes>.Instance];
+    ///<inheritdoc cref="MapRepreRepresentative{TMapRepre,TConfiguration}.GetMapRepreProcessors{TVertexAttributes,TEdgeAttributes}"/>
+    public override IGraphicMapRepreProcessor<IBlankMapRepre>[] GetMapRepreProcessors<TVertexAttributes, TEdgeAttrbiutes>() => [BlankGraphRep<TVertexAttributes, TEdgeAttrbiutes>.Instance];
     protected override NullConfiguration DefaultConfiguration { get; } = new(); 
 }

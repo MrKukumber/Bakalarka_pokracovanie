@@ -18,7 +18,7 @@ namespace Optepafi.Models.MapRepreMan.Implementations.Representatives.Specific.B
 /// for presenting application functionality.
 /// /// </summary>
 public class BlankElevDataIndepBlankTemplateOmapMapImplementationRep:
-    ElevDataIndepImplementationRep<BlankTemplate, OmapMap, OmapMap, BlankElevDataIndepBlankTemplateOmapMapImplementation, NullConfiguration, IBlankGraph<BlankTemplate.VertexAttributes, BlankTemplate.EdgeAttributes>.Vertex, IBlankGraph<BlankTemplate.VertexAttributes, BlankTemplate.EdgeAttributes>.Edge, BlankTemplate.VertexAttributes, BlankTemplate.EdgeAttributes>
+    ElevDataIndepImplementationRep<BlankTemplate, OmapMap, OmapMap, BlankElevDataIndepBlankTemplateOmapMapImplementation, NullConfiguration, IBlankMapGraph<BlankTemplate.VertexAttributes, BlankTemplate.EdgeAttributes>.Vertex, IBlankMapGraph<BlankTemplate.VertexAttributes, BlankTemplate.EdgeAttributes>.Edge, BlankTemplate.VertexAttributes, BlankTemplate.EdgeAttributes>
 {
     public static BlankElevDataIndepBlankTemplateOmapMapImplementationRep Instance { get; } = new();
     private BlankElevDataIndepBlankTemplateOmapMapImplementationRep(){ }

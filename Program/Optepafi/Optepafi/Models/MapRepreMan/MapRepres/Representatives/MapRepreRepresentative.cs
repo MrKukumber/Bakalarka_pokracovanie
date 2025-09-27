@@ -19,11 +19,11 @@ public abstract class MapRepreRepresentative<TMapRepre, TConfiguration> : IMapRe
     where TConfiguration : IConfiguration
 {
     public abstract string MapRepreName { get; }
-    public abstract IGraphCreator<TMapRepre>[] GetGraphCreators<TVertexAttributes, TEdgeAttributes>()
+    public abstract IGraphicMapRepreProcessor<TMapRepre>[] GetMapRepreProcessors<TVertexAttributes, TEdgeAttributes>()
         where TVertexAttributes : IVertexAttributes
         where TEdgeAttributes : IEdgeAttributes;
     
-    public IImplementationIndicator<ITemplate, IMap, IMapRepre>[] ImplementationIndicators => GetGraphCreators<IVertexAttributes, IEdgeAttributes>().SelectMany(x => x.CreateableImplementationsIndicators).ToArray();
+    public IImplementationIndicator<ITemplate, IMap, IMapRepre>[] ImplementationIndicators => GetMapRepreProcessors<IVertexAttributes, IEdgeAttributes>().SelectMany(x => x.CreateableImplementationsIndicators).ToArray();
     protected abstract TConfiguration DefaultConfiguration { get; }
     public IConfiguration DefaultConfigurationDeepCopy => DefaultConfiguration.DeepCopy(); 
 
@@ -34,14 +34,14 @@ public abstract class MapRepreRepresentative<TMapRepre, TConfiguration> : IMapRe
         where TVertexAttributes : IVertexAttributes 
         where TEdgeAttributes : IEdgeAttributes
     { 
-        if (graphCreatorIndex < 0 || graphCreatorIndex >= GetGraphCreators<TVertexAttributes, TEdgeAttributes>().Count())
+        if (graphCreatorIndex < 0 || graphCreatorIndex >= GetMapRepreProcessors<TVertexAttributes, TEdgeAttributes>().Count())
             throw new IndexOutOfRangeException(nameof(graphCreatorIndex));
         if (configuration is TConfiguration config) 
-            return GetGraphCreators<TVertexAttributes, TEdgeAttributes>()[graphCreatorIndex]
+            return GetMapRepreProcessors<TVertexAttributes, TEdgeAttributes>()[graphCreatorIndex]
                 .CreateGraph<TTemplate, TMap, TConfiguration, TVertexAttributes, TEdgeAttributes>(template, map, config, progress, cancellationToken);
         // TODO: log wrong type of retrieved configuration
         Console.WriteLine($"Wrong type of retrieved configuration in {typeof(TMapRepre).Name} representative. Retrived confifiguration was of type {configuration.GetType().Name}.");
-        return GetGraphCreators<TVertexAttributes, TEdgeAttributes>()[graphCreatorIndex]
+        return GetMapRepreProcessors<TVertexAttributes, TEdgeAttributes>()[graphCreatorIndex]
             .CreateGraph<TTemplate, TMap, TConfiguration, TVertexAttributes, TEdgeAttributes>(template, map, DefaultConfiguration, progress, cancellationToken);
     }
     public IMapRepre CreateMapRepre<TTemplate, TMap, TVertexAttributes, TEdgeAttributes>(TTemplate template, TMap map, int graphCreatorIndex,
@@ -51,14 +51,14 @@ public abstract class MapRepreRepresentative<TMapRepre, TConfiguration> : IMapRe
             where TVertexAttributes : IVertexAttributes 
             where TEdgeAttributes : IEdgeAttributes
     {
-        if (graphCreatorIndex < 0 || graphCreatorIndex >= GetGraphCreators<TVertexAttributes, TEdgeAttributes>().Count())
+        if (graphCreatorIndex < 0 || graphCreatorIndex >= GetMapRepreProcessors<TVertexAttributes, TEdgeAttributes>().Count())
             throw new IndexOutOfRangeException(nameof(graphCreatorIndex));
         if (configuration is TConfiguration config) 
-            return GetGraphCreators<TVertexAttributes, TEdgeAttributes>()[graphCreatorIndex]
+            return GetMapRepreProcessors<TVertexAttributes, TEdgeAttributes>()[graphCreatorIndex]
                 .CreateGraph<TTemplate, TMap, TConfiguration, TVertexAttributes, TEdgeAttributes>(template, map, elevData, config, progress, cancellationToken); 
         // TODO: log wrong type of retrieved configuration
         Console.WriteLine($"Wrong type of retrieved configuration in {typeof(TMapRepre).Name} representative. Retrived confifiguration was of type {configuration.GetType().Name}.");
-        return GetGraphCreators<TVertexAttributes, TEdgeAttributes>()[graphCreatorIndex]
+        return GetMapRepreProcessors<TVertexAttributes, TEdgeAttributes>()[graphCreatorIndex]
             .CreateGraph<TTemplate, TMap, TConfiguration, TVertexAttributes, TEdgeAttributes>(template, map, elevData, DefaultConfiguration, progress, cancellationToken); 
     }
 }

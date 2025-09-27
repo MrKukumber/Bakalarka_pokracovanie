@@ -2,7 +2,10 @@ using System.Collections.Generic;
 using System.Threading;
 using Optepafi.Models.GraphicsMan.Collectors;
 using Optepafi.Models.GraphicsMan.Objects.MapRepre;
+using Optepafi.Models.MapRepreMan.Graphs.Specific.CompleteNetIntertwining;
 using Optepafi.Models.MapRepreMan.Implementations.Specific.CompleteIterativelySnapping;
+using Optepafi.Models.MapRepreMan.Utils;
+using Optepafi.Models.TemplateMan.Templates;
 using Optepafi.Models.Utils;
 
 namespace Optepafi.Models.GraphicsMan.Aggregators.MapRepre.CompleteNetIntertwining;
@@ -17,7 +20,8 @@ public class CompleteNetIntertwiningBasicElevDataIndepOrienteering_ISOM_2017_2Om
         IGraphicObjectCollector collectorForAggregatedObjects, CancellationToken? cancellationToken)
     {
         HashSet<(MapCoordinates, MapCoordinates)> foundEdgeCoordinates = new HashSet<(MapCoordinates, MapCoordinates)>();
-        // foreach (var vertex in ((IRadiallySearchableDataStruct<CompleteNetIntertwiningElevDataIndepOrienteering_ISOM_2017_2OmapMapImplementation.EdgesEditableVertex>)implementation.SearchableVertices).FindInEuclideanDistanceFrom((-3841, 8942), 5000)) // for debugging
+        // foreach (var vertex in ((IRadiallySearchableDataStruct<ICompleteNetIntertwiningBasicGraph<Orienteering_ISOM_2017_2_RunSpeModSym.VertexAttributes, Orienteering_ISOM_2017_2_RunSpeModSym.EdgeAttributes>.Vertex>)implementation.SearchableVertices)
+                 // .FindInEuclideanDistanceFrom((-4220, -142100), 5000)) // for debugging
         foreach (var vertex in implementation)
         {
             collectorForAggregatedObjects.Add(new VertexObject(vertex.Attributes.Position, vertex.Attributes.Elevation));

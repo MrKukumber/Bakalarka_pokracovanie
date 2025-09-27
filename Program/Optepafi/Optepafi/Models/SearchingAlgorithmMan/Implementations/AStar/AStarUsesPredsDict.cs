@@ -21,7 +21,7 @@ namespace Optepafi.Models.SearchingAlgorithmMan.Implementations.AStar;
 
 public class AStarUsesPredsDict : SearchingAlgorithmImplementation<AStarConfiguration>
 {
-    public static AStarUsesPredsDict Instance { get; } = new AStarUsesPredsDict();
+    public static AStarUsesPredsDict Instance { get; } = new();
     private AStarUsesPredsDict() {}
     
     public override bool DoesRepresentUsableGraph<TVertex, TEdge, TVertexAttributes, TEdgeAttributes>(
@@ -69,6 +69,10 @@ public class AStarUsesPredsDict : SearchingAlgorithmImplementation<AStarConfigur
     {
         public static Algorithm<TVertexAttributes, TEdgeAttributes> Instance { get; } = new();
         private Algorithm() { }
+        
+        /// <summary>
+        /// How ofen is the cancellation of path searching checked.
+        /// </summary>
         private const int CancellationCheckDensity = 5000;
         
         public IPath<TVertexAttributes, TEdgeAttributes> Search<TVertex, TEdge>(Leg[] track, IGraph<TVertex, TEdge> graph, IUserModel<ITemplate<TVertexAttributes, TEdgeAttributes>> userModel, AStarConfiguration configuration, IProgress<ISearchingReport>? progress, CancellationToken? cancellationToken)
@@ -90,20 +94,20 @@ public class AStarUsesPredsDict : SearchingAlgorithmImplementation<AStarConfigur
         }
 
         SegmentedLinesPath<TVertexAttributes, TEdgeAttributes> ICanBeSearchedGenericVisitor<SegmentedLinesPath<TVertexAttributes, TEdgeAttributes>, float, TVertexAttributes, TEdgeAttributes, (Leg, IUserModel<ITemplate<TVertexAttributes, TEdgeAttributes>>, AStarConfiguration, IProgress<ISearchingReport>?, CancellationToken? )>.
-            GenericVisit<TPredecessorRemembering, TVertex, TEdge>(TPredecessorRemembering basicGraph,
+            GenericVisit<TSearchable, TVertex, TEdge>(TSearchable searchableGraph,
             (Leg, IUserModel<ITemplate<TVertexAttributes, TEdgeAttributes>>, AStarConfiguration, IProgress<ISearchingReport>?, CancellationToken?) otherParams)
         {
             var (leg, userModel, configuration, progress, cancellationToken) = otherParams;
             if (userModel is IWeightComputing<ITemplate<TVertexAttributes, TEdgeAttributes>, TVertexAttributes, TEdgeAttributes> weightComputingUserModel
                 && userModel is IAStarHeuristicsComputing<ITemplate<TVertexAttributes, TEdgeAttributes>, TVertexAttributes, TEdgeAttributes> aStarHeuristicsComputingUserModel)
             {
-                TVertex startVertex = basicGraph.GetVertexFor(leg.Start);
-                TVertex finishVertex = basicGraph.GetVertexFor(leg.Finish);
+                TVertex startVertex = searchableGraph.GetVertexFor(leg.Start);
+                TVertex finishVertex = searchableGraph.GetVertexFor(leg.Finish);
                 SimplePriorityQueue<TVertex, float> frontier = new();
                 Dictionary<TVertex, float> frontierVerticesCosts = new();
                 HashSet<TVertex> visited = new();
                 Dictionary<TVertex, TVertex> predecessors = new();
-                frontier.Enqueue(startVertex, aStarHeuristicsComputingUserModel.GetWeightFromHeuristics(startVertex.Attributes, finishVertex.Attributes, basicGraph.Scale) + 0);
+                frontier.Enqueue(startVertex, aStarHeuristicsComputingUserModel.GetWeightFromHeuristics(startVertex.Attributes, finishVertex.Attributes, searchableGraph.Scale) + 0);
                 frontierVerticesCosts.Add(startVertex, 0);
                 int timeSinceLastCancellationCheck = 0;
                 while (frontier.TryDequeue(out TVertex vertex))
@@ -116,12 +120,12 @@ public class AStarUsesPredsDict : SearchingAlgorithmImplementation<AStarConfigur
                     foreach (TEdge edge in vertex.GetEdges())
                         if (!visited.Contains(edge.To))
                         {
-                            float g = frontierVerticesCosts[vertex] + GetEdgeWeight(vertex, edge, weightComputingUserModel, basicGraph.Scale);
+                            float g = frontierVerticesCosts[vertex] + GetEdgeWeight(vertex, edge, weightComputingUserModel, searchableGraph.Scale);
                             if (g is float.NaN)
                             {
                                 Console.WriteLine();
                             }
-                            float f = g + aStarHeuristicsComputingUserModel.GetWeightFromHeuristics(edge.To.Attributes, finishVertex.Attributes, basicGraph.Scale);
+                            float f = g + aStarHeuristicsComputingUserModel.GetWeightFromHeuristics(edge.To.Attributes, finishVertex.Attributes, searchableGraph.Scale);
                             if (frontier.Contains(edge.To))
                                 if (frontier.GetPriority(edge.To) < f) continue;
                                 else frontier.UpdatePriority(edge.To, f);

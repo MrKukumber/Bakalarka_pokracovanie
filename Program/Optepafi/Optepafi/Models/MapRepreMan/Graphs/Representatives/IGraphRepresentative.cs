@@ -31,6 +31,8 @@ public interface IGraphRepresentative<out TGraph, out TVertex, out TEdge>
     where TEdge : IEdge
 {
     
+}
+    
     /// <summary>
     /// Indicator collection of all implementations of represented map representation.
     /// 
@@ -91,4 +93,3 @@ public interface IGraphRepresentative<out TGraph, out TVertex, out TEdge>
         // where TConfiguration : IConfiguration
         // where TVertexAttributes : IVertexAttributes
         // where TEdgeAttributes : IEdgeAttributes;
-}

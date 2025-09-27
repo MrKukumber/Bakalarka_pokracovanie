@@ -13,7 +13,7 @@ namespace Optepafi.Models.MapRepreMan.Implementations.Specific.Blank;
 /// For more information on graphs see <see cref="IGraph{TVertexAttributes,TEdgeAttributes}"/> and on map representations <see cref="IMapRepre"/>.  
 /// </summary>
 public abstract class BlankElevDataDepBlankTemplateTextMapImplementation :
-    IBlankGraph<BlankTemplate.VertexAttributes, BlankTemplate.EdgeAttributes>
+    IBlankMapGraph<BlankTemplate.VertexAttributes, BlankTemplate.EdgeAttributes>
 {
     /// <inheritdoc cref="IGraph{TVertexAttributes,TEdgeAttributes}.RestoreConsistency"/>
     public void RestoreConsistency() { }
@@ -29,5 +29,5 @@ public abstract class BlankElevDataDepBlankTemplateTextMapImplementation :
 
     public TOut AcceptGeneric<TOut, TGenericParam1, TGenericParam2, TGenericConstraint1, TGenericConstraint2, TOtherParams>(
         IGraphGenericVisitor<TOut, TGenericConstraint1, TGenericConstraint2, TOtherParams> genericVisitor, TOtherParams otherParams) where TGenericParam1 : TGenericConstraint1 where TGenericParam2 : TGenericConstraint2
-        => genericVisitor.GenericVisit<BlankElevDataDepBlankTemplateTextMapImplementation, IBlankGraph<BlankTemplate.VertexAttributes, BlankTemplate.EdgeAttributes>.Vertex, IBlankGraph<BlankTemplate.VertexAttributes, BlankTemplate.EdgeAttributes>.Edge, TGenericParam1, TGenericParam2>(this, otherParams);
+        => genericVisitor.GenericVisit<BlankElevDataDepBlankTemplateTextMapImplementation, IBlankMapGraph<BlankTemplate.VertexAttributes, BlankTemplate.EdgeAttributes>.Vertex, IBlankMapGraph<BlankTemplate.VertexAttributes, BlankTemplate.EdgeAttributes>.Edge, TGenericParam1, TGenericParam2>(this, otherParams);
 }
