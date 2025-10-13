@@ -84,7 +84,7 @@ public abstract class GraphRepresentative<TGraph, TVertex, TEdge> :
             "There is no constructor for given template and map which requires elevation data.");
     }
     
-    /// <inheritdoc cref="IGraphicMapRepreProcessor{TMapRepre}.GenericTraverse{TOut,TOtherParams}"/> 
-     public abstract TOut GenericTraverse<TOut, TOtherParams>( IFromGraphicMapRepreProcToGraphRepGenericTraverser<TOut, TOtherParams> traverser, TOtherParams otherParams);
+    /// <inheritdoc cref="IGraphicMapRepreProcessor{TMapRepre}.Traverse{TOut,TOtherParams}"/> 
+     public abstract TOut Traverse<TOut, TOtherParams>( IFromGraphicMapRepreProcToGraphRepTraverser<TOut, TOtherParams> traverser, TOtherParams otherParams);
         
 }

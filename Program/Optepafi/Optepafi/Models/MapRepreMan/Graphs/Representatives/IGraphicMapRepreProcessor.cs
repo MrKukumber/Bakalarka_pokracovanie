@@ -75,6 +75,6 @@ public interface IGraphicMapRepreProcessor<out TMapRepre>
         where TEdgeAttributes : IEdgeAttributes;
 
     //TODO: comment
-    TOut GenericTraverse<TOut, TOtherParams>( IFromGraphicMapRepreProcToGraphRepGenericTraverser<TOut, TOtherParams> traverser, TOtherParams otherParams);
+    TOut Traverse<TOut, TOtherParams>( IFromGraphicMapRepreProcToGraphRepTraverser<TOut, TOtherParams> traverser, TOtherParams otherParams);
 
 }

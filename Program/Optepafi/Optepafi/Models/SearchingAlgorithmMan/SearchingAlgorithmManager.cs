@@ -34,9 +34,7 @@ public class SearchingAlgorithmManager :
     ITemplateGenericVisitor<IPath, (Leg[], ISearchingAlgorithm, IMapRepre, IUserModel<ITemplate>, IConfiguration, IProgress<ISearchingReport>?, CancellationToken?)>,
     ITemplateGenericVisitor<ISearchingExecutor, (ISearchingAlgorithm, IMapRepre, IUserModel<ITemplate>, IConfiguration)>,
     ITemplateGenericVisitor<HashSet<ISearchingAlgorithm>,(IMapRepreRepresentative<IMapRepre>, IUserModelType<IUserModel<ITemplate>,ITemplate>)>,
-    ITemplateGenericVisitor<int, (IMapRepreRepresentative<IMapRepre>, IUserModelType<IUserModel<ITemplate>,ITemplate>, ISearchingAlgorithm)>,
-    IGraphGenericVisitor<(SearchingAlgorithmManager.SearchResult[], IPath?[]), IVertexAttributes, IEdgeAttributes, (Leg[], ISearchingAlgorithm, IUserModel<ITemplate>[], IConfiguration, IProgress<ISearchingReport>?, CancellationToken?)>,
-    IGraphGenericVisitor<ISearchingExecutor, IVertexAttributes, IEdgeAttributes, (ISearchingAlgorithm, IUserModel<ITemplate>, IConfiguration)>
+    ITemplateGenericVisitor<int, (IMapRepreRepresentative<IMapRepre>, IUserModelType<IUserModel<ITemplate>,ITemplate>, ISearchingAlgorithm)>
 {
     public static SearchingAlgorithmManager Instance { get; } = new();
     private SearchingAlgorithmManager(){}
@@ -71,7 +69,7 @@ public class SearchingAlgorithmManager :
             foreach(var graphCreator in mapRepreRep.GetMapRepreProcessors<TVertexAttributes, TEdgeAttributes>())
                 foreach (var searchingAlgorithm in SearchingAlgorithms)
                 {
-                    if (FromGraphicMapRepreProcToGraphRepGenericTraverser<ITemplate<TVertexAttributes, TEdgeAttributes>, TVertexAttributes, TEdgeAttributes>.Instance.DoesRepresentUsableGraphicMapRepreProcUserModelCombinationForAlgorithm(graphCreator, computingUserModelType, searchingAlgorithm)) 
+                    if (FromGraphicMapRepreProcToGraphRepTraverser<ITemplate<TVertexAttributes, TEdgeAttributes>, TVertexAttributes, TEdgeAttributes>.Instance.DoesRepresentUsableGraphicMapRepreProcUserModelCombinationForAlgorithm(graphCreator, computingUserModelType, searchingAlgorithm)) 
                         usableAlgorithms.Add(searchingAlgorithm);
                 }
         }
@@ -120,44 +118,31 @@ public class SearchingAlgorithmManager :
         {
             var graphicMapRepreProcs = mapRepreRep.GetMapRepreProcessors<TVertexAttributes, TEdgeAttributes>();
             for (int i = 0; i < mapRepreRep.GetMapRepreProcessors<TVertexAttributes, TEdgeAttributes>().Length; ++i)
-                if (FromGraphicMapRepreProcToGraphRepGenericTraverser<TTemplate, TVertexAttributes, TEdgeAttributes>.Instance.DoesRepresentUsableGraphicMapRepreProcUserModelCombinationForAlgorithm(graphicMapRepreProcs[i], computingUserModelType, algorithm)) return i;
+                if (FromGraphicMapRepreProcToGraphRepTraverser<TTemplate, TVertexAttributes, TEdgeAttributes>.Instance.DoesRepresentUsableGraphicMapRepreProcUserModelCombinationForAlgorithm(graphicMapRepreProcs[i], computingUserModelType, algorithm)) return i;
         }
         return -1;
     }
 
-    private class FromGraphicMapRepreProcToGraphRepGenericTraverser<TTemplate, TVertexAttributes, TEdgeAttributes> :
-        IFromGraphicMapRepreProcToGraphRepGenericTraverser<bool, (IUserModelType<IComputing<TTemplate, TVertexAttributes, TEdgeAttributes>, TTemplate>, ISearchingAlgorithm)>
+    private class FromGraphicMapRepreProcToGraphRepTraverser<TTemplate, TVertexAttributes, TEdgeAttributes> :
+        IFromGraphicMapRepreProcToGraphRepTraverser<bool, (IUserModelType<IComputing<TTemplate, TVertexAttributes, TEdgeAttributes>, TTemplate>, ISearchingAlgorithm)>
         where TTemplate : ITemplate<TVertexAttributes, TEdgeAttributes>
         where TVertexAttributes : IVertexAttributes
         where TEdgeAttributes : IEdgeAttributes
     {
-        public static FromGraphicMapRepreProcToGraphRepGenericTraverser<TTemplate, TVertexAttributes, TEdgeAttributes> Instance { get; } = new();
-        private FromGraphicMapRepreProcToGraphRepGenericTraverser(){}
+        public static FromGraphicMapRepreProcToGraphRepTraverser<TTemplate, TVertexAttributes, TEdgeAttributes> Instance { get; } = new();
+        private FromGraphicMapRepreProcToGraphRepTraverser(){}
         public bool DoesRepresentUsableGraphicMapRepreProcUserModelCombinationForAlgorithm(
             IGraphicMapRepreProcessor<IMapRepre> graphicMapRepreProc,
             IUserModelType<IComputing<TTemplate, TVertexAttributes, TEdgeAttributes>, TTemplate> userModelType,
             ISearchingAlgorithm algorithm)
-            => graphicMapRepreProc.GenericTraverse(this, (userModelType, algorithm));
+            => graphicMapRepreProc.Traverse(this, (userModelType, algorithm));
 
-        public bool AcceptedGenericTraverse<TVertex, TEdge>(IGraphRepresentative<IGraph<TVertex, TEdge>, TVertex, TEdge> graphRepresentative,
+        public bool AcceptedTraverse<TVertex, TEdge>(IGraphRepresentative<IGraph<TVertex, TEdge>, TVertex, TEdge> graphRepresentative,
             (IUserModelType<IComputing<TTemplate, TVertexAttributes, TEdgeAttributes>, TTemplate>, ISearchingAlgorithm) otherParams) where TVertex : IVertex where TEdge : IEdge
         {
             var (computingUserModelType, algorithm) = otherParams;
             return algorithm.DoesRepresentUsableGraphUserModelCombination(graphRepresentative, computingUserModelType);
         }
-    }
-
-    public bool AcceptGraphCreatorsRevelation<TVertex, TEdge, TTemplate, TVertexAttributes, TEdgeAttributes>(
-        IGraphRepresentative<IGraph<TVertex, TEdge>, TVertex, TEdge> revealedGraphRep,
-        IUserModelType<IComputing<TTemplate, TVertexAttributes, TEdgeAttributes>, TTemplate> computingUserModelType,
-        ISearchingAlgorithm algorithm)
-        where TVertex : IVertex
-        where TEdge : IEdge
-        where TTemplate : ITemplate<TVertexAttributes, TEdgeAttributes>
-        where TVertexAttributes : IVertexAttributes
-        where TEdgeAttributes : IEdgeAttributes
-    {
-        return algorithm.DoesRepresentUsableGraphUserModelCombination(revealedGraphRep, computingUserModelType);
     }
     
     public enum SearchResult{Ok = 1, NotComputingUserModelOrNotTiedToTemplate}
@@ -193,11 +178,12 @@ public class SearchingAlgorithmManager :
         var (track, algorithm, mapRepre, userModel, configuration,progress, cancellationToken) = otherParams;
         if (userModel is IComputing<ITemplate<TVertexAttributes, TEdgeAttributes>, TVertexAttributes, TEdgeAttributes> computingUserModel)
         {
+            //TODO: it must be tested, whether it is enough to call ExecuteSearch on algorithm with not visited graph, so without knowing the type of vertices and edges in this graph
             if (mapRepre is IGraph<IAttributesBearingVertex<TVertexAttributes>, IAttributesBearingEdge<TEdgeAttributes>> graph)
             {
                 return algorithm.ExecuteSearch(track, graph, [computingUserModel], configuration, progress, cancellationToken)[0];
             }
-            throw new ArgumentException("Provided map representation is not a graph ot its vertices or edges bear attributes of given template.");
+            throw new ArgumentException("Provided map representation is not a graph or its vertices or edges do not bear attributes of given template.");
         }
         throw new ArgumentException("Provided user model is not computing one.");
     }
@@ -239,17 +225,19 @@ public class SearchingAlgorithmManager :
         (Leg[], ISearchingAlgorithm, IMapRepre, IUserModel<ITemplate>[], IConfiguration, IProgress<ISearchingReport>?, CancellationToken?) otherParams)
     {
         var (track, algorithm, mapRepre, userModels, configuration, progress, cancellationToken) = otherParams;
-        if (mapRepre is IGraph<IVertex, IEdge> graph)
-            return graph.AcceptGeneric<(SearchResult[], IPath?[]), TVertexAttributes, TEdgeAttributes, IVertexAttributes, IEdgeAttributes, (Leg[], ISearchingAlgorithm, IUserModel<ITemplate>[], IConfiguration, IProgress<ISearchingReport>?, CancellationToken?)>(this, (track, algorithm, userModels, configuration, progress, cancellationToken)); 
-        throw new ArgumentException("Provided map representation is not a graph.");
-            
+        //TODO: it must be tested, whether it is enough to call ExecuteSearch on algorithm with not visited graph, so without knowing the type of vertices and edges in this graph
+        if (mapRepre is IGraph<IAttributesBearingVertex<TVertexAttributes>, IAttributesBearingEdge<TEdgeAttributes>> graph)
+            return TryExecuteSearch(graph, track, algorithm, userModels, configuration, progress, cancellationToken);
+        throw new ArgumentException("Provided map representation is not a graph or its vertices or edges do not bear attributes of given template.");
+        // if (mapRepre is IGraph<IAttributesBearingVertex<TVertexAttributes>, IAttributesBearingEdge<TEdgeAttributes>> graph)
+            // return GraphGenericVisitor<TVertexAttributes, TEdgeAttributes>.Instance.TryExecuteSearch(graph, track, algorithm, userModels, configuration, progress, cancellationToken);
+        // throw new ArgumentException("Provided map representation is not a graph.");
     }
-
-    (SearchResult[], IPath?[]) IGraphGenericVisitor<(SearchResult[], IPath?[]), IVertexAttributes, IEdgeAttributes, (Leg[], ISearchingAlgorithm, IUserModel<ITemplate>[], IConfiguration, IProgress<ISearchingReport>?, CancellationToken?)>.
-        GenericVisit<TGraph, TVertex, TEdge, TVertexAttributes, TEdgeAttributes>(TGraph graph, (Leg[], ISearchingAlgorithm, IUserModel<ITemplate>[], IConfiguration, IProgress<ISearchingReport>?, CancellationToken?) otherParams)
+    
+    private (SearchResult[], IPath?[]) TryExecuteSearch<TVertexAttributes, TEdgeAttributes>(IGraph<IAttributesBearingVertex<TVertexAttributes>, IAttributesBearingEdge<TEdgeAttributes>> graph, Leg[] track, ISearchingAlgorithm algorithm, IUserModel<ITemplate>[] userModels, IConfiguration configuration, IProgress<ISearchingReport>? progress, CancellationToken? cancellationToken)
+        where TVertexAttributes : IVertexAttributes
+        where TEdgeAttributes : IEdgeAttributes
     {
-        var (track, algorithm, userModels, configuration, progress, cancellationToken) = otherParams;
-        
         SearchResult[] results = new SearchResult[userModels.Length];
         List<IUserModel<ITemplate<TVertexAttributes, TEdgeAttributes>>> usableUserModels = new();
         for(int i = 0; i < userModels.Length; ++i)
@@ -286,7 +274,6 @@ public class SearchingAlgorithmManager :
         
     }
 
-
     /// <summary>
     /// Returns path finding algorithms executor instantiated with provided map representation and user model, both tied to user models associated template.
     /// 
@@ -311,21 +298,84 @@ public class SearchingAlgorithmManager :
     {
         var (algorithm, mapRepre, userModel, configuration) = otherParams;
         if (mapRepre is IGraph<IVertex, IEdge> graph)
-            return graph.AcceptGeneric<ISearchingExecutor, TVertexAttributes, TEdgeAttributes, IVertexAttributes, IEdgeAttributes, (ISearchingAlgorithm, IUserModel<ITemplate>, IConfiguration)>(this, (algorithm, userModel, configuration));
+            return GraphGenericVisitor<TVertexAttributes, TEdgeAttributes>.Instance.GetExecutorOf(graph, algorithm, userModel, configuration); 
         throw new ArgumentException("Provided map representation is not a graph.");
     }
 
-    ISearchingExecutor IGraphGenericVisitor<ISearchingExecutor, IVertexAttributes, IEdgeAttributes, (ISearchingAlgorithm, IUserModel<ITemplate>, IConfiguration)>.
-        GenericVisit<TGraph, TVertex, TEdge, TVertexAttributes, TEdgeAttributes>(TGraph graph, (ISearchingAlgorithm, IUserModel<ITemplate>, IConfiguration) otherParams)
+    
+    
+    
+    private class GraphGenericVisitor<TVertexAttributes, TEdgeAttributes> 
+        : IGraphGenericVisitor<ISearchingExecutor, (ISearchingAlgorithm, IUserModel<ITemplate>, IConfiguration)>//,
+        // IGraphGenericVisitor<(SearchResult[], IPath?[]), (Leg[], ISearchingAlgorithm, IUserModel<ITemplate>[], IConfiguration, IProgress<ISearchingReport>?, CancellationToken?)>
+        where TVertexAttributes : IVertexAttributes
+        where TEdgeAttributes : IEdgeAttributes
     {
-        var (algorithm, userModel, configuration) = otherParams;
-        if (userModel is IUserModel<ITemplate<TVertexAttributes, TEdgeAttributes>> computingUserModel)
+        private GraphGenericVisitor() {}
+        public static GraphGenericVisitor<TVertexAttributes, TEdgeAttributes> Instance => new();
+
+        public ISearchingExecutor GetExecutorOf(IGraph<IVertex, IEdge> graph, ISearchingAlgorithm algorithm,
+            IUserModel<ITemplate> userModel, IConfiguration configuration)
+            => graph.AcceptGeneric<ISearchingExecutor, (ISearchingAlgorithm, IUserModel<ITemplate>, IConfiguration)>(this, (algorithm, userModel, configuration));
+        
+        ISearchingExecutor IGraphGenericVisitor<ISearchingExecutor, (ISearchingAlgorithm, IUserModel<ITemplate>, IConfiguration)>.
+            GenericVisit<TGraph, TVertex, TEdge>(TGraph graph, (ISearchingAlgorithm, IUserModel<ITemplate>, IConfiguration) otherParams)
         {
+            var (algorithm, userModel, configuration) = otherParams;
+            if (userModel is IUserModel<ITemplate<TVertexAttributes, TEdgeAttributes>> computingUserModel)
+            {
                 var executor = algorithm.GetExecutor(graph, computingUserModel, configuration);
                 return executor;
+            }
+            throw new ArgumentException("Provided user model is not matching with vertex and edge attributes.");
         }
-        throw new ArgumentException("Provided user model is not matching with vertex and edge attributes.");
+        
+        // public (SearchResult[], IPath?[]) TryExecuteSearch(IGraph<IVertex, IEdge> graph, Leg[] track, ISearchingAlgorithm algorithm, IUserModel<ITemplate>[] userModels, IConfiguration configuration, IProgress<ISearchingReport>? progress, CancellationToken? cancellationToken) 
+            // => graph.AcceptGeneric<(SearchResult[], IPath?[]), (Leg[], ISearchingAlgorithm, IUserModel<ITemplate>[], IConfiguration, IProgress<ISearchingReport>?, CancellationToken?)>(this, (track, algorithm, userModels, configuration, progress, cancellationToken)); 
+        
+        // (SearchResult[], IPath?[]) IGraphGenericVisitor<(SearchResult[], IPath?[]), (Leg[], ISearchingAlgorithm, IUserModel<ITemplate>[], IConfiguration, IProgress<ISearchingReport>?, CancellationToken?)>.
+            // GenericVisit<TGraph, TVertex, TEdge>(TGraph graph, (Leg[], ISearchingAlgorithm, IUserModel<ITemplate>[], IConfiguration, IProgress<ISearchingReport>?, CancellationToken?) otherParams)
+        // {
+            // var (track, algorithm, userModels, configuration, progress, cancellationToken) = otherParams;
+        
+            // SearchResult[] results = new SearchResult[userModels.Length];
+            // List<IUserModel<ITemplate<TVertexAttributes, TEdgeAttributes>>> usableUserModels = new();
+            // for(int i = 0; i < userModels.Length; ++i)
+            // {
+                // if (userModels[i] is IUserModel<ITemplate<TVertexAttributes, TEdgeAttributes>> usableUserModel)
+                // {
+                    // usableUserModels.Add(usableUserModel);
+                // }
+                // else results[i] = SearchResult.NotComputingUserModelOrNotTiedToTemplate;
+            // }
+        
+            // IPath[] foundPaths;
+
+            // foundPaths = usableUserModels.Count == 0 ? [] : algorithm.ExecuteSearch(track, graph, usableUserModels, configuration, progress, cancellationToken);
+
+            // if (cancellationToken is not null && cancellationToken.Value.IsCancellationRequested) return ([], []);
+        
+            // IPath?[] resultingPaths = new IPath?[userModels.Length];
+        
+            // int j = 0;
+            // for (int i = 0; i < userModels.Length; ++i)
+            // {
+                // if (results[i] == 0)
+                // {
+                    // results[i] = SearchResult.Ok;
+                    // resultingPaths[i] = foundPaths[j++];
+                // }
+                // else
+                // {
+                    // resultingPaths[i] = null;
+                // }
+            // }
+            // return (results, resultingPaths);
+        
+        // }
     }
+
+    
 }
 
 

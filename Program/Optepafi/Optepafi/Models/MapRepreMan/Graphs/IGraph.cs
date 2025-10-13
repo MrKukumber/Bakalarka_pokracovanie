@@ -22,9 +22,8 @@ public interface IGraph<out TVertex, out TEdge> :
 {
     void RestoreConsistency();
     int Scale { get; }
-    
-    TOut AcceptGeneric<TOut, TGenericParam1, TGenericParam2, TGenericConstraint1, TGenericConstraint2, TOtherParams>(IGraphGenericVisitor<TOut, TGenericConstraint1, TGenericConstraint2, TOtherParams> genericVisitor, 
-        TOtherParams otherParams)
-        where TGenericParam1 : TGenericConstraint1
-        where TGenericParam2 : TGenericConstraint2;
+
+    TOut AcceptGeneric<TOut, TOtherParams>(
+        IGraphGenericVisitor<TOut, TOtherParams> genericVisitor,
+        TOtherParams otherParams);
 }

@@ -17,15 +17,14 @@ public interface ICanBeSearched<out TVertex, out TEdge, TWeight, TVertexAttribut
     where TVertexAttributes : IVertexAttributes
     where TEdgeAttributes : IEdgeAttributes
 {
-    public TOut AcceptGeneric<TOut, TOtherParams>(ICanBeSearchedGenericVisitor<TOut, TWeight, TVertexAttributes, TEdgeAttributes, TOtherParams> genericVisitor, TOtherParams otherParams);
+    public TOut Traverse<TOut, TOtherParams>(IFromCanBeSearchedToSearchableTraverser<TOut, TWeight, TVertexAttributes, TEdgeAttributes, TOtherParams> traverser, TOtherParams otherParams);
 }
 
-public interface ICanBeSearchedGenericVisitor<TOut, TWeight, TVertexAttributes, TEdgeAttributes, TOtherParams>
+public interface IFromCanBeSearchedToSearchableTraverser<TOut, TWeight, TVertexAttributes, TEdgeAttributes, TOtherParams>
     where TVertexAttributes : IVertexAttributes
     where TEdgeAttributes : IEdgeAttributes
 {
-    public TOut GenericVisit<TGraph, TVertex, TEdge>(TGraph graph, TOtherParams otherParams)
-        where TGraph : ISearchable<TVertex, TEdge, TWeight, TVertexAttributes, TEdgeAttributes>
+    public TOut AcceptedTraverse<TVertex, TEdge>(ISearchable<TVertex, TEdge, TWeight, TVertexAttributes, TEdgeAttributes> graph, TOtherParams otherParams)
         where TVertex : class, IBasicVertex<TEdge, TVertexAttributes>
         where TEdge : IBasicEdge<TVertex, TEdgeAttributes, TWeight>;
 }

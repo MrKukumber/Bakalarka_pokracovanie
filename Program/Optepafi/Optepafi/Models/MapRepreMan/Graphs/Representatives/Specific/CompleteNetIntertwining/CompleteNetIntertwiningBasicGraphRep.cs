@@ -23,6 +23,6 @@ public class CompleteNetIntertwiningBasicGraphRep<TVertexAttributes, TEdgeAttrib
 /*Dep*/     CompleteNetIntertwiningBasicElevDataIndepOrienteering_ISOM_2017_2RunSpeModSymOmapMapImplementationRep.Instance
         ];
 
-    public override TOut GenericTraverse<TOut, TOtherParams>( IFromGraphicMapRepreProcToGraphRepGenericTraverser<TOut, TOtherParams> traverser, TOtherParams otherParams)
-        => traverser.AcceptedGenericTraverse(this, otherParams);
+    public override TOut Traverse<TOut, TOtherParams>( IFromGraphicMapRepreProcToGraphRepTraverser<TOut, TOtherParams> traverser, TOtherParams otherParams)
+        => traverser.AcceptedTraverse(this, otherParams);
 }

@@ -84,7 +84,7 @@ public class AStarUsesPredsInVerts :
         => Algorithm<TVertexAttributes, TEdgeAttributes>.Instance.Search(track, graph, userModel, configuration, progress, cancellationToken); 
 
     private class Algorithm<TVertexAttributes, TEdgeAttributes> :
-        IRemembersPredecessorsGenericVisitor<SegmentedLinesPath<TVertexAttributes, TEdgeAttributes>, float, TVertexAttributes, TEdgeAttributes, (Leg, IUserModel<ITemplate<TVertexAttributes, TEdgeAttributes>>, AStarConfiguration, IProgress<ISearchingReport>?, CancellationToken? )> 
+        IFromRemembersPredecessorsToPredecessorRememberingTraverser<SegmentedLinesPath<TVertexAttributes, TEdgeAttributes>, float, TVertexAttributes, TEdgeAttributes, (Leg, IUserModel<ITemplate<TVertexAttributes, TEdgeAttributes>>, AStarConfiguration, IProgress<ISearchingReport>?, CancellationToken? )> 
         where TVertexAttributes : IVertexAttributes
         where TEdgeAttributes : IEdgeAttributes
     {
@@ -103,15 +103,15 @@ public class AStarUsesPredsInVerts :
                 foreach (var leg in track)
                 {
                     if (cancellationToken is not null && cancellationToken.Value.IsCancellationRequested) return path;
-                    path.MergeWith(graphWhichRemembersPredecessors.AcceptGeneric(this, (leg, userModel, configuration, progress, cancellationToken)));
+                    path.MergeWith(graphWhichRemembersPredecessors.Traverse(this, (leg, userModel, configuration, progress, cancellationToken)));
                 }
                 return path;
             }
             throw new ArgumentException("Graph was not convertible to IRemembersPredecessorsGenericVisitor even though it should be checked before call of this method.");
         }
 
-        SegmentedLinesPath<TVertexAttributes, TEdgeAttributes> IRemembersPredecessorsGenericVisitor<SegmentedLinesPath<TVertexAttributes, TEdgeAttributes>, float, TVertexAttributes, TEdgeAttributes, (Leg, IUserModel<ITemplate<TVertexAttributes, TEdgeAttributes>>, AStarConfiguration, IProgress<ISearchingReport>?, CancellationToken? )>.
-            GenericVisit<TPredecessorRemembering, TVertex, TEdge>(TPredecessorRemembering predecessorRememberingGraph,
+        SegmentedLinesPath<TVertexAttributes, TEdgeAttributes> IFromRemembersPredecessorsToPredecessorRememberingTraverser<SegmentedLinesPath<TVertexAttributes, TEdgeAttributes>, float, TVertexAttributes, TEdgeAttributes, (Leg, IUserModel<ITemplate<TVertexAttributes, TEdgeAttributes>>, AStarConfiguration, IProgress<ISearchingReport>?, CancellationToken? )>.
+            AcceptedTraverse<TVertex, TEdge>(IPredecessorRemembering<TVertex, TEdge, float, TVertexAttributes, TEdgeAttributes> predecessorRememberingGraph,
             (Leg, IUserModel<ITemplate<TVertexAttributes, TEdgeAttributes>>, AStarConfiguration, IProgress<ISearchingReport>?, CancellationToken?) otherParams)
         {
             var (leg, userModel, configuration, progress, cancellationToken) = otherParams;

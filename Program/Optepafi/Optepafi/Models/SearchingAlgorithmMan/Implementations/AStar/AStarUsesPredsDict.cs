@@ -63,7 +63,7 @@ public class AStarUsesPredsDict : SearchingAlgorithmImplementation<AStarConfigur
         => Algorithm<TVertexAttributes, TEdgeAttributes>.Instance.Search(track, graph, userModel, configuration, progress, cancellationToken); 
     
     private class Algorithm<TVertexAttributes, TEdgeAttributes> :
-        ICanBeSearchedGenericVisitor<SegmentedLinesPath<TVertexAttributes, TEdgeAttributes>, float, TVertexAttributes, TEdgeAttributes, (Leg, IUserModel<ITemplate<TVertexAttributes, TEdgeAttributes>>, AStarConfiguration, IProgress<ISearchingReport>?, CancellationToken? )> 
+        IFromCanBeSearchedToSearchableTraverser<SegmentedLinesPath<TVertexAttributes, TEdgeAttributes>, float, TVertexAttributes, TEdgeAttributes, (Leg, IUserModel<ITemplate<TVertexAttributes, TEdgeAttributes>>, AStarConfiguration, IProgress<ISearchingReport>?, CancellationToken? )> 
         where TVertexAttributes : IVertexAttributes
         where TEdgeAttributes : IEdgeAttributes
     {
@@ -86,15 +86,15 @@ public class AStarUsesPredsDict : SearchingAlgorithmImplementation<AStarConfigur
                 foreach (var leg in track)
                 {
                     if (cancellationToken is not null && cancellationToken.Value.IsCancellationRequested) return path;
-                    path.MergeWith(searchableGraph.AcceptGeneric(this, (leg, userModel, configuration, progress, cancellationToken)));
+                    path.MergeWith(searchableGraph.Traverse(this, (leg, userModel, configuration, progress, cancellationToken)));
                 }
                 return path;
             }
             throw new ArgumentException("Graph was not convertible to IRemembersPredecessorsGenericVisitor even though it should be checked before call of this method.");
         }
 
-        SegmentedLinesPath<TVertexAttributes, TEdgeAttributes> ICanBeSearchedGenericVisitor<SegmentedLinesPath<TVertexAttributes, TEdgeAttributes>, float, TVertexAttributes, TEdgeAttributes, (Leg, IUserModel<ITemplate<TVertexAttributes, TEdgeAttributes>>, AStarConfiguration, IProgress<ISearchingReport>?, CancellationToken? )>.
-            GenericVisit<TSearchable, TVertex, TEdge>(TSearchable searchableGraph,
+        SegmentedLinesPath<TVertexAttributes, TEdgeAttributes> IFromCanBeSearchedToSearchableTraverser<SegmentedLinesPath<TVertexAttributes, TEdgeAttributes>, float, TVertexAttributes, TEdgeAttributes, (Leg, IUserModel<ITemplate<TVertexAttributes, TEdgeAttributes>>, AStarConfiguration, IProgress<ISearchingReport>?, CancellationToken? )>.
+            AcceptedTraverse<TVertex, TEdge>(ISearchable<TVertex, TEdge, float, TVertexAttributes, TEdgeAttributes> searchableGraph,
             (Leg, IUserModel<ITemplate<TVertexAttributes, TEdgeAttributes>>, AStarConfiguration, IProgress<ISearchingReport>?, CancellationToken?) otherParams)
         {
             var (leg, userModel, configuration, progress, cancellationToken) = otherParams;
