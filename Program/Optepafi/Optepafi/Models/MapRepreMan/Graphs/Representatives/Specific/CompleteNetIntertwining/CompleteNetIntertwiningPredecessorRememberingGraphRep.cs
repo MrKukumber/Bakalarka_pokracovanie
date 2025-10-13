@@ -15,7 +15,7 @@ namespace Optepafi.Models.MapRepreMan.Graphs.Representatives.Specific.CompleteNe
 
 //TODO: comment
 public class CompleteNetIntertwiningPredecessorRememberingGraphRep<TVertexAttributes, TEdgeAttributes> : 
-    GraphRepresentative<ICompleteNetIntertwiningPredecessorRememberingGraph<TVertexAttributes, TEdgeAttributes>, ICompleteNetIntertwiningPredecessorRememberingGraph<TVertexAttributes, TEdgeAttributes>.Vertex, ICompleteNetIntertwiningPredecessorRememberingGraph<TVertexAttributes, TEdgeAttributes>.Edge>
+    GraphRepresentative<ICompleteNetIntertwiningPredecessorsRememberingGraph<TVertexAttributes, TEdgeAttributes>, ICompleteNetIntertwiningPredecessorsRememberingGraph<TVertexAttributes, TEdgeAttributes>.Vertex, ICompleteNetIntertwiningPredecessorsRememberingGraph<TVertexAttributes, TEdgeAttributes>.Edge>
     where TVertexAttributes : IVertexAttributes
     where TEdgeAttributes : IEdgeAttributes
 {

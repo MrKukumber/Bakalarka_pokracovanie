@@ -9,11 +9,11 @@ using Optepafi.Models.Utils;
 
 namespace Optepafi.Models.GraphicsMan.Aggregators.MapRepre.CompleteNetIntertwining;
 
-public class CompleteNetIntertwiningPredecessorRememberingElevDataIndepOrienteering_ISOM_2017_2OmapMapImplementationGraphicsAggregator : IMapRepreGraphicsAggregator<CompleteNetIntertwiningPredecessorRememberingElevDataIndepOrienteering_ISOM_2017_2RunSpeModSymOmapMapImplementation>
+public class CompleteNetIntertwiningPredecessorRememberingElevDataIndepOrienteering_ISOM_2017_2OmapMapImplementationGraphicsAggregator : IMapRepreGraphicsAggregator<CompleteNetIntertwiningPredecessorsRememberingElevDataIndepOrienteeringIsom20172RunSpeModSymOmapMapImplementation>
 {
     public static CompleteNetIntertwiningPredecessorRememberingElevDataIndepOrienteering_ISOM_2017_2OmapMapImplementationGraphicsAggregator Instance { get; } = new();
     private CompleteNetIntertwiningPredecessorRememberingElevDataIndepOrienteering_ISOM_2017_2OmapMapImplementationGraphicsAggregator(){}
-    public void AggregateGraphics(CompleteNetIntertwiningPredecessorRememberingElevDataIndepOrienteering_ISOM_2017_2RunSpeModSymOmapMapImplementation implementation,
+    public void AggregateGraphics(CompleteNetIntertwiningPredecessorsRememberingElevDataIndepOrienteeringIsom20172RunSpeModSymOmapMapImplementation implementation,
         IGraphicObjectCollector collectorForAggregatedObjects, CancellationToken? cancellationToken)
     {
         HashSet<(MapCoordinates, MapCoordinates)> foundEdgeCoordinates = new HashSet<(MapCoordinates, MapCoordinates)>();

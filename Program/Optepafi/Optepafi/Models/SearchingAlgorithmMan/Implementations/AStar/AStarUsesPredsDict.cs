@@ -27,7 +27,7 @@ public class AStarUsesPredsDict : SearchingAlgorithmImplementation<AStarConfigur
     public override bool DoesRepresentUsableGraph<TVertex, TEdge, TVertexAttributes, TEdgeAttributes>(
         IGraphRepresentative<IGraph<TVertex, TEdge>, TVertex, TEdge> graphRepresentative) 
     {
-        return graphRepresentative is IGraphRepresentative< ICanBeSearched<TVertex, TEdge, float, TVertexAttributes, TEdgeAttributes>, TVertex, TEdge>;
+        return graphRepresentative is IGraphRepresentative< IPromisesSearchability<TVertex, TEdge, float, TVertexAttributes, TEdgeAttributes>, TVertex, TEdge>;
     }
     public override bool DoesRepresentUsableUserModel<TTemplate, TVertexAttributes, TEdgeAttributes>(IUserModelType<IComputing<TTemplate, TVertexAttributes, TEdgeAttributes>, TTemplate> userModelType) 
     {
@@ -37,7 +37,7 @@ public class AStarUsesPredsDict : SearchingAlgorithmImplementation<AStarConfigur
     }
     public override bool IsUsableGraph<TVertex, TEdge, TVertexAttributes, TEdgeAttributes>(IGraph<TVertex, TEdge> graph) 
     {
-        return graph is ICanBeSearched<TVertex, TEdge, float, TVertexAttributes, TEdgeAttributes>;
+        return graph is IPromisesSearchability<TVertex, TEdge, float, TVertexAttributes, TEdgeAttributes>;
     }
     public override bool IsUsableUserModel<TVertexAttributes, TEdgeAttributes>(IUserModel<ITemplate<TVertexAttributes, TEdgeAttributes>> userModel) 
     {
@@ -63,7 +63,7 @@ public class AStarUsesPredsDict : SearchingAlgorithmImplementation<AStarConfigur
         => Algorithm<TVertexAttributes, TEdgeAttributes>.Instance.Search(track, graph, userModel, configuration, progress, cancellationToken); 
     
     private class Algorithm<TVertexAttributes, TEdgeAttributes> :
-        IFromCanBeSearchedToSearchableTraverser<SegmentedLinesPath<TVertexAttributes, TEdgeAttributes>, float, TVertexAttributes, TEdgeAttributes, (Leg, IUserModel<ITemplate<TVertexAttributes, TEdgeAttributes>>, AStarConfiguration, IProgress<ISearchingReport>?, CancellationToken? )> 
+        IFromPromiseToSearchableTraverser<SegmentedLinesPath<TVertexAttributes, TEdgeAttributes>, float, TVertexAttributes, TEdgeAttributes, (Leg, IUserModel<ITemplate<TVertexAttributes, TEdgeAttributes>>, AStarConfiguration, IProgress<ISearchingReport>?, CancellationToken? )> 
         where TVertexAttributes : IVertexAttributes
         where TEdgeAttributes : IEdgeAttributes
     {
@@ -79,7 +79,7 @@ public class AStarUsesPredsDict : SearchingAlgorithmImplementation<AStarConfigur
         where TVertex : IVertex
         where TEdge : IEdge
         {
-            if (graph is ICanBeSearched<TVertex, TEdge, float, TVertexAttributes, TEdgeAttributes>
+            if (graph is IPromisesSearchability<TVertex, TEdge, float, TVertexAttributes, TEdgeAttributes>
                 searchableGraph)
             {
                 SegmentedLinesPath<TVertexAttributes, TEdgeAttributes> path = new();
@@ -93,7 +93,7 @@ public class AStarUsesPredsDict : SearchingAlgorithmImplementation<AStarConfigur
             throw new ArgumentException("Graph was not convertible to IRemembersPredecessorsGenericVisitor even though it should be checked before call of this method.");
         }
 
-        SegmentedLinesPath<TVertexAttributes, TEdgeAttributes> IFromCanBeSearchedToSearchableTraverser<SegmentedLinesPath<TVertexAttributes, TEdgeAttributes>, float, TVertexAttributes, TEdgeAttributes, (Leg, IUserModel<ITemplate<TVertexAttributes, TEdgeAttributes>>, AStarConfiguration, IProgress<ISearchingReport>?, CancellationToken? )>.
+        SegmentedLinesPath<TVertexAttributes, TEdgeAttributes> IFromPromiseToSearchableTraverser<SegmentedLinesPath<TVertexAttributes, TEdgeAttributes>, float, TVertexAttributes, TEdgeAttributes, (Leg, IUserModel<ITemplate<TVertexAttributes, TEdgeAttributes>>, AStarConfiguration, IProgress<ISearchingReport>?, CancellationToken? )>.
             AcceptedTraverse<TVertex, TEdge>(ISearchable<TVertex, TEdge, float, TVertexAttributes, TEdgeAttributes> searchableGraph,
             (Leg, IUserModel<ITemplate<TVertexAttributes, TEdgeAttributes>>, AStarConfiguration, IProgress<ISearchingReport>?, CancellationToken?) otherParams)
         {

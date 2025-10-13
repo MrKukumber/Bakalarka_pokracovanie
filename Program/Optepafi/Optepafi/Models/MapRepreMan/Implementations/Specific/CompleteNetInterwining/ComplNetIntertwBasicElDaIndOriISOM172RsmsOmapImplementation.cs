@@ -26,7 +26,7 @@ public abstract class CompleteNetIntertwiningBasicElevDataIndepOrienteering_ISOM
     
     public TOut AcceptGeneric<TOut,TOtherParams>( IGraphGenericVisitor<TOut, TOtherParams> genericVisitor, TOtherParams otherParams) 
         => genericVisitor.GenericVisit<CompleteNetIntertwiningBasicElevDataIndepOrienteering_ISOM_2017_2RunSpeModSymOmapMapImplementation, ICompleteNetIntertwiningBasicGraph<Orienteering_ISOM_2017_2_RunSpeModSym.VertexAttributes, Orienteering_ISOM_2017_2_RunSpeModSym.EdgeAttributes>.Vertex,ICompleteNetIntertwiningBasicGraph<Orienteering_ISOM_2017_2_RunSpeModSym.VertexAttributes, Orienteering_ISOM_2017_2_RunSpeModSym.EdgeAttributes>.Edge>(this, otherParams);
-    public TOut Traverse<TOut, TOtherParams>(IFromCanBeSearchedToSearchableTraverser<TOut, float, Orienteering_ISOM_2017_2_RunSpeModSym.VertexAttributes, Orienteering_ISOM_2017_2_RunSpeModSym.EdgeAttributes, TOtherParams> traverser, TOtherParams otherParams)
+    public TOut Traverse<TOut, TOtherParams>(IFromPromiseToSearchableTraverser<TOut, float, Orienteering_ISOM_2017_2_RunSpeModSym.VertexAttributes, Orienteering_ISOM_2017_2_RunSpeModSym.EdgeAttributes, TOtherParams> traverser, TOtherParams otherParams)
         => traverser.AcceptedTraverse(this, otherParams);
     public TOut AcceptGeneric<TOut, TOtherParams>(IMapRepreGenericVisitor<TOut, TOtherParams> genericVisitor, TOtherParams otherParams)
         => genericVisitor.GenericVisit(this, otherParams);

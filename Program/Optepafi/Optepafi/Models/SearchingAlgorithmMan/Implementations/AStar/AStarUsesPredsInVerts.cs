@@ -33,26 +33,26 @@ namespace Optepafi.Models.SearchingAlgorithmMan.Implementations.AStar;
 public class AStarUsesPredsInVerts : 
     SearchingAlgorithmImplementation<AStarConfiguration>
 {
-    public static AStarUsesPredsInVerts Instance { get; } = new AStarUsesPredsInVerts();
+    public static AStarUsesPredsInVerts Instance { get; } = new ();
     private AStarUsesPredsInVerts() {}
     /// <inheritdoc cref="SearchingAlgorithmImplementation{TConfiguration}"/> 
     public override bool DoesRepresentUsableGraph<TVertex, TEdge, TVertexAttributes, TEdgeAttributes>(IGraphRepresentative<IGraph<TVertex, TEdge>, TVertex, TEdge> graphRepresentative) 
     {
-        return graphRepresentative is IGraphRepresentative<IRemembersPredecessors<TVertex, TEdge, float, TVertexAttributes, TEdgeAttributes>, TVertex, TEdge>;
+        return graphRepresentative is IGraphRepresentative<IPromisesPredecessorsRemembering<TVertex, TEdge, float, TVertexAttributes, TEdgeAttributes>, TVertex, TEdge>;
     }
 
     /// <inheritdoc cref="SearchingAlgorithmImplementation{TConfiguration}"/> 
     public override bool DoesRepresentUsableUserModel<TTemplate, TVertexAttributes, TEdgeAttributes>(IUserModelType<IComputing<TTemplate, TVertexAttributes, TEdgeAttributes>, TTemplate> userModelType) 
     {
         return userModelType 
-            is IUserModelType<IAStarHeuristicsComputing<TTemplate, TVertexAttributes, TEdgeAttributes> , TTemplate> 
+            is IUserModelType<IAStarHeuristicsComputing<TTemplate, TVertexAttributes, TEdgeAttributes>, TTemplate> 
             and IUserModelType<IWeightComputing<TTemplate, TVertexAttributes, TEdgeAttributes>, TTemplate> ;
     }
 
     /// <inheritdoc cref="SearchingAlgorithmImplementation{TConfiguration}"/> 
     public override bool IsUsableGraph<TVertex, TEdge, TVertexAttributes, TEdgeAttributes>(IGraph<TVertex, TEdge> graph) 
     {
-        return graph is IRemembersPredecessors<TVertex, TEdge, float, TVertexAttributes, TEdgeAttributes>;
+        return graph is IPromisesPredecessorsRemembering<TVertex, TEdge, float, TVertexAttributes, TEdgeAttributes>;
     }
 
     /// <inheritdoc cref="SearchingAlgorithmImplementation{TConfiguration}"/> 
@@ -84,7 +84,7 @@ public class AStarUsesPredsInVerts :
         => Algorithm<TVertexAttributes, TEdgeAttributes>.Instance.Search(track, graph, userModel, configuration, progress, cancellationToken); 
 
     private class Algorithm<TVertexAttributes, TEdgeAttributes> :
-        IFromRemembersPredecessorsToPredecessorRememberingTraverser<SegmentedLinesPath<TVertexAttributes, TEdgeAttributes>, float, TVertexAttributes, TEdgeAttributes, (Leg, IUserModel<ITemplate<TVertexAttributes, TEdgeAttributes>>, AStarConfiguration, IProgress<ISearchingReport>?, CancellationToken? )> 
+        IFromPromiseToPredecessorRememberingTraverser<SegmentedLinesPath<TVertexAttributes, TEdgeAttributes>, float, TVertexAttributes, TEdgeAttributes, (Leg, IUserModel<ITemplate<TVertexAttributes, TEdgeAttributes>>, AStarConfiguration, IProgress<ISearchingReport>?, CancellationToken? )> 
         where TVertexAttributes : IVertexAttributes
         where TEdgeAttributes : IEdgeAttributes
     {
@@ -96,7 +96,7 @@ public class AStarUsesPredsInVerts :
         where TVertex : IVertex
         where TEdge : IEdge
         {
-            if (graph is IRemembersPredecessors<TVertex, TEdge, float, TVertexAttributes, TEdgeAttributes>
+            if (graph is IPromisesPredecessorsRemembering<TVertex, TEdge, float, TVertexAttributes, TEdgeAttributes>
                 graphWhichRemembersPredecessors)
             {
                 SegmentedLinesPath<TVertexAttributes, TEdgeAttributes> path = new();
@@ -110,20 +110,20 @@ public class AStarUsesPredsInVerts :
             throw new ArgumentException("Graph was not convertible to IRemembersPredecessorsGenericVisitor even though it should be checked before call of this method.");
         }
 
-        SegmentedLinesPath<TVertexAttributes, TEdgeAttributes> IFromRemembersPredecessorsToPredecessorRememberingTraverser<SegmentedLinesPath<TVertexAttributes, TEdgeAttributes>, float, TVertexAttributes, TEdgeAttributes, (Leg, IUserModel<ITemplate<TVertexAttributes, TEdgeAttributes>>, AStarConfiguration, IProgress<ISearchingReport>?, CancellationToken? )>.
-            AcceptedTraverse<TVertex, TEdge>(IPredecessorRemembering<TVertex, TEdge, float, TVertexAttributes, TEdgeAttributes> predecessorRememberingGraph,
+        SegmentedLinesPath<TVertexAttributes, TEdgeAttributes> IFromPromiseToPredecessorRememberingTraverser<SegmentedLinesPath<TVertexAttributes, TEdgeAttributes>, float, TVertexAttributes, TEdgeAttributes, (Leg, IUserModel<ITemplate<TVertexAttributes, TEdgeAttributes>>, AStarConfiguration, IProgress<ISearchingReport>?, CancellationToken? )>.
+            AcceptedTraverse<TVertex, TEdge>(IPredecessorsRemembering<TVertex, TEdge, float, TVertexAttributes, TEdgeAttributes> predecessorsRememberingGraph,
             (Leg, IUserModel<ITemplate<TVertexAttributes, TEdgeAttributes>>, AStarConfiguration, IProgress<ISearchingReport>?, CancellationToken?) otherParams)
         {
             var (leg, userModel, configuration, progress, cancellationToken) = otherParams;
             if (userModel is IWeightComputing<ITemplate<TVertexAttributes, TEdgeAttributes>, TVertexAttributes, TEdgeAttributes> weightComputingUserModel
                 && userModel is IAStarHeuristicsComputing<ITemplate<TVertexAttributes, TEdgeAttributes>, TVertexAttributes, TEdgeAttributes> aStarHeuristicsComputingUserModel)
             {
-                TVertex startVertex = predecessorRememberingGraph.GetVertexFor(leg.Start);
-                TVertex finishVertex = predecessorRememberingGraph.GetVertexFor(leg.Finish);
+                TVertex startVertex = predecessorsRememberingGraph.GetVertexFor(leg.Start);
+                TVertex finishVertex = predecessorsRememberingGraph.GetVertexFor(leg.Finish);
                 SimplePriorityQueue<TVertex, float> frontier = new();
                 Dictionary<TVertex, float> frontierVerticesCosts = new();
                 HashSet<TVertex> visited = new();
-                frontier.Enqueue(startVertex, aStarHeuristicsComputingUserModel.GetWeightFromHeuristics(startVertex.Attributes, finishVertex.Attributes, predecessorRememberingGraph.Scale) + 0);
+                frontier.Enqueue(startVertex, aStarHeuristicsComputingUserModel.GetWeightFromHeuristics(startVertex.Attributes, finishVertex.Attributes, predecessorsRememberingGraph.Scale) + 0);
                 frontierVerticesCosts.Add(startVertex, 0);
                 int timeSinceLastCancellationCheck = 0;
                 while (frontier.TryDequeue(out TVertex vertex))
@@ -136,8 +136,8 @@ public class AStarUsesPredsInVerts :
                     foreach (TEdge edge in vertex.GetEdges())
                         if (!visited.Contains(edge.To))
                         {
-                            float g = frontierVerticesCosts[vertex] + GetEdgeWeight(vertex, edge, weightComputingUserModel, predecessorRememberingGraph.Scale);
-                            float f = g + aStarHeuristicsComputingUserModel.GetWeightFromHeuristics(edge.To.Attributes, finishVertex.Attributes, predecessorRememberingGraph.Scale);
+                            float g = frontierVerticesCosts[vertex] + GetEdgeWeight(vertex, edge, weightComputingUserModel, predecessorsRememberingGraph.Scale);
+                            float f = g + aStarHeuristicsComputingUserModel.GetWeightFromHeuristics(edge.To.Attributes, finishVertex.Attributes, predecessorsRememberingGraph.Scale);
                             if (frontier.Contains(edge.To))
                                 if (frontier.GetPriority(edge.To) < f) continue;
                                 else frontier.UpdatePriority(edge.To, f);

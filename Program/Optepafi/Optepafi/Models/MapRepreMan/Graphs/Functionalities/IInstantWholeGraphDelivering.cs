@@ -8,7 +8,7 @@ namespace Optepafi.Models.MapRepreMan.Graphs.Functionalities;
 /// That means this map representations that corresponds to graphs with this ability must generate their graphs before start of path finding on them.
 /// This interface should not be implemented. Its successor <see cref="IInstantWholeGraphDelivering{TVertex,TEdge}"/> should be implemented instead.
 /// </summary>
-public interface ICanDeliverWholeGraphInInstant<out TVertex, out TEdge> : IGraph<TVertex, TEdge>
+public interface IPromisesInstantWholeGraphDelivering<out TVertex, out TEdge> : IGraph<TVertex, TEdge>
     where TVertex : IVertex
     where TEdge : IEdge{}
 
@@ -18,7 +18,8 @@ public interface ICanDeliverWholeGraphInInstant<out TVertex, out TEdge> : IGraph
 /// That means this map representations that corresponds to graphs with this ability must generate their graphs before start of path finding on them. 
 /// </summary>
 /// <typeparam name="TVertex">Type of vertices of graph.</typeparam>
-public interface IInstantWholeGraphDelivering<out TVertex, out TEdge> : ICanDeliverWholeGraphInInstant<TVertex, TEdge>, IGraph<TVertex, TEdge>
+public interface IInstantWholeGraphDelivering<out TVertex, out TEdge> : 
+    IGraph<TVertex, TEdge>
     where TVertex : IVertex
     where TEdge : IEdge
 {

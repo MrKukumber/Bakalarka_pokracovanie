@@ -7,23 +7,23 @@ namespace Optepafi.Models.MapRepreMan.Graphs.Functionalities;
 /// Represents searchable graph whose vertices has ability to remember one other vertex.
 /// 
 /// This reference can be used for remembering predecessor vertex during path finding.
-/// This interface should not be implemented. Its successor <see cref="IPredecessorRemembering{TVertex,TEdge}"/> should be implemented instead.
+/// This interface should not be implemented. Its successor <see cref="IPredecessorsRemembering{TVertex,TEdge,TWeight,TVertexAttributes,TEdgeAttributes}"/> should be implemented instead.
 /// </summary>
-public interface IRemembersPredecessors<out TVertex, out TEdge, TWeight, TVertexAttributes, TEdgeAttributes> : IGraph<TVertex, TEdge>
+public interface IPromisesPredecessorsRemembering<out TVertex, out TEdge, TWeight, TVertexAttributes, TEdgeAttributes> : IGraph<TVertex, TEdge>
     where TVertex : IVertex
     where TEdge : IEdge
     where TVertexAttributes : IVertexAttributes
     where TEdgeAttributes : IEdgeAttributes
 
 {
-    public TOut Traverse<TOut, TOtherParams>(IFromRemembersPredecessorsToPredecessorRememberingTraverser<TOut, TWeight, TVertexAttributes, TEdgeAttributes, TOtherParams> traverser, TOtherParams otherParams);
+    public TOut Traverse<TOut, TOtherParams>(IFromPromiseToPredecessorRememberingTraverser<TOut, TWeight, TVertexAttributes, TEdgeAttributes, TOtherParams> traverser, TOtherParams otherParams);
 }
 
-public interface IFromRemembersPredecessorsToPredecessorRememberingTraverser<TOut, TWeight, TVertexAttributes, TEdgeAttributes, TOtherParams>
+public interface IFromPromiseToPredecessorRememberingTraverser<TOut, TWeight, TVertexAttributes, TEdgeAttributes, TOtherParams>
         where TVertexAttributes : IVertexAttributes
         where TEdgeAttributes : IEdgeAttributes
 {
-    public TOut AcceptedTraverse<TVertex, TEdge>(IPredecessorRemembering<TVertex, TEdge, TWeight, TVertexAttributes, TEdgeAttributes> predecessorRememberingGraph, TOtherParams otherParams)
+    public TOut AcceptedTraverse<TVertex, TEdge>(IPredecessorsRemembering<TVertex, TEdge, TWeight, TVertexAttributes, TEdgeAttributes> predecessorsRememberingGraph, TOtherParams otherParams)
         where TVertex : class, IPredecessorRememberingVertex<TVertexAttributes>, IBasicVertex<TEdge, TVertexAttributes>
         where TEdge : IBasicEdge<TVertex, TEdgeAttributes, TWeight>;
 }
@@ -39,8 +39,7 @@ public interface IFromRemembersPredecessorsToPredecessorRememberingTraverser<TOu
 /// <typeparam name="TVertexAttributes">Type of attributes used in vertices of a graph.</typeparam>
 /// <typeparam name="TEdgeAttributes">Type of attributes used in edges of a graph.</typeparam>
 /// <typeparam name="TWeight">Type, that is used for representing weight of the edge.</typeparam>
-public interface IPredecessorRemembering<out TVertex, out TEdge, TWeight, TVertexAttributes, TEdgeAttributes> :
-    IRemembersPredecessors<TVertex, TEdge, TWeight, TVertexAttributes, TEdgeAttributes>,
+public interface IPredecessorsRemembering<out TVertex, out TEdge, TWeight, TVertexAttributes, TEdgeAttributes> :
     ISearchable<TVertex, TEdge, TWeight, TVertexAttributes, TEdgeAttributes>
     where TVertex : class, IPredecessorRememberingVertex<TVertexAttributes>, IBasicVertex<TEdge, TVertexAttributes>
     where TEdge : IBasicEdge<TVertex, TEdgeAttributes, TWeight>

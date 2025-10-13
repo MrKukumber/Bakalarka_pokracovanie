@@ -9,9 +9,9 @@ using Optepafi.Models.TemplateMan.TemplateAttributes;
 namespace Optepafi.Models.MapRepreMan.Graphs.Specific.CompleteNetIntertwining;
 
 //TODO: comment + add functionalities
-public interface ICompleteNetIntertwiningPredecessorRememberingGraph<TVertexAttributes, TEdgeAttributes>: 
+public interface ICompleteNetIntertwiningPredecessorsRememberingGraph<TVertexAttributes, TEdgeAttributes>: 
     ICompleteNetIntertwiningMapRepre,
-    IPredecessorRemembering<ICompleteNetIntertwiningPredecessorRememberingGraph<TVertexAttributes, TEdgeAttributes>.Vertex, ICompleteNetIntertwiningPredecessorRememberingGraph<TVertexAttributes, TEdgeAttributes>.Edge, float, TVertexAttributes, TEdgeAttributes>
+    IPredecessorsRemembering<ICompleteNetIntertwiningPredecessorsRememberingGraph<TVertexAttributes, TEdgeAttributes>.Vertex, ICompleteNetIntertwiningPredecessorsRememberingGraph<TVertexAttributes, TEdgeAttributes>.Edge, float, TVertexAttributes, TEdgeAttributes>
     where TVertexAttributes: IVertexAttributes
     where TEdgeAttributes: IEdgeAttributes
 {
