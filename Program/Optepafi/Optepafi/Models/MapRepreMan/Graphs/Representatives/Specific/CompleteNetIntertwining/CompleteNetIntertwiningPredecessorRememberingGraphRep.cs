@@ -13,7 +13,14 @@ using Optepafi.Models.UserModelMan.UserModels.Functionalities;
 
 namespace Optepafi.Models.MapRepreMan.Graphs.Representatives.Specific.CompleteNetIntertwining;
 
-//TODO: comment
+/// <summary>
+/// Representative of a graph which corresponds to the <c>ICompleteNetIntertwiningMapRepre</c> map representation and which has an attribute in its vertices, which
+/// can be used for remembering predecesor of that vertex.
+///
+/// For more general information on graph representatives, see <see cref="GraphRepresentative{TGraph,TVertex,TEdge}"/>.
+/// </summary>
+/// <typeparam name="TVertexAttributes">Type of vertices used in a represented graph.</typeparam>
+/// <typeparam name="TEdgeAttributes">Type of edges used in a represented graph.</typeparam>
 public class CompleteNetIntertwiningPredecessorRememberingGraphRep<TVertexAttributes, TEdgeAttributes> : 
     GraphRepresentative<ICompleteNetIntertwiningPredecessorsRememberingGraph<TVertexAttributes, TEdgeAttributes>, ICompleteNetIntertwiningPredecessorsRememberingGraph<TVertexAttributes, TEdgeAttributes>.Vertex, ICompleteNetIntertwiningPredecessorsRememberingGraph<TVertexAttributes, TEdgeAttributes>.Edge>
     where TVertexAttributes : IVertexAttributes

@@ -19,33 +19,42 @@ using Tmds.DBus.Protocol;
 
 namespace Optepafi.Models.SearchingAlgorithmMan.Implementations.AStar;
 
+/// <summary>
+/// Classic implementation of A* algorithm which uses dictionary for remembering current predecessors of processed vertices by algorithm.
+///
+/// For more general information on the concept of searching algorithm implementations, see <see cref="SearchingAlgorithmImplementation{TConfiguration}"/>   
+/// </summary>
 public class AStarUsesPredsDict : SearchingAlgorithmImplementation<AStarConfiguration>
 {
     public static AStarUsesPredsDict Instance { get; } = new();
     private AStarUsesPredsDict() {}
     
+    /// <inheritdoc cref="SearchingAlgorithmImplementation{TConfiguration}.DoesRepresentUsableGraph{TVertex,TEdge,TVertexAttributes,TEdgeAttributes}"/> 
     public override bool DoesRepresentUsableGraph<TVertex, TEdge, TVertexAttributes, TEdgeAttributes>(
         IGraphRepresentative<IGraph<TVertex, TEdge>, TVertex, TEdge> graphRepresentative) 
     {
-        return graphRepresentative is IGraphRepresentative< IPromisesSearchability<TVertex, TEdge, float, TVertexAttributes, TEdgeAttributes>, TVertex, TEdge>;
+        return graphRepresentative is IGraphRepresentative<IPromisesSearchability<TVertex, TEdge, float, TVertexAttributes, TEdgeAttributes>, TVertex, TEdge>;
     }
+    /// <inheritdoc cref="SearchingAlgorithmImplementation{TConfiguration}.DoesRepresentUsableUserModel{TTemplate,TVertexAttributes,TEdgeAttributes}"/>
     public override bool DoesRepresentUsableUserModel<TTemplate, TVertexAttributes, TEdgeAttributes>(IUserModelType<IComputing<TTemplate, TVertexAttributes, TEdgeAttributes>, TTemplate> userModelType) 
     {
         return userModelType 
             is IUserModelType<IAStarHeuristicsComputing<TTemplate, TVertexAttributes, TEdgeAttributes> , TTemplate> 
             and IUserModelType<IWeightComputing<TTemplate, TVertexAttributes, TEdgeAttributes>, TTemplate> ;
     }
+    /// <inheritdoc cref="SearchingAlgorithmImplementation{TConfiguration}.IsUsableGraph{TVertex,TEdge,TVertexAttributes,TEdgeAttributes}"/>
     public override bool IsUsableGraph<TVertex, TEdge, TVertexAttributes, TEdgeAttributes>(IGraph<TVertex, TEdge> graph) 
     {
         return graph is IPromisesSearchability<TVertex, TEdge, float, TVertexAttributes, TEdgeAttributes>;
     }
+    /// <inheritdoc cref="SearchingAlgorithmImplementation{TConfiguration}.IsUsableUserModel{TVertexAttributes,TEdgeAttributes}"/>
     public override bool IsUsableUserModel<TVertexAttributes, TEdgeAttributes>(IUserModel<ITemplate<TVertexAttributes, TEdgeAttributes>> userModel) 
     {
         return userModel 
             is IAStarHeuristicsComputing<ITemplate<TVertexAttributes,TEdgeAttributes>, TVertexAttributes, TEdgeAttributes> 
             and IWeightComputing<ITemplate<TVertexAttributes, TEdgeAttributes>, TVertexAttributes, TEdgeAttributes>;
     }
-
+    /// <inheritdoc cref="SearchingAlgorithmImplementation{TConfiguration}.SearchForPaths{TVertexAttributes,TEdgeAttributes,TVertex,TEdge}"/>
     public override IPath<TVertexAttributes, TEdgeAttributes>[] SearchForPaths<TVertexAttributes, TEdgeAttributes, TVertex, TEdge>(Leg[] track, IGraph<TVertex, TEdge> graph, IList<IUserModel<ITemplate<TVertexAttributes, TEdgeAttributes>>> userModels,
         AStarConfiguration configuration, IProgress<ISearchingReport>? progress, CancellationToken? cancellationToken) 
     {
@@ -58,10 +67,16 @@ public class AStarUsesPredsDict : SearchingAlgorithmImplementation<AStarConfigur
         return paths.ToArray();
     }
 
+    /// <inheritdoc cref="SearchingAlgorithmImplementation{TConfiguration}.ExecutorSearch{TVertexAttributes,TEdgeAttributes,TVertex,TEdge}"/>
     protected override IPath<TVertexAttributes, TEdgeAttributes> ExecutorSearch<TVertexAttributes, TEdgeAttributes, TVertex, TEdge>(Leg[] track, IGraph<TVertex, TEdge> graph,
         IUserModel<ITemplate<TVertexAttributes, TEdgeAttributes>> userModel, AStarConfiguration configuration, IProgress<ISearchingReport>? progress, CancellationToken? cancellationToken) 
         => Algorithm<TVertexAttributes, TEdgeAttributes>.Instance.Search(track, graph, userModel, configuration, progress, cancellationToken); 
     
+    /// <summary>
+    /// Helper class, used mainly for remembering generic type parameters received by calling traverse function of searchability promising graph.
+    /// </summary>
+    /// <typeparam name="TVertexAttributes">Vertex attributes used in algorithm execution.</typeparam>
+    /// <typeparam name="TEdgeAttributes">Edge attributes used in algorithm execution.</typeparam>
     private class Algorithm<TVertexAttributes, TEdgeAttributes> :
         IFromPromiseToSearchableTraverser<SegmentedLinesPath<TVertexAttributes, TEdgeAttributes>, float, TVertexAttributes, TEdgeAttributes, (Leg, IUserModel<ITemplate<TVertexAttributes, TEdgeAttributes>>, AStarConfiguration, IProgress<ISearchingReport>?, CancellationToken? )> 
         where TVertexAttributes : IVertexAttributes

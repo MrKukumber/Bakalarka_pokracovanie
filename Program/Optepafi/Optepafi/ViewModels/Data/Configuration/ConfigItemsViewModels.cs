@@ -5,7 +5,9 @@ using Color = System.Drawing.Color;
 
 namespace Optepafi.ViewModels.Data.Configuration;
 
-    //TODO: comment
+/// <summary>
+/// View model for configuration item of categorical nature. It is defined by enumeration of all possible values, it can become.
+/// </summary>
 public class CategoricalConfigItemViewModel : ConfigItemViewModel
 {
     public CategoricalConfigItem ConfigItem { get; }
@@ -22,6 +24,7 @@ public class CategoricalConfigItemViewModel : ConfigItemViewModel
     // }
 
     public string Name => ConfigItem.Name;
+    
     public Enum[] AllValues => ConfigItem.AllValues;
 
     private int _indexOfSelectedValue;
