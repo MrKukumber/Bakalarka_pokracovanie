@@ -18,7 +18,7 @@ public interface ICompleteNetIntertwiningBasicGraph<TVertexAttributes, TEdgeAttr
     public class Vertex :
         IBasicVertex<Edge, TVertexAttributes>
     {
-        public Vertex() { }
+        protected Vertex(){}
         public Vertex(TVertexAttributes attributes, IEnumerable<Edge> outgoingEdges)
         {
             _outgoingEdges = outgoingEdges;
@@ -34,8 +34,7 @@ public interface ICompleteNetIntertwiningBasicGraph<TVertexAttributes, TEdgeAttr
     public class Edge :
         IBasicEdge<Vertex, TEdgeAttributes, float>
     {
-        
-        public Edge(){}
+        protected Edge() { }
         public Edge(TEdgeAttributes attributes, Vertex destination)
         {
             _to  = destination;
