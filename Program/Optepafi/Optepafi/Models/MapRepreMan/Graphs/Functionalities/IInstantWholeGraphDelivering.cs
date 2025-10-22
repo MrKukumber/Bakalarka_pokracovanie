@@ -19,6 +19,7 @@ public interface IPromisesInstantWholeGraphDelivering<out TVertex, out TEdge> : 
 /// </summary>
 /// <typeparam name="TVertex">Type of vertices of graph.</typeparam>
 public interface IInstantWholeGraphDelivering<out TVertex, out TEdge> : 
+    IPromisesInstantWholeGraphDelivering<TVertex, TEdge>,
     IGraph<TVertex, TEdge>
     where TVertex : IVertex
     where TEdge : IEdge

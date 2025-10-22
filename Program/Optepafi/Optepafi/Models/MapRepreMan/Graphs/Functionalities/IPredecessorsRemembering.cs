@@ -40,6 +40,7 @@ public interface IFromPromiseToPredecessorRememberingTraverser<TOut, TWeight, TV
 /// <typeparam name="TEdgeAttributes">Type of attributes used in edges of a graph.</typeparam>
 /// <typeparam name="TWeight">Type, that is used for representing weight of the edge.</typeparam>
 public interface IPredecessorsRemembering<out TVertex, out TEdge, TWeight, TVertexAttributes, TEdgeAttributes> :
+    IPromisesPredecessorsRemembering<TVertex, TEdge, TWeight, TVertexAttributes, TEdgeAttributes>,
     ISearchable<TVertex, TEdge, TWeight, TVertexAttributes, TEdgeAttributes>
     where TVertex : class, IPredecessorRememberingVertex<TVertexAttributes>, IBasicVertex<TEdge, TVertexAttributes>
     where TEdge : IBasicEdge<TVertex, TEdgeAttributes, TWeight>

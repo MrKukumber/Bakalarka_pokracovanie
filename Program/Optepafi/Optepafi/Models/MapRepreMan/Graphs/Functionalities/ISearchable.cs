@@ -39,6 +39,7 @@ public interface IFromPromiseToSearchableTraverser<TOut, TWeight, TVertexAttribu
 /// <typeparam name="TEdgeAttributes">Type of attributes used in edges of a graph.</typeparam>
 /// <typeparam name="TWeight">Type, that is used for representing weight of the edge.</typeparam>
 public interface ISearchable<out TVertex, out TEdge, TWeight, TVertexAttributes, TEdgeAttributes> : 
+    IPromisesSearchability<TVertex, TEdge, TWeight, TVertexAttributes, TEdgeAttributes>,
     IGraph<TVertex, TEdge>
     where TVertex : class, IBasicVertex<TEdge, TVertexAttributes>
     where TEdge : IBasicEdge<TVertex, TEdgeAttributes, TWeight>
