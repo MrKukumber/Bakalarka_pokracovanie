@@ -1,3 +1,4 @@
 [submodule "Optepafi"]
 	path = Optepafi
 	url = git@github.com:MrKukumber/Optepafi.git
+	branch = bachelor
